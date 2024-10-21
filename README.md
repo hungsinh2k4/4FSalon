@@ -1,4 +1,4 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + TailWind CSS
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -47,4 +47,10 @@ export default tseslint.config({
     ...react.configs['jsx-runtime'].rules,
   },
 })
+```
+# Cài đặt Môi Trường
+```js
+npm create vite@latest my-hair-salon --template react
+cd my-hair-salon
+npm install
 ```

@@ -46,7 +46,7 @@ const App: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-grow pt-24"> {/* Thêm lớp pt-16 để thêm khoảng trống ở đầu */}
+      <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
