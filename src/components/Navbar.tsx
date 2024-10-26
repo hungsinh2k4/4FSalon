@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
           <h1 className="text-black text-2xl">4F Salon</h1>
         </div>
         
-        <div className="hidden md:flex space-x-4">
+        <div className="hidden md:flex space-x-4 right-0">
           <Link to="/" className="text-black hover:text-gray-600 transition-colors duration-200">Trang Chủ</Link>
           <Link to="/vechungtoi" className="text-black hover:text-gray-600 transition-colors duration-200">Về chúng tôi</Link>
           <Link to="/lienhe" className="text-black hover:text-gray-600 transition-colors duration-200">Liên hệ</Link>
