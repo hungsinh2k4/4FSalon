@@ -1,5 +1,5 @@
-import React from 'react';
-import logo from '/src/assets/Barber Hair Cutting Effect 3.png';
+import React from "react";
+import logo from "/src/assets/Barber Hair Cutting Effect 3.png";
 
 const Login: React.FC = () => {
   return (
@@ -9,10 +9,12 @@ const Login: React.FC = () => {
         <div className="flex justify-center mb-6">
           <img src={logo} alt="Logo" className="w-24 h-24 object-contain" />
         </div>
-        
+
         <form className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium">Tên đăng nhập</label>
+            <label htmlFor="email" className="block text-sm font-medium">
+              Tên đăng nhập
+            </label>
             <input
               type="text"
               id="email"
@@ -21,7 +23,9 @@ const Login: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium">Mật khẩu</label>
+            <label htmlFor="password" className="block text-sm font-medium">
+              Mật khẩu
+            </label>
             <input
               type="password"
               id="password"
@@ -30,7 +34,9 @@ const Login: React.FC = () => {
             />
           </div>
           <div className="text-right">
-            <a href="#" className="text-sm text-blue-600 hover:underline">Quên mật khẩu ?</a>
+            <a href="#" className="text-sm text-blue-600 hover:underline">
+              Quên mật khẩu ?
+            </a>
           </div>
           <button
             type="submit"
@@ -46,15 +52,20 @@ const Login: React.FC = () => {
           <span className="w-full border-t"></span>
         </div>
 
-        <button
-          className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100"
-        >
-          <img src="path-to-google-icon.png" alt="Google" className="w-5 h-5 mr-2" />
+        <button className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100">
+          <img
+            src="path-to-google-icon.png"
+            alt="Google"
+            className="w-5 h-5 mr-2"
+          />
           Đăng nhập với tài khoản Google
         </button>
 
         <p className="text-center mt-4 text-sm">
-          Không có tài khoản? <a href="#" className="text-blue-600 hover:underline">Đăng ký</a>
+          Không có tài khoản?{" "}
+          <a href="#" className="text-blue-600 hover:underline">
+            Đăng ký
+          </a>
         </p>
       </div>
     </div>
