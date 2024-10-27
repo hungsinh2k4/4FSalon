@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useRef } from "react";
 import HairCut from "/src/assets/Home Img/HairCut.png";
 import Service2 from "/src/assets/Home Img/Service2.png";
 import Service3 from "/src/assets/Home Img/Service3.png";
 import Khuyenmai from "/src/assets/Home Img/Khuyenmai.png";
+import Stylist1 from "/src/assets/Home Img/Stylist1.png";
+import Stylist2 from "/src/assets/Home Img/Stylist2.png";
+import Stylist3 from "/src/assets/Home Img/Stylist3.png";
+import Stylist4 from "/src/assets/Home Img/Stylist4.png";
+import Stylist5 from "/src/assets/Home Img/Stylist5.png";
+
 const Home: React.FC = () => {
+  const stylistContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (stylistContainerRef.current) {
+      stylistContainerRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (stylistContainerRef.current) {
+      stylistContainerRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
+
   return (
     <div
       className="bg-cover bg-center min-h-screen"
@@ -90,6 +110,115 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Gặp gỡ các stylist */}
+
+      <section className="py-12 bg-white">
+        <h2 className="text-4xl font-bold text-center mb-8">
+          Gặp gỡ các stylist
+        </h2>
+        <div className="relative">
+          <button
+            onClick={scrollLeft}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+          >
+            &lt;
+          </button>
+          <div
+            ref={stylistContainerRef}
+            className="container mx-auto overflow-x-scroll flex space-x-8"
+          >
+            <div className="flex space-x-8">
+              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
+                  <img
+                    src={Stylist1}
+                    alt="Stylist 1"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-4 text-center">
+                  <h3 className="text-xl font-semibold mt-4">Stylist 1</h3>
+                  <p className="text-gray-500 mt-2">Chuyên gia cắt tóc</p>
+                </div>
+              </div>
+              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
+                  <img
+                    src={Stylist2}
+                    alt="Stylist 2"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-4 text-center">
+                  <h3 className="text-xl font-semibold mt-4">Stylist 2</h3>
+                  <p className="text-gray-500 mt-2">Chuyên gia uốn tóc</p>
+                </div>
+              </div>
+              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
+                  <img
+                    src={Stylist3}
+                    alt="Stylist 3"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-4 text-center">
+                  <h3 className="text-xl font-semibold mt-4">Stylist 3</h3>
+                  <p className="text-gray-500 mt-2">Chuyên gia nhuộm tóc</p>
+                </div>
+              </div>
+              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
+                  <img
+                    src={Stylist4}
+                    alt="Stylist 4"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-4 text-center">
+                  <h3 className="text-xl font-semibold mt-4">Stylist 4</h3>
+                  <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
+                </div>
+              </div>
+
+              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
+                  <img
+                    src={Stylist4}
+                    alt="Stylist 4"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-4 text-center">
+                  <h3 className="text-xl font-semibold mt-4">Stylist 5</h3>
+                  <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
+              <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
+                <img
+                  src={Stylist4}
+                  alt="Stylist 4"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-4 text-center">
+                <h3 className="text-xl font-semibold mt-4">Stylist 6</h3>
+                <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={scrollRight}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+          >
+            &gt;
+          </button>
+        </div>
+      </section>
     </div>
   );
 };
