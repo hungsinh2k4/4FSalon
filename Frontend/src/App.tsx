@@ -41,7 +41,6 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Vechungtoi from "./pages/aboutUs";
-import Contact from "./pages/contact";
 
 const App: React.FC = () => {
   return (
@@ -52,7 +51,6 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/aboutUs" element={<Vechungtoi />} />
-          <Route path="contact" element={<Contact />} />
         </Routes>
       </main>
       <Footer />
