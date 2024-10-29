@@ -34,14 +34,13 @@
 
 // export default App
 
-
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Vechungtoi from './pages/Vechungtoi';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Vechungtoi from "./pages/Vechungtoi";
 
 const App: React.FC = () => {
   return (
@@ -51,7 +50,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/vechungtoi" element={<Vechungtoi />} />
+          <Route path="/aboutUs" element={<Vechungtoi />} />
         </Routes>
       </main>
       <Footer />
