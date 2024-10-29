@@ -87,7 +87,7 @@ const Home: React.FC = () => {
       {/* Khuyến mãi */}
       <div className="py-14">
         <div className="container mx-auto px-4">
-          <h2 className="text-xl font-semibold mb-4 text-white">Khuyến mãi</h2>
+          <h2 className="text-3xl font-semibold mb-4 text-white">Khuyến mãi</h2>
           <div className="bg-gray-800 rounded-lg p-7 flex flex-col md:flex-row items-center">
             {/* Ảnh */}
             <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4">
