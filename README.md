@@ -1,56 +1,46 @@
-# React + TypeScript + Vite + TailWind CSS
+# 4F Salon
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+4F Salon là một trang web giới thiệu dịch vụ salon tóc, được xây dựng bằng Vite, React, và Tailwind CSS. Trang web cung cấp thông tin về các dịch vụ cắt tóc, uốn tóc, nhuộm tóc, và gặp gỡ các stylist chuyên nghiệp.
 
-Currently, two official plugins are available:
+## Cài đặt Môi Trường
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Để cài đặt và chạy dự án trên máy của bạn, hãy làm theo các bước sau:
 
-## Expanding the ESLint configuration
+```sh
+# Clone repository
+git clone https://github.com/your-username/my-hair-salon.git
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
-# Cài đặt Môi Trường
-```js
-npm create vite@latest my-hair-salon --template react
+# Chuyển vào thư mục dự án
 cd my-hair-salon
+cd Frontend
+
+# Cài đặt các gói phụ thuộc
 npm install
+
+# Chạy dự án
+npm run dev
 ```
+
+Công nghệ sử dụng
+Vite: Công cụ build nhanh chóng và hiện đại cho các dự án web.
+React: Thư viện JavaScript để xây dựng giao diện người dùng.
+Tailwind CSS: Framework CSS tiện lợi để tạo kiểu dáng cho trang web.
+Cấu trúc dự án
+my-hair-salon/
+├── Frontend/
+│ ├── public/
+│ ├── src/
+│ │ ├── assets/
+│ │ ├── components/
+│ │ ├── pages/
+│ │ ├── App.tsx
+│ │ ├── main.tsx
+│ ├── index.html
+│ ├── package.json
+│ ├── tailwind.config.js
+│ └── vite.config.ts
+└──
+Liên hệ
+Nếu bạn có bất kỳ câu hỏi hoặc góp ý nào, vui lòng liên hệ với chúng tôi qua email: contact@4fsalon.com.
+
+Cảm ơn bạn đã ghé thăm trang web của chúng tôi!
