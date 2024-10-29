@@ -31,11 +31,11 @@ const Navbar: React.FC = () => {
       {/* Menu mobile */}
       <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
         <div className="flex flex-col space-y-2">
-          <Link to="/" className="block text-black hover:text-gray-600 transition-colors duration-200">Trang Chủ</Link>
-          <Link to="/vechungtoi" className="block text-black hover:text-gray-600 transition-colors duration-200">Về chúng tôi</Link>
-          <Link to="/lienhe" className="block text-black hover:text-gray-600 transition-colors duration-200">Liên hệ</Link>
-          <Link to="/timchinhanh" className="block text-black hover:text-gray-600 transition-colors duration-200">Tìm chi nhánh</Link>
-          <Link to="/datlichhen" className="block text-black hover:text-gray-600 transition-colors duration-200">Đặt lịch Hẹn</Link>
+          <Link to="/" className="mobile-nav-items">Trang Chủ</Link>
+          <Link to="/aboutUs" className="mobile-nav-items">Về chúng tôi</Link>
+          <Link to="/contact" className="mobile-nav-items">Liên hệ</Link>
+          <Link to="/findNearestShop" className="mobile-nav-items">Tìm chi nhánh</Link>
+          <Link to="/booking" className="mobile-nav-items">Đặt lịch Hẹn</Link>
           <Link to="/login" className="bg-black text-white px-3 rounded-full hover:bg-gray-600 hover:text-white transition-colors duration-200">Đăng Nhập</Link>
         </div>
       </div>
