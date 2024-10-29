@@ -30,9 +30,11 @@ const Home: React.FC = () => {
       style={{ backgroundImage: `url('/src/assets/bg.png')` }}
     >
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-center text-center py-32">
-        <h1 className="text-6xl font-bold text-white mb-4">4F SALON</h1>
-        <p className="text-2xl text-white">
+
+      <div className="flex flex-col items-center justify-center text-center py-64">
+        <h1 className="text-6xl font-bold text-white mb-2 ">4F SALON</h1>
+        <div className="w-24 h-px bg-gray-300 my-4"></div>
+        <p className="text-2xl font-semi-bold text-white">
           The best place for your best haircut
         </p>
       </div>
@@ -85,7 +87,7 @@ const Home: React.FC = () => {
       {/* Khuyến mãi */}
       <div className="py-14">
         <div className="container mx-auto px-4">
-          <h2 className="text-xl font-semibold mb-4 text-white">Khuyến mãi</h2>
+          <h2 className="text-3xl font-semibold mb-4 text-white">Khuyến mãi</h2>
           <div className="bg-gray-800 rounded-lg p-7 flex flex-col md:flex-row items-center">
             {/* Ảnh */}
             <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4">
