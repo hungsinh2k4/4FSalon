@@ -7,7 +7,6 @@ import Stylist1 from "/src/assets/Home Img/Stylist1.png";
 import Stylist2 from "/src/assets/Home Img/Stylist2.png";
 import Stylist3 from "/src/assets/Home Img/Stylist3.png";
 import Stylist4 from "/src/assets/Home Img/Stylist4.png";
-import Stylist5 from "/src/assets/Home Img/Stylist5.png";
 
 const Home: React.FC = () => {
   const stylistContainerRef = useRef<HTMLDivElement>(null);
@@ -26,7 +25,7 @@ const Home: React.FC = () => {
 
   return (
     <div
-      className="bg-cover bg-center min-h-screen"
+      className="bg-cover bg-top min-h-screen"
       style={{ backgroundImage: `url('/src/assets/bg.png')` }}
     >
       {/* Main Content */}
