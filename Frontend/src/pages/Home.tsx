@@ -9,6 +9,7 @@ import Stylist2 from "/src/assets/Home Img/Stylist2.png";
 import Stylist3 from "/src/assets/Home Img/Stylist3.png";
 import Stylist4 from "/src/assets/Home Img/Stylist4.png";
 import Logo from "/src/assets/logo.png";
+import "./Home.css";
 
 const Home: React.FC = () => {
   const stylistContainerRef = useRef<HTMLDivElement>(null);
@@ -131,7 +132,7 @@ const Home: React.FC = () => {
           </button>
           <div
             ref={stylistContainerRef}
-            className="container mx-auto overflow-x-scroll flex space-x-8"
+            className="container mx-auto overflow-x-scroll flex space-x-8 scrollbar-hide"
           >
             <div className="flex space-x-8">
               <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
@@ -186,12 +187,11 @@ const Home: React.FC = () => {
                   <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
                 </div>
               </div>
-
               <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
                 <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
                   <img
                     src={Stylist4}
-                    alt="Stylist 4"
+                    alt="Stylist 5"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -200,19 +200,18 @@ const Home: React.FC = () => {
                   <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-              <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
-                <img
-                  src={Stylist4}
-                  alt="Stylist 4"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-4 text-center">
-                <h3 className="text-xl font-semibold mt-4">Stylist 6</h3>
-                <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
+              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
+                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
+                  <img
+                    src={Stylist4}
+                    alt="Stylist 6"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-4 text-center">
+                  <h3 className="text-xl font-semibold mt-4">Stylist 6</h3>
+                  <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
+                </div>
               </div>
             </div>
           </div>
