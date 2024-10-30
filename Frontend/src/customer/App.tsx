@@ -36,11 +36,12 @@
 
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Vechungtoi from "../pages/aboutUs";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Vechungtoi from "./pages/aboutUs";
+import Booking from "./pages/Booking";
 
 const App: React.FC = () => {
   return (
@@ -51,6 +52,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/aboutUs" element={<Vechungtoi />} />
+          <Route path="/booking" element={<Booking />} />
         </Routes>
       </main>
       <Footer />

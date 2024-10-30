@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "/src/assets/Barber Hair Cutting Effect 3.png";
+import logo from "../assets/Barber Hair Cutting Effect 3.png";
 import "./Navbar.css";
 
 const Navbar: React.FC = () => {

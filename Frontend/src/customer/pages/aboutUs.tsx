@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import samplePic1 from "/src/assets/AboutUsImg/aboutUsPic.jpg"
+import samplePic1 from "../assets/AboutUsImg/aboutUsPic.jpg"
 
 const Vechungtoi: React.FC = () => {
     return (
         <div
             className="bg-cover pb-8 bg-bottom min-h-screen "
-            style={{ backgroundImage: `url('/src/assets/bg.png')` }}
+            style={{ backgroundImage: `url('/src/customer/assets/bg.png')` }}
         >
 
             <div className="flex flex-col items-center justify-center text-center py-32">
