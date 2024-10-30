@@ -1,5 +1,6 @@
 import React from "react";
-import logo from "/src/assets/Barber Hair Cutting Effect 3.png";
+import logo from "../assets/Barber Hair Cutting Effect 3.png";
+import gglogo from "../assets/Login/icons8-google-48.png"
 
 const Login: React.FC = () => {
   return (
@@ -54,7 +55,7 @@ const Login: React.FC = () => {
 
         <button className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100">
           <img
-            src="path-to-google-icon.png"
+            src={gglogo}
             alt="Google"
             className="w-5 h-5 mr-2"
           />
