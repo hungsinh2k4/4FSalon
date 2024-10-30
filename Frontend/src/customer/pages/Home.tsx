@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-import HairCut from "../assets/Home Img/HairCut.png";
-import Service2 from "../assets/Home Img/Service2.png";
-import Service3 from "../assets/Home Img/Service3.png";
-import Khuyenmai from "../assets/Home Img/Khuyenmai.png";
-import Stylist1 from "../assets/Home Img/Stylist1.png";
-import Stylist2 from "../assets/Home Img/Stylist2.png";
-import Stylist3 from "../assets/Home Img/Stylist3.png";
-import Stylist4 from "../assets/Home Img/Stylist4.png";
+import HairCut from "../assets/HomeImg/HairCut.png";
+import Service2 from "../assets/HomeImg/Service2.png";
+import Service3 from "../assets/HomeImg/Service3.png";
+import Khuyenmai from "../assets/HomeImg/Khuyenmai.png";
+import Stylist1 from "../assets/HomeImg/Stylist1.png";
+import Stylist2 from "../assets/HomeImg/Stylist2.png";
+import Stylist3 from "../assets/HomeImg/Stylist3.png";
+import Stylist4 from "../assets/HomeImg/Stylist4.png";
 import Logo from "../assets/logo.png";
 import "./Home.css";
 

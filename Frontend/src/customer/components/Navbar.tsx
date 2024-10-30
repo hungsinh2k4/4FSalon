@@ -18,13 +18,13 @@ const Navbar: React.FC = () => {
           <Link to="/" className="nav-items">
             Trang Chủ
           </Link>
-          <Link to="/aboutUs" className="nav-items">
+          <Link to="/about-us" className="nav-items">
             Về chúng tôi
           </Link>
           <a href="https://zalo.me/g/brxjir719" className="nav-items">
             Liên hệ
           </a>
-          <Link to="/findNearestShop" className="nav-items">
+          <Link to="/find-nearest-shop" className="nav-items">
             Tìm chi nhánh
           </Link>
           <Link to="/booking" className="nav-items">
