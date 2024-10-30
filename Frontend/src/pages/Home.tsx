@@ -28,7 +28,7 @@ const Home: React.FC = () => {
 
   return (
     <div
-      className="bg-cover bg-top min-h-screen"
+      className="bg-contain bg-top min-h-screen w-full"
       style={{ backgroundImage: `url('/src/assets/bg.png')` }}
     >
       {/* Main Content */}

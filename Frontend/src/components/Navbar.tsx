@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
           <h1 className="text-black text-2xl">4F Salon</h1>
         </div>
 
-        <div className="hidden md:flex items-center ">
+        <div className="hidden md:flex items-center">
           <Link to="/" className="nav-items">
             Trang Chủ
           </Link>
