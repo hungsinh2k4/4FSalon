@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "/src/assets/Barber Hair Cutting Effect 3.png";
+import logo from "../assets/Barber Hair Cutting Effect 3.png";
 
 const Login: React.FC = () => {
   return (

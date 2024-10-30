@@ -1,14 +1,14 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-import HairCut from "/src/assets/Home Img/HairCut.png";
-import Service2 from "/src/assets/Home Img/Service2.png";
-import Service3 from "/src/assets/Home Img/Service3.png";
-import Khuyenmai from "/src/assets/Home Img/Khuyenmai.png";
-import Stylist1 from "/src/assets/Home Img/Stylist1.png";
-import Stylist2 from "/src/assets/Home Img/Stylist2.png";
-import Stylist3 from "/src/assets/Home Img/Stylist3.png";
-import Stylist4 from "/src/assets/Home Img/Stylist4.png";
-import Logo from "/src/assets/logo.png";
+import HairCut from "../assets/Home Img/HairCut.png";
+import Service2 from "../assets/Home Img/Service2.png";
+import Service3 from "../assets/Home Img/Service3.png";
+import Khuyenmai from "../assets/Home Img/Khuyenmai.png";
+import Stylist1 from "../assets/Home Img/Stylist1.png";
+import Stylist2 from "../assets/Home Img/Stylist2.png";
+import Stylist3 from "../assets/Home Img/Stylist3.png";
+import Stylist4 from "../assets/Home Img/Stylist4.png";
+import Logo from "../assets/logo.png";
 import "./Home.css";
 
 const Home: React.FC = () => {
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
   return (
     <div
       className="bg-cover bg-top min-h-screen"
-      style={{ backgroundImage: `url('/src/assets/bg.png')` }}
+      style={{ backgroundImage: `url('/src/customer/assets/bg.png')` }}
     >
       {/* Main Content */}
 
