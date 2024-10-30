@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 import HairCut from "/src/assets/Home Img/HairCut.png";
 import Service2 from "/src/assets/Home Img/Service2.png";
 import Service3 from "/src/assets/Home Img/Service3.png";
@@ -7,6 +8,7 @@ import Stylist1 from "/src/assets/Home Img/Stylist1.png";
 import Stylist2 from "/src/assets/Home Img/Stylist2.png";
 import Stylist3 from "/src/assets/Home Img/Stylist3.png";
 import Stylist4 from "/src/assets/Home Img/Stylist4.png";
+import Logo from "/src/assets/logo.png";
 
 const Home: React.FC = () => {
   const stylistContainerRef = useRef<HTMLDivElement>(null);
@@ -104,9 +106,11 @@ const Home: React.FC = () => {
               <p className="mb-4 text-white">
                 Tham gia ngay để tích điểm và hưởng nhiều ưu đãi độc quyền.
               </p>
-              <button className="bg-transparent border border-white text-white px-4 py-2 rounded hover:bg-white hover:text-gray-900 transition-colors">
-                Đặt lịch ngay
-              </button>
+              <Link to="/booking" className="text-white">
+                <button className="bg-transparent border border-white text-white px-4 py-2 rounded hover:bg-white hover:text-gray-900 transition-colors">
+                  Đặt lịch ngay
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -220,6 +224,73 @@ const Home: React.FC = () => {
           </button>
         </div>
       </section>
+
+      {/* Footer */}
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3">
+        {/* Cột trái */}
+        <div
+          className="bg-cover bg-right p-6 text-white flex flex-col justify-center"
+          style={{ backgroundImage: "url('/src/assets/Home Img/bottom.png')" }}
+        >
+          <h2 className="text-4xl font-bold">
+            <span className="text-blue-500">20% </span>OFF
+            <br />
+            CHO LẦN ĐẶT LỊCH
+            <br />
+            ĐẦU TIÊN
+          </h2>
+          <p className="mt-8 font-bold">
+            CALL US:
+            <br />
+            XXX XXX XXXX
+          </p>
+        </div>
+
+        {/* Cột giữa */}
+        <div className="bg-gray-300 p-8 flex flex-col items-center text-center">
+          <h2 className="text-3xl font-bold mb-4">OUR STORY</h2>
+          <img src={Logo} alt="Barber Logo" className="w-24 h-24 mb-4" />
+          <p className="mb-6">
+            4F Salon – Nơi biến mái tóc thành ngôn ngữ của cá tính. Chúng tôi
+            không chỉ cắt tóc, mà tạo nên phong cách. Đến với 4F Salon, bạn sẽ
+            thấy sự khác biệt trong từng đường kéo, từng mái tóc. Hãy để chúng
+            tôi giúp bạn tỏa sáng theo cách riêng của bạn.
+          </p>
+          <Link to="/booking" className="text-blue-500">
+            <button className="bg-black text-white px-4 py-2 rounded">
+              Đặt lịch ngay
+            </button>
+          </Link>
+        </div>
+
+        {/* Cột phải */}
+        <div
+          className="bg-cover bg-center p-8 text-white w-full h-full"
+          style={{ backgroundImage: "url('/src/assets/Home Img/Bg2.png')" }}
+        >
+          <div className="bg-gray-900 bg-opacity-80 text-white p-8">
+            <h2 className="text-3xl font-bold mb-6 text-center">
+              LỊCH LÀM VIỆC
+            </h2>
+            <ul className="space-y-2 text-sm">
+              {[
+                "Thứ hai",
+                "Thứ ba",
+                "Thứ tư",
+                "Thứ năm",
+                "Thứ sáu",
+                "Thứ bảy",
+                "Chủ nhật",
+              ].map((day, index) => (
+                <li key={index} className="flex justify-between">
+                  <span>{day}</span>
+                  <span>8:00 - 21:00</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
