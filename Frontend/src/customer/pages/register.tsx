@@ -1,33 +1,36 @@
 import React from "react";
 import logo from "../assets/Barber Hair Cutting Effect 3.png";
-import gglogo from "../assets/Login/icons8-google-48.png"
+import gglogo from "../assets/Login/icons8-google-48.png";
 import { Link } from "react-router-dom";
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   return (
     <div className="container mx-auto min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm md:max-w-md lg:max-w-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">Đăng nhập</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Đăng Ký</h2>
         <div className="flex justify-center mb-6">
           <img src={logo} alt="Logo" className="w-24 h-24 object-contain" />
         </div>
 
         <form className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium">
-              Tên đăng nhập
-            </label>
             <input
               type="text"
-              id="email"
-              placeholder="Email hoặc số điện thoại"
+              id="Name"
+              placeholder="Nhập tên đăng ký"
               className="mt-1 p-2 w-full border rounded-lg focus:outline-none focus:ring focus:ring-gray-300"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium">
-              Mật khẩu
-            </label>
+            <input
+              type="text"
+              id="email"
+              placeholder="Nhập email đăng ký"
+              className="mt-1 p-2 w-full border rounded-lg focus:outline-none focus:ring focus:ring-gray-300"
+            />
+          </div>
+
+          <div>
             <input
               type="password"
               id="password"
@@ -35,16 +38,21 @@ const Login: React.FC = () => {
               className="mt-1 p-2 w-full border rounded-lg focus:outline-none focus:ring focus:ring-gray-300"
             />
           </div>
+          <div>
+            <input
+              type="text"
+              id="phonenumber"
+              placeholder="Nhập số điện thoại"
+              className="mt-1 p-2 w-full border rounded-lg focus:outline-none focus:ring focus:ring-gray-300"
+            />
+          </div>
           <div className="text-right">
-            <a href="#" className="text-sm text-blue-600 hover:underline">
-              Quên mật khẩu ?
-            </a>
           </div>
           <button
             type="submit"
             className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition-colors"
           >
-            Đăng nhập
+            Đăng Ký
           </button>
         </form>
 
@@ -60,14 +68,13 @@ const Login: React.FC = () => {
             alt="Google"
             className="w-5 h-5 mr-2"
           />
-          Đăng nhập với tài khoản Google
+          Đăng ký với tài khoản Google
         </button>
 
         <p className="text-center mt-4 text-sm">
-          Không có tài khoản?{" "}
-
-          <Link to="/register" className="nav-items">
-            Đăng ký
+          Đã có tài khoản?{" "}
+          <Link to = "/login" className="nav-items">
+          Đăng nhập
           </Link>
         </p>
       </div>
@@ -75,4 +82,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;

@@ -42,6 +42,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Vechungtoi from "./pages/aboutUs";
 import Booking from "./pages/Booking";
+import Register from "./pages/register";
 
 const App: React.FC = () => {
   return (
@@ -51,6 +52,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/about-us" element={<Vechungtoi />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/find-nearest-shop" element={<Booking />} />

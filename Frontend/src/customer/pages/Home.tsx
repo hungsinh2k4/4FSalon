@@ -29,7 +29,7 @@ const Home: React.FC = () => {
   return (
     <div
       className="bg-contain bg-top min-h-screen w-full"
-      style={{ backgroundImage: `url('/src/assets/bg.png')` }}
+      style={{ backgroundImage: "url('/src/customer/assets/bg.png')"}}
     >
       {/* Main Content */}
 
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
         </p>
       </div>
 
-      <section className="py-12 bg-white min-w-screen">
+      <section className="py-5 bg-white min-w-screen">
         <h2 className="text-4xl font-bold text-center mb-8">Dịch vụ</h2>
         <div className="container w-3/4 mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
