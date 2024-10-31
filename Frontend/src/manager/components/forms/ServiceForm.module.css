@@ -1,0 +1,10 @@
+/* src/manager/components/forms/ServiceForm.module.css */
+.serviceForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .serviceForm .button {
+    align-self: flex-end;
+  }
+  

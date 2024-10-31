@@ -1,0 +1,24 @@
+/* src/manager/pages/Accounts/AccountList.module.css */
+.accountList {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .searchInput {
+    flex: 1;
+    margin-left: 20px;
+  }
+  
+  .error {
+    color: red;
+    margin-bottom: 15px;
+  }
+  

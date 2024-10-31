@@ -1,0 +1,10 @@
+/* src/manager/components/forms/BranchForm.module.css */
+.branchForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .branchForm .button {
+    align-self: flex-end;
+  }
+  

@@ -1,0 +1,26 @@
+/* src/manager/pages/NotFound.module.css */
+.notFound {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .notFound h2 {
+    margin-bottom: 20px;
+  }
+  
+  .notFound a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .notFound a:hover {
+    text-decoration: underline;
+  }
+  
