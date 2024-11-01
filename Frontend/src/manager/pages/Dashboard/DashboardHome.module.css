@@ -4,7 +4,7 @@
   }
   
   .mainContent {
-    margin-left: 250px; /* Width của Sidebar */
+    margin-left: 0; /* Width của Sidebar */
     width: calc(100% - 250px);
     display: flex;
     flex-direction: column;

@@ -9,10 +9,9 @@ const axiosInstance = axios.create({
   },
 });
 
-// Thêm interceptor để thêm token vào headers nếu có
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token && config.headers) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -23,13 +22,11 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Thêm interceptor để xử lý lỗi chung
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Xử lý lỗi chung, ví dụ: logout nếu token hết hạn
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       window.location.href = '/manager/login';
     }
     return Promise.reject(error);

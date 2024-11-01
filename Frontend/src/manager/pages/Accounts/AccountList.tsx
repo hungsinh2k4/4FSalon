@@ -8,12 +8,8 @@ import AccountForm from '../../components/forms/AccountForm';
 import styles from './AccountList.module.css';
 import { fetchAccounts, removeAccount, addAccount, editAccount } from '../../services/accountService';
 
-interface Account {
-  id: number;
-  username: string;
-  email: string;
-  // Thêm các trường khác nếu cần
-}
+import { Account } from '../../utils/types';
+
 
 const AccountList: React.FC = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -80,9 +76,7 @@ const AccountList: React.FC = () => {
     }
   };
 
-  const filteredAccounts = accounts.filter((account) =>
-    account.username.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
 
   if (loading) {
     return <p>Đang tải...</p>;
@@ -104,8 +98,8 @@ const AccountList: React.FC = () => {
         />
       </div>
       {error && <p className={styles.error}>{error}</p>}
-      <AccountsTable accounts={filteredAccounts} onDelete={handleDelete} onEdit={handleEdit} />
       
+      <AccountsTable accounts={accounts} onDelete={handleDelete} onEdit={handleEdit} />
       {/* Modal cho Add/Edit */}
       <Modal
         isOpen={isModalOpen}
@@ -117,5 +111,5 @@ const AccountList: React.FC = () => {
     </div>
   );
 };
-
+//
 export default AccountList;

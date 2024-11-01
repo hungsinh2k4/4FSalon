@@ -31,7 +31,7 @@ const EmployeeList: React.FC = () => {
       setLoading(true);
       try {
         const data = await fetchEmployees();
-        setEmployees(data);
+        //setEmployees(data);
       } catch (err) {
         setError('Failed to fetch employees.');
       } finally {
@@ -66,14 +66,14 @@ const EmployeeList: React.FC = () => {
     try {
       if (currentEmployee) {
         // Edit employee
-        const editdEmployee = await editEmployee(currentEmployee.id, data);
-        setEmployees(
-          employees.map((employee) => (employee.id === editdEmployee.id ? editdEmployee : employee))
-        );
+        //const editdEmployee = await editEmployee(currentEmployee.id, data);
+        //setEmployees(
+          //employees.map((employee) => (employee.id === editdEmployee.id ? editdEmployee : employee))
+        //);
       } else {
         // Add employee
         const newEmployee = await addEmployee(data);
-        setEmployees([...employees, newEmployee]);
+        //setEmployees([...employees, newEmployee]);
       }
       setIsModalOpen(false);
     } catch (err) {

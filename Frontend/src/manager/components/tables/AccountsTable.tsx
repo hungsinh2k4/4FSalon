@@ -2,13 +2,7 @@
 import React from 'react';
 import Button from '../common/Button';
 import styles from './AccountsTable.module.css';
-
-interface Account {
-  id: number;
-  username: string;
-  email: string;
-  // Thêm các trường khác nếu cần
-}
+import { Account } from '../../utils/types';
 
 interface AccountsTableProps {
   accounts: Account[];
@@ -18,12 +12,13 @@ interface AccountsTableProps {
 
 const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdit }) => {
   return (
-    <table className={styles.table}>
-      <thead>
+    <table className={`${styles.table} fadeIn`}>
+      <thead> 
         <tr>
           <th>ID</th>
-          <th>Tên đăng nhập</th>
           <th>Email</th>
+          <th>Role</th>
+          <th>Ngày tạo</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -31,11 +26,13 @@ const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdi
         {accounts.map((account) => (
           <tr key={account.id}>
             <td>{account.id}</td>
-            <td>{account.username}</td>
             <td>{account.email}</td>
+            <td>{account.role}</td>
+            <td>{account.created_at}</td>
             <td>
-              <Button onClick={() => onEdit(account)}>Chỉnh sửa</Button>
-              <Button onClick={() => onDelete(account.id)}>Xóa</Button>
+              <Button variant="primary" width='150px' onClick={() => onEdit(account)}>Chỉnh sửa</Button>
+              <p></p>
+              <Button variant="danger" width='150px' onClick={() => onDelete(account.id)}>Xóa</Button>
             </td>
           </tr>
         ))}

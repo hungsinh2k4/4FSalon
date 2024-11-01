@@ -3,7 +3,7 @@ import axiosInstance from './axiosInstance';
 import { Account } from '../utils/types';
 
 export const getAccounts = async (): Promise<Account[]> => {
-  const response = await axiosInstance.get('api/users');
+  const response = await axiosInstance.get<Account[]>('api/users');
   console.log(response.data);
   return response.data;
 };

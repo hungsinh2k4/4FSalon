@@ -1,20 +1,90 @@
 /* src/manager/components/common/Button.module.css */
+
+:root {
+  --primary-color: #2196F3;  /* Light Blue */
+  --secondary-color: #f5f5f5; /* Light Gray */
+  --danger-color: #f44336;   /* Red */
+  --text-color: #212121;     /* Dark Text */
+}
+
 .button {
-    padding: 10px 20px;
-    background-color: #3498db;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .button:hover {
-    background-color: #2980b9;
-  }
-  
-  .button:disabled {
-    background-color: #95a5a6;
-    cursor: not-allowed;
-  }
-  
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 4px;
+}
+
+.button:active {
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Primary Button */
+.primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.primary:hover {
+  background-color: #1976D2;
+}
+
+/* Secondary Button */
+.secondary {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+.secondary:hover {
+  background-color: #e0e0e0;
+}
+
+/* Danger Button */
+.danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.danger:hover {
+  background-color: #d32f2f;
+}
+
+/* Outline Button */
+.outline {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.outline:hover {
+  background-color: rgba(33, 150, 243, 0.1);
+}
+
+/* Link Button */
+.link {
+  background: none;
+  color: var(--primary-color);
+  border: none;
+  padding: 0;
+  font-size: 14px;
+}
+
+.link:hover {
+  background: rgba(33, 150, 243, 0.1);
+}

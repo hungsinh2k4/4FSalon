@@ -1,5 +1,4 @@
 // src/manager/services/AuthService.ts
-import axios from 'axios';
 import axiosInstance from '../api/axiosInstance';
 
 interface LoginResponse {
@@ -7,7 +6,7 @@ interface LoginResponse {
 }
 class AuthService {
   private static instance: AuthService;
-  private token: string | null = localStorage.getItem('token');
+  private token: string | null = sessionStorage.getItem('token');
 
   private constructor() {
     this.setAxiosAuthToken(this.token);
@@ -22,10 +21,10 @@ class AuthService {
 
   private setAxiosAuthToken(token: string | null) {
     if (token) {
-      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      console.log('Authorization', `Bearer ${token}`);
+      axiosInstance.defaults.headers['Authorization'] = `Bearer ${token}`;
+      console.log('Set token', `Bearer ${token}`);
     } else {
-      delete axiosInstance.defaults.headers.common['Authorization'];
+      delete axiosInstance.defaults.headers['Authorization'];
     }
   }
 
@@ -35,19 +34,9 @@ class AuthService {
   
   public async login(username: string, password: string): Promise<void> {
     try {
-      //console.log({ email: username, password: password });
-
-      //const response = await axios.post<LoginResponse>('/auth/login-admin', { email: "string@", password: password });
-
-      console.log("login");
-      const response = await axiosInstance.post<LoginResponse>('/auth/login', { email: username, password: password });
-      console.log('Loginsd successfully');
-      console.log('Login successfully');
+      const response = await axiosInstance.post<LoginResponse>('/auth/login-admin', { email: username, password: password });
       this.token = response.data.access_token;
-      if (this.token) {
-        localStorage.setItem('token', this.token);
-      }
-      console.log('tokeqwen', this.token);
+      sessionStorage.setItem('token', this.token);
       this.setAxiosAuthToken(this.token);
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Đăng nhập thất bại');
@@ -61,7 +50,7 @@ class AuthService {
       console.error('Logout failed:', error);
     } finally {
       this.token = null;
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       this.setAxiosAuthToken(this.token);
       window.location.href = '/manager/login';
     }
