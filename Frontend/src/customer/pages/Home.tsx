@@ -28,8 +28,8 @@ const Home: React.FC = () => {
 
   return (
     <div
-      className="bg-contain bg-top min-h-screen w-full"
-      style={{ backgroundImage: `url('/src/assets/bg.png')` }}
+      className="bg-cover bg-top min-h-screen"
+      style={{ backgroundImage: `url('/src/customer/assets/bg.png')` }}
     >
       {/* Main Content */}
 
@@ -41,6 +41,7 @@ const Home: React.FC = () => {
         </p>
       </div>
 
+      {/* Dịch Vụ */}
       <section className="py-12 bg-white min-w-screen">
         <h2 className="text-4xl font-bold text-center mb-8">Dịch vụ</h2>
         <div className="container w-3/4 mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -107,8 +108,8 @@ const Home: React.FC = () => {
               <p className="mb-4 text-white">
                 Tham gia ngay để tích điểm và hưởng nhiều ưu đãi độc quyền.
               </p>
-              <Link to="/booking" className="text-white">
-                <button className="bg-transparent border border-white text-white px-4 py-2 rounded hover:bg-white hover:text-gray-900 transition-colors">
+              <Link to="/booking" className="text-white mb-4">
+                <button className="text-left bg-transparent border border-white px-1 text-white py-2 rounded hover:bg-white hover:text-gray-900 transition-colors">
                   Đặt lịch ngay
                 </button>
               </Link>
@@ -123,16 +124,16 @@ const Home: React.FC = () => {
         <h2 className="text-4xl font-bold text-center mb-8">
           Gặp gỡ các stylist
         </h2>
-        <div className="relative">
+        <div className="relative w-[85%] mx-auto">
           <button
             onClick={scrollLeft}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center"
           >
             &lt;
           </button>
           <div
             ref={stylistContainerRef}
-            className="container mx-auto overflow-x-scroll flex space-x-8 scrollbar-hide"
+            className="overflow-x-scroll flex space-x-8 scrollbar-hide"
           >
             <div className="flex space-x-8">
               <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
@@ -217,7 +218,7 @@ const Home: React.FC = () => {
           </div>
           <button
             onClick={scrollRight}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center"
           >
             &gt;
           </button>
@@ -256,7 +257,7 @@ const Home: React.FC = () => {
             tôi giúp bạn tỏa sáng theo cách riêng của bạn.
           </p>
           <Link to="/booking" className="text-blue-500">
-            <button className="bg-black text-white px-4 py-2 rounded">
+            <button className="bg-black text-white px-4 py-2 rounded hover:bg-white hover:text-gray-900 transition-colors">
               Đặt lịch ngay
             </button>
           </Link>
