@@ -1,37 +1,126 @@
 /* src/manager/components/Sidebar/Sidebar.module.css */
-.sidebar {
-    width: 250px;
-    background-color: #2c3e50;
-    color: white;
-    height: 100vh;
-    position: fixed;
-    padding: 20px;
-    box-sizing: border-box;
-  }
+
+.scroll {
+  width: 200px; /* Chiều rộng khi mở rộng */
+  background-color: white;
+  color: gray;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
+}
+.scroll:hover {
+  width: 200px; /* Chiều rộng khi mở rộng */
+}
+.collapsed {
+  width: 55px; /* Chiều rộng khi thu gọn */
+}
+.sidebar  {
+  position: fixed;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  transition: width 0.3s ease; 
+}
+.sidebar.collapsed {
+  width: 55px; /* Chiều rộng khi thu gọn */
+}
+.header {
+  background-color: white;
+  height: 150px;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggleButton {
+  cursor: pointer;
   
-  .logo {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 1.5rem;
-  }
+}
+
+.toggleIcon {
+  font-size: 24px;
+  color: gray;  
   
-  .nav {
-    display: flex;
-    flex-direction: column;
-  }
+}
+
+.logo {
+  height: 80px;
+}
+
+.can_scroll {
+  flex-grow: 1;            
+  overflow-y: auto;  
   
-  .nav a {
-    color: white;
-    padding: 10px 15px;
-    margin: 5px 0;
-    border-radius: 4px;
+}
+
+.can_scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.can_scroll::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Màu của track scrollbar */
+}
+
+.can_scroll::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0; /* Màu của thumb scrollbar */
+  border-radius: 4px;
+  border: 2px solid #f0f0f0;
+}
+
+.can_scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #a0a0a0;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease, padding 0.3s ease;
+  padding-bottom: 200px
+}
+
+.navLink {
+  color: gray;
+  padding: 15px;
+  height: 50px;
+  display: flex;
+  transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+.navLink:hover {
+  background-color: rgba(222, 222, 222, 0.8);
+  color: rgb(0, 160, 213);
+}
+
+.active {
+  background-color: lightblue;
+}
+
+.iconWrapper {
+  display: flex;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+.linkText {
+  margin-left: 20px;
+  opacity: 1;
+  overflow: clip;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  .nav a:hover {
-    background-color: #34495e;
+  to {
+    opacity: 1;
   }
-  
-  .active {
-    background-color: #16a085;
-  }
-  
+}
+.collapsed .logo {
+  width:  0;
+}

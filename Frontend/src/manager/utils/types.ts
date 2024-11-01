@@ -1,9 +1,15 @@
 // src/manager/utils/types.ts
 export interface Account {
-    id: number;
-    username: string;
-    email: string;
-    // Thêm các trường khác nếu cần
+  id: number;
+  email: string;
+  password: string;
+  google_id: string;
+  role: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  picture_url: string | null;
+  username: string;
   }
   
   export interface Feedback {

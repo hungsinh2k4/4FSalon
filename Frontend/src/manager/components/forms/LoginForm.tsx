@@ -34,10 +34,7 @@ const LoginForm: React.FC = () => {
     setError(null);
     try {
       console.log('Login 2ly');
-      //const response = await axios.post<LoginResponse>('localhost:3000/auth/login-admin', { email: "string@gmail.com", password: "string" });
       await AuthService.login(username, password);
-      //const response = await axios.post<LoginResponse>('http://localhost:3000/auth/login-admin', { email: "string@gmail.com", password: "string" });
-      console.log('Login 4ly');
       navigate(from, { replace: true });
     } catch (err: any) {
       setError(err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
