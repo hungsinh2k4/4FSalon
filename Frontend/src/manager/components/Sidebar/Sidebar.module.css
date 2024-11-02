@@ -1,77 +1,97 @@
 /* src/manager/components/Sidebar/Sidebar.module.css */
 
 .scroll {
-  width: 200px; /* Chiều rộng khi mở rộng */
-  background-color: white;
+  width: 220px; /* Chiều rộng khi mở rộng */
   color: gray;
   height: 100vh;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 50px;
+  transition: width 0.25s ease-in-out; 
+  flex-grow: 1;            
+  overflow-x: hidden;
+  border-radius: 5px;
+}
+.collapsed.sidebar {
+  width: 60px; /* Chiều rộng khi thu gọn */
+}
+.collapsed .scroll {
+  width: 60px; /* Chiều rộng khi thu gọn */
 }
 .scroll:hover {
-  width: 200px; /* Chiều rộng khi mở rộng */
+  width: 220px; /* Chiều rộng khi mở rộng */
 }
-.collapsed {
-  width: 55px; /* Chiều rộng khi thu gọn */
-}
+
 .sidebar  {
   position: fixed;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 200px;
-  transition: width 0.3s ease; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 220px;
+  transition: width 0.25s ease-in-out; 
+  z-index: 100;
 }
-.sidebar.collapsed {
-  width: 55px; /* Chiều rộng khi thu gọn */
+.list{
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+.listIcon {
+  font-size: 30px;
+  color: rgb(0, 0, 0);
+  padding: 5px;
 }
 .header {
-  background-color: white;
-  height: 150px;
-  transition: width 0.3s ease, opacity 0.3s ease;
+  height: 50px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  color: gray;  
 }
 
 .toggleButton {
   cursor: pointer;
-  
+  display: flex;
+  align-items: center;
+  justify-content: right;
 }
 
 .toggleIcon {
-  font-size: 24px;
-  color: gray;  
+  font-size: 34px;
   
 }
-
+.header:hover {
+  color: rgb(0, 160, 213);
+}
+.navName{
+  white-space: nowrap;
+}
 .logo {
-  height: 80px;
+  width: 200px;
+}
+.collapsed .logo {
+  width: 0px;
+}
+.linkText {
+  margin-left: 15px;
+  white-space: nowrap;
 }
 
-.can_scroll {
-  flex-grow: 1;            
-  overflow-y: auto;  
-  
-}
-
-.can_scroll::-webkit-scrollbar {
+.scroll::-webkit-scrollbar {
   width: 8px;
 }
 
-.can_scroll::-webkit-scrollbar-track {
+.scroll::-webkit-scrollbar-track {
   background: #f0f0f0; /* Màu của track scrollbar */
 }
 
-.can_scroll::-webkit-scrollbar-thumb {
+.scroll::-webkit-scrollbar-thumb {
   background-color: #c0c0c0; /* Màu của thumb scrollbar */
   border-radius: 4px;
   border: 2px solid #f0f0f0;
 }
 
-.can_scroll::-webkit-scrollbar-thumb:hover {
+.scroll::-webkit-scrollbar-thumb:hover {
   background-color: #a0a0a0;
 }
 
@@ -79,7 +99,8 @@
   display: flex;
   flex-direction: column;
   transition: background-color 0.3s ease, padding 0.3s ease;
-  padding-bottom: 200px
+  
+  
 }
 
 .navLink {
@@ -87,7 +108,9 @@
   padding: 15px;
   height: 50px;
   display: flex;
+  flex-direction: row;
   transition: background-color 0.3s ease, padding 0.3s ease;
+  overflow: hidden;
 }
 
 .navLink:hover {
@@ -107,20 +130,5 @@
   font-size: 20px;
 }
 
-.linkText {
-  margin-left: 20px;
-  opacity: 1;
-  overflow: clip;
-}
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-.collapsed .logo {
-  width:  0;
-}
+

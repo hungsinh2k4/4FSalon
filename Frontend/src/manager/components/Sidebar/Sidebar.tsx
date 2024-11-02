@@ -3,7 +3,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './Sidebar.module.css';
-import logo from '../../assets/images/manager_logo.png';
+
 
 /* Import các icon từ React Icons */
 
@@ -16,8 +16,8 @@ import {
   FaCalendarCheck, //appointment
   FaUsers, //employee
   FaBuilding, //branch
-  FaEllipsisVertical, //collapse
-  FaBars // expand
+  FaAngleLeft, //collapse
+  FaAngleRight // expand
 } from 'react-icons/fa6';
 
 // Định nghĩa giao diện cho các props
@@ -25,40 +25,16 @@ interface SidebarProps {
   isCollapsed: boolean;
   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const navItems = [
+const navItems1 = [
   { to: "/manager/dashboard", linkText: "Dashboard", icon: <FaBuffer className={styles.icon} /> },
-  { to: "/manager/accounts", linkText: "Tài Khoản", icon: <FaUser className={styles.icon} /> },
-  { to: "/manager/feedbacks", linkText: "Phản Hồi", icon: <FaComments className={styles.icon} /> },
-  { to: "/manager/services", linkText: "Dịch Vụ", icon: <FaBagShopping className={styles.icon} /> },
-  { to: "/manager/schedules", linkText: "Lịch Làm Việc", icon: <FaCalendar className={styles.icon} /> },
-  { to: "/manager/appointments", linkText: "Đặt Lịch", icon: <FaCalendarCheck className={styles.icon} /> },
-  { to: "/manager/employees", linkText: "Nhân Viên", icon: <FaUsers className={styles.icon} /> },
-  { to: "/manager/branches", linkText: "Chi Nhánh", icon: <FaBuilding className={styles.icon} /> },
- 
-  { to: "/manager/dashboard", linkText: "Dashboard", icon: <FaBuffer className={styles.icon} /> },
-  { to: "/manager/accounts", linkText: "Tài Khoản", icon: <FaUser className={styles.icon} /> },
-  { to: "/manager/feedbacks", linkText: "Phản Hồi", icon: <FaComments className={styles.icon} /> },
-  { to: "/manager/services", linkText: "Dịch Vụ", icon: <FaBagShopping className={styles.icon} /> },
-  { to: "/manager/schedules", linkText: "Lịch Làm Việc", icon: <FaCalendar className={styles.icon} /> },
-  { to: "/manager/appointments", linkText: "Đặt Lịch", icon: <FaCalendarCheck className={styles.icon} /> },
-  { to: "/manager/employees", linkText: "Nhân Viên", icon: <FaUsers className={styles.icon} /> },
-  { to: "/manager/branches", linkText: "Chi Nhánh", icon: <FaBuilding className={styles.icon} /> },
-  { to: "/manager/dashboard", linkText: "Dashboard", icon: <FaBuffer className={styles.icon} /> },
-  { to: "/manager/accounts", linkText: "Tài Khoản", icon: <FaUser className={styles.icon} /> },
-  { to: "/manager/feedbacks", linkText: "Phản Hồi", icon: <FaComments className={styles.icon} /> },
-  { to: "/manager/services", linkText: "Dịch Vụ", icon: <FaBagShopping className={styles.icon} /> },
-  { to: "/manager/schedules", linkText: "Lịch Làm Việc", icon: <FaCalendar className={styles.icon} /> },
-  { to: "/manager/appointments", linkText: "Đặt Lịch", icon: <FaCalendarCheck className={styles.icon} /> },
-  { to: "/manager/employees", linkText: "Nhân Viên", icon: <FaUsers className={styles.icon} /> },
-  { to: "/manager/branches", linkText: "Chi Nhánh", icon: <FaBuilding className={styles.icon} /> },
-  { to: "/manager/dashboard", linkText: "Dashboard", icon: <FaBuffer className={styles.icon} /> },
-  { to: "/manager/accounts", linkText: "Tài Khoản", icon: <FaUser className={styles.icon} /> },
-  { to: "/manager/feedbacks", linkText: "Phản Hồi", icon: <FaComments className={styles.icon} /> },
-  { to: "/manager/services", linkText: "Dịch Vụ", icon: <FaBagShopping className={styles.icon} /> },
-  { to: "/manager/schedules", linkText: "Lịch Làm Việc", icon: <FaCalendar className={styles.icon} /> },
-  { to: "/manager/appointments", linkText: "Đặt Lịch", icon: <FaCalendarCheck className={styles.icon} /> },
-  { to: "/manager/employees", linkText: "Nhân Viên", icon: <FaUsers className={styles.icon} /> },
-  { to: "/manager/branches", linkText: "Chi Nhánh", icon: <FaBuilding className={styles.icon} /> },
+  { to: "/manager/accounts", linkText: "Quản lý Tài Khoản", icon: <FaUser className={styles.icon} /> },
+  { to: "/manager/branches", linkText: "Quản lý Chi Nhánh", icon: <FaBuilding className={styles.icon} /> },
+  
+  { to: "/manager/schedules", linkText: "Quản lý Lịch Làm Việc", icon: <FaCalendar className={styles.icon} /> },
+  { to: "/manager/appointments", linkText: "Quản lý Lịch Hẹn", icon: <FaCalendarCheck className={styles.icon} /> },
+  { to: "/manager/feedbacks", linkText: "Quản lý Phản Hồi", icon: <FaComments className={styles.icon} /> },
+  { to: "/manager/employees", linkText: "Quản lý Nhân Viên", icon: <FaUsers className={styles.icon} /> },
+  { to: "/manager/services", linkText: "Quản lý Dịch Vụ", icon: <FaBagShopping className={styles.icon} /> },
 ];
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
   const handleToggle = () => {
@@ -67,36 +43,36 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
 
   return (
     <div className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
-    <div className={`${styles.header} ${isCollapsed ? styles.collapsed : ''}`}>
-        <img src={logo} alt="Logo" className={styles.logo} />
+      
+      <div className={styles.header}>
+        
         <button className={styles.toggleButton} onClick={handleToggle}>
           {isCollapsed ? (
-            <FaBars className={styles.toggleIcon} />
+            <FaAngleRight className={styles.toggleIcon} />
           ) : (
-            <FaEllipsisVertical className={styles.toggleIcon} />
+            <FaAngleLeft className={styles.toggleIcon} />
           )}
         </button>
       </div>
-    <div className={`${styles.scroll} ${isCollapsed ? styles.collapsed : ''}`}>
-      
-      <div className={styles.can_scroll}>
-        <nav className={styles.nav}>
-          {navItems.map((item, index) => (
-              <NavLink
-                key={index}
-                to={item.to}
-                className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
-              >
-                <div className={styles.iconWrapper}>
-                  {item.icon}
-                </div>
-                <span className={styles.linkText}>{item.linkText}</span>
-              </NavLink>
-            ))}
-        </nav>
+      <div className={styles.scroll}>
+        <div className={styles.list}>
+          <nav className={styles.nav}>
+            {navItems1.map((item, index) => (
+                <NavLink
+                  key={index}
+                  to={item.to}
+                  className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
+                >
+                  <div className={styles.iconWrapper}>
+                    {item.icon}
+                  </div>
+                  <span className={styles.linkText}>{item.linkText}</span>
+                </NavLink>
+              ))}
+          </nav>
+        </div>
         
       </div>
-    </div>
     </div>
   );
 };

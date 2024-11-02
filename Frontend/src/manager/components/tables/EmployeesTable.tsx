@@ -2,14 +2,7 @@
 import React from 'react';
 import Button from '../common/Button';
 import styles from './EmployeesTable.module.css';
-
-interface Employee {
-  id: number;
-  name: string;
-  position: string;
-  email: string;
-  // Thêm các trường khác nếu cần
-}
+import { Employee } from '../../utils/types';
 
 interface EmployeesTableProps {
   employees: Employee[];
@@ -24,8 +17,10 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({ employees, onDelete, on
         <tr>
           <th>ID</th>
           <th>Tên nhân viên</th>
-          <th>Chức vụ</th>
+          <th>SĐT</th>
           <th>Email</th>
+          <th>Chi nhánh</th>
+          <th>Vị trí</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -34,11 +29,13 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({ employees, onDelete, on
           <tr key={employee.id}>
             <td>{employee.id}</td>
             <td>{employee.name}</td>
-            <td>{employee.position}</td>
+            <td>{employee.phone}</td>
             <td>{employee.email}</td>
+            <td>{employee.branch_id}</td>
+            <td>{employee.work_position}</td>
             <td>
-              <Button onClick={() => onEdit(employee)}>Chỉnh sửa</Button>
-              <Button onClick={() => onDelete(employee.id)}>Xóa</Button>
+            <Button variant="primary" width='50px' onClick={() => onEdit(employee)}>Sửa</Button>
+            <Button variant="danger" width='50px' onClick={() => onDelete(employee.id)}>Xóa</Button>
             </td>
           </tr>
         ))}

@@ -7,14 +7,7 @@ import Modal from '../../components/common/Modal';
 import ServiceForm from '../../components/forms/ServiceForm';
 import styles from './ServiceList.module.css';
 import { fetchServices, removeService, addService, editService } from '../../services/serviceService';
-
-interface Service {
-  id: number;
-  name: string;
-  price: number;
-  estimatedTime: string;
-  // Thêm các trường khác nếu cần
-}
+import { Service } from '../../utils/types';
 
 const ServiceList: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
@@ -70,6 +63,7 @@ const ServiceList: React.FC = () => {
         setServices(
           services.map((service) => (service.id === editdService.id ? editdService : service))
         );
+        console.log("edit thanh cong service",editdService);
       } else {
         // Add service
         const newService = await addService(data);
@@ -81,9 +75,6 @@ const ServiceList: React.FC = () => {
     }
   };
 
-  const filteredServices = services.filter((service) =>
-    service.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   if (loading) {
     return <p>Đang tải...</p>;
@@ -104,7 +95,7 @@ const ServiceList: React.FC = () => {
         />
       </div>
       {error && <p className={styles.error}>{error}</p>}
-      <ServicesTable services={filteredServices} onDelete={handleDelete} onEdit={handleEdit} />
+      <ServicesTable services={services} onDelete={handleDelete} onEdit={handleEdit} />
       
       {/* Modal cho Add/Edit */}
       <Modal
@@ -113,7 +104,7 @@ const ServiceList: React.FC = () => {
         title={currentService ? 'Chỉnh sửa dịch vụ' : 'Thêm dịch vụ'}
       >
         <ServiceForm initialData={currentService || undefined} onSubmit={handleFormSubmit} />
-      </Modal>
+      </Modal>  
     </div>
   );
 };

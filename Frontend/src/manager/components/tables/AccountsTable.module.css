@@ -48,7 +48,7 @@
 
 .table th,
 .table td {
-  padding: 16px;
+  padding: 10px;
   border-bottom: 1px solid var(--border-color);
   text-align: left;
   color: var(--text-color);

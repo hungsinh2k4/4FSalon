@@ -10,7 +10,7 @@ export interface Account {
   deleted_at: string | null;
   picture_url: string | null;
   username: string;
-  }
+}
   
   export interface Feedback {
     id: number;
@@ -19,12 +19,16 @@ export interface Account {
     // Thêm các trường khác nếu cần
   }
   
+
   export interface Service {
     id: number;
-    name: string;
+    title: string;
+    description: string;
+    estimate_time: number;
     price: number;
-    estimatedTime: string;
-    // Thêm các trường khác nếu cần
+    createAt: string;
+    updateAt: string;
+    deleteAt: string | null;
   }
   
   export interface Schedule {
@@ -46,15 +50,20 @@ export interface Account {
   
   export interface Employee {
     id: number;
+    name: string;
     email: string;
-    password: string;
-    google_id: string;
-    role: string;
+    phone: string;
+    work_position: string;
+    available_from: string;
+    available_to: string;
+    status: boolean;
+    branch_id: number;
     created_at: string;
     updated_at: string;
     deleted_at: string | null;
     picture_url: string | null;
   }
+  
   
   export interface Branch {
     id: number;

@@ -9,20 +9,20 @@ export const getAccounts = async (): Promise<Account[]> => {
 };
 
 export const getAccountById = async (id: number): Promise<Account> => {
-  const response = await axiosInstance.get(`/accounts/${id}`);
+  const response = await axiosInstance.get(`api/users/${id}`);
   return response.data;
 };
 
 export const createAccount = async (data: Partial<Account>): Promise<Account> => {
-  const response = await axiosInstance.post('/accounts', data);
+  const response = await axiosInstance.post('api/users', data);
   return response.data;
 };
 
 export const updateAccount = async (id: number, data: Partial<Account>): Promise<Account> => {
-  const response = await axiosInstance.put(`/accounts/${id}`, data);
+  const response = await axiosInstance.put(`api/users/${id}`, data);
   return response.data;
 };
 
 export const deleteAccount = async (id: number): Promise<void> => {
-  await axiosInstance.delete(`/accounts/${id}`);
+  await axiosInstance.delete(`api/users/${id}`);
 };

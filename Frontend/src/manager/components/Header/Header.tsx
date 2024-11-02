@@ -1,20 +1,16 @@
 // src/manager/components/Header/Header.tsx
 import React from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import AuthService from '../../services/authService';
 import Button from '../common/Button';
 import styles from './Header.module.css';
-
+import logo from '../../assets/images/manager_logo.png';
 const Header: React.FC = () => {
-  const { logout } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-  };
-
+ 
   return (
     <header className={styles.header}>
-      <h1>Quản Lý</h1>
-      <Button onClick={handleLogout}>Đăng xuất</Button>
+      <img src={logo} alt="Logo" className={styles.logo} />
+      <Button variant="primary" width='150px' onClick={() => AuthService.logout()}>Đăng xuất</Button>
     </header>
   );
 };

@@ -2,14 +2,7 @@
 import React from 'react';
 import Button from '../common/Button';
 import styles from './ServicesTable.module.css';
-
-interface Service {
-  id: number;
-  name: string;
-  price: number;
-  estimatedTime: string;
-  // Thêm các trường khác nếu cần
-}
+import { Service } from '../../utils/types';
 
 interface ServicesTableProps {
   services: Service[];
@@ -33,9 +26,9 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
         {services.map((service) => (
           <tr key={service.id}>
             <td>{service.id}</td>
-            <td>{service.name}</td>
+            <td>{service.title}</td>
             <td>{service.price}</td>
-            <td>{service.estimatedTime}</td>
+            <td>{service.estimate_time}</td>
             <td>
               <Button onClick={() => onEdit(service)}>Chỉnh sửa</Button>
               <Button onClick={() => onDelete(service.id)}>Xóa</Button>

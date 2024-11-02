@@ -7,14 +7,7 @@ import Modal from '../../components/common/Modal';
 import EmployeeForm from '../../components/forms/EmployeeForm';
 import styles from './EmployeeList.module.css';
 import { fetchEmployees, removeEmployee, addEmployee, editEmployee } from '../../services/employeeService';
-
-interface Employee {
-  id: number;
-  name: string;
-  position: string;
-  email: string;
-  // Thêm các trường khác nếu cần
-}
+import { Employee } from '../../utils/types';
 
 const EmployeeList: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -31,7 +24,7 @@ const EmployeeList: React.FC = () => {
       setLoading(true);
       try {
         const data = await fetchEmployees();
-        //setEmployees(data);
+        setEmployees(data);
       } catch (err) {
         setError('Failed to fetch employees.');
       } finally {
@@ -44,7 +37,9 @@ const EmployeeList: React.FC = () => {
   const handleDelete = async (id: number) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa nhân viên này?')) {
       try {
+        console.log("xoa thang employee",id);
         await removeEmployee(id);
+        console.log("xoa thanh cong employee",id);
         setEmployees(employees.filter((employee) => employee.id !== id));
       } catch (err) {
         setError('Failed to delete employee.');
@@ -66,14 +61,14 @@ const EmployeeList: React.FC = () => {
     try {
       if (currentEmployee) {
         // Edit employee
-        //const editdEmployee = await editEmployee(currentEmployee.id, data);
-        //setEmployees(
-          //employees.map((employee) => (employee.id === editdEmployee.id ? editdEmployee : employee))
-        //);
+        const editdEmployee = await editEmployee(currentEmployee.id, data);
+        setEmployees(
+          employees.map((employee) => (employee.id === editdEmployee.id ? editdEmployee : employee))
+        );
+        console.log("edit thanh cong employee",editdEmployee);
       } else {
-        // Add employee
         const newEmployee = await addEmployee(data);
-        //setEmployees([...employees, newEmployee]);
+        setEmployees([...employees, newEmployee]);
       }
       setIsModalOpen(false);
     } catch (err) {

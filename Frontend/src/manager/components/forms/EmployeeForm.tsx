@@ -7,22 +7,25 @@ import styles from './EmployeeForm.module.css';
 interface EmployeeFormProps {
   initialData?: {
     name: string;
-    position: string;
+    phone: string;
     email: string;
-    // Thêm các trường cần thiết
+    branch_id: number;
+    work_position: string;
   };
   onSubmit: (data: any) => void;
 }
 
 const EmployeeForm: React.FC<EmployeeFormProps> = ({ initialData, onSubmit }) => {
   const [name, setName] = useState(initialData?.name || '');
-  const [position, setPosition] = useState(initialData?.position || '');
+  const [phone, setPhone] = useState(initialData?.phone || '');
   const [email, setEmail] = useState(initialData?.email || '');
+  const [branch_id, setBranchId] = useState(initialData?.branch_id || '');
+  const [work_position, setWorkPosition] = useState(initialData?.work_position || '');
   // Thêm các state cho các trường khác
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data = { name, position, email /* Thêm các trường khác */ };
+    const data = { name, phone, email, branch_id, work_position /* Thêm các trường khác */ };
     onSubmit(data);
   };
 
@@ -36,10 +39,10 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ initialData, onSubmit }) =>
         required
       />
       <Input
-        label="Chức vụ"
+        label="Số điện thoại"
         type="text"
-        value={position}
-        onChange={(e) => setPosition(e.target.value)}
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
         required
       />
       <Input
@@ -49,7 +52,14 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ initialData, onSubmit }) =>
         onChange={(e) => setEmail(e.target.value)}
         required
       />
-      {/* Thêm các Input khác */}
+      <Input
+        label="Vị trí"
+        type="text"
+        value={work_position}
+        onChange={(e) => setWorkPosition(e.target.value)}
+        required
+      />
+
       <Button type="submit">Lưu</Button>
     </form>
   );

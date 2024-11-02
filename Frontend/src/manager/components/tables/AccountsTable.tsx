@@ -30,9 +30,8 @@ const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdi
             <td>{account.role}</td>
             <td>{account.created_at}</td>
             <td>
-              <Button variant="primary" width='150px' onClick={() => onEdit(account)}>Chỉnh sửa</Button>
-              <p></p>
-              <Button variant="danger" width='150px' onClick={() => onDelete(account.id)}>Xóa</Button>
+              <Button variant="primary" width='50px' onClick={() => onEdit(account)}>Sửa</Button>
+              <Button variant="danger" width='50px' onClick={() => onDelete(account.id)}>Xóa</Button>
             </td>
           </tr>
         ))}
