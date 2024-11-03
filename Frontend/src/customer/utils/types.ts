@@ -3,7 +3,7 @@ export interface Account {
   id: number;
   email: string;
   password: string;
-  phone: string;
+  phoneNumber: string;
   google_id: string;
   role: string;
   created_at: string;
