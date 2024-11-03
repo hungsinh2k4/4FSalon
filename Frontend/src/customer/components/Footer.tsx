@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
-
-
     <footer className="bg-white dark:bg-gray-900">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
 

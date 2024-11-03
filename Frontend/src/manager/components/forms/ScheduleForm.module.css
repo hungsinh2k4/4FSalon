@@ -1,0 +1,10 @@
+/* src/manager/components/forms/ScheduleForm.module.css */
+.scheduleForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .scheduleForm .button {
+    align-self: flex-end;
+  }
+  

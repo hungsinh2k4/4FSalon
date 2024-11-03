@@ -1,0 +1,134 @@
+/* src/manager/components/Sidebar/Sidebar.module.css */
+
+.scroll {
+  width: 220px; /* Chiều rộng khi mở rộng */
+  color: gray;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.25s ease-in-out; 
+  flex-grow: 1;            
+  overflow-x: hidden;
+  border-radius: 5px;
+}
+.collapsed.sidebar {
+  width: 60px; /* Chiều rộng khi thu gọn */
+}
+.collapsed .scroll {
+  width: 60px; /* Chiều rộng khi thu gọn */
+}
+.scroll:hover {
+  width: 220px; /* Chiều rộng khi mở rộng */
+}
+
+.sidebar  {
+  position: fixed;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 220px;
+  transition: width 0.25s ease-in-out; 
+  z-index: 100;
+}
+.list{
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+.listIcon {
+  font-size: 30px;
+  color: rgb(0, 0, 0);
+  padding: 5px;
+}
+.header {
+  height: 50px;
+  display: flex;
+  color: gray;  
+}
+
+.toggleButton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
+.toggleIcon {
+  font-size: 34px;
+  
+}
+.header:hover {
+  color: rgb(0, 160, 213);
+}
+.navName{
+  white-space: nowrap;
+}
+.logo {
+  width: 200px;
+}
+.collapsed .logo {
+  width: 0px;
+}
+.linkText {
+  margin-left: 15px;
+  white-space: nowrap;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Màu của track scrollbar */
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0; /* Màu của thumb scrollbar */
+  border-radius: 4px;
+  border: 2px solid #f0f0f0;
+}
+
+.scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #a0a0a0;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease, padding 0.3s ease;
+  
+  
+}
+
+.navLink {
+  color: gray;
+  padding: 15px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  transition: background-color 0.3s ease, padding 0.3s ease;
+  overflow: hidden;
+}
+
+.navLink:hover {
+  background-color: rgba(222, 222, 222, 0.8);
+  color: rgb(0, 160, 213);
+}
+
+.active {
+  background-color: lightblue;
+}
+
+.iconWrapper {
+  display: flex;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+
+

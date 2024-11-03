@@ -11,11 +11,13 @@
 git clone https://github.com/your-username/my-hair-salon.git
 
 # Chuyển vào thư mục dự án
-cd my-hair-salon
 cd Frontend
 
 # Cài đặt các gói phụ thuộc
 npm install
+npm install axios
+npm install react-icons
+npm install @react-oauth/google
 
 # Chạy dự án
 npm run dev

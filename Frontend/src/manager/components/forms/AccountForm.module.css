@@ -1,0 +1,10 @@
+/* src/manager/components/forms/AccountForm.module.css */
+.accountForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .accountForm .button {
+    align-self: flex-end;
+  }
+  

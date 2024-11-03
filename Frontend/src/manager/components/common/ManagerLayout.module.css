@@ -1,0 +1,11 @@
+/* src/manager/pages/Dashboard/DashboardLayout.module.css */
+
+.container {
+  display: flex;
+}
+
+.content {
+  flex-grow: 1;
+  transition: margin-left 0.3s ease; /* Hiệu ứng mượt khi thay đổi chiều rộng sidebar */
+  padding: 20px; /* Padding tùy chọn cho nội dung */
+}
