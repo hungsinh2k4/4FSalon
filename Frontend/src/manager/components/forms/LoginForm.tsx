@@ -9,13 +9,7 @@ import Button from '../common/Button';
 import styles from './LoginForm.module.css';
 import axios from 'axios';
 
-interface LoginResponse {
-  token: string;
-  user: {
-    id: string;
-    username: string;
-  };
-}
+
 
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -33,7 +27,6 @@ const LoginForm: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      console.log('Login 2ly');
       await AuthService.login(username, password);
       navigate(from, { replace: true });
     } catch (err: any) {
@@ -45,10 +38,10 @@ const LoginForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.loginForm}>
-      <h2>Đăng nhập quản</h2>
+      <h2>Đăng nhập 4F MANAGER</h2>
       {error && <p className={styles.error}>{error}</p>}
       <Input
-        label="Tên đăng nhập"
+        label="Email"
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}

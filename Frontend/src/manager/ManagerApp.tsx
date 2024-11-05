@@ -9,21 +9,21 @@ import ProtectedRoute from './routes/ProtectedRoute';
 const ManagerApp: React.FC = () => {
   return (
     <Routes>
-      {/* Public Route: Login */}
-      <Route path="/login" element={<ManagerLogin />} />
+      
+        <Route path="/login" element={<ManagerLogin />} />
 
-      {/* Protected Routes: All routes under /manager/* */}
-      <Route
-        path="/*"
-        element={
-          <ProtectedRoute>
-            <ManagerRoutes />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <ManagerRoutes />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Catch-all Route: NotFound */}
-      <Route path="*" element={<NotFound />} />
+        {/* Catch-all Route: NotFound */}
+        <Route path="*" element={<NotFound />} />
+      
     </Routes>
   );
 };
