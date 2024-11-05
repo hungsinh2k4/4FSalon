@@ -6,30 +6,39 @@ import styles from './AccountForm.module.css';
 import { Account } from '../../utils/types';
 
 interface AccountFormProps {
-  initialData?: Account | null;
-  onSubmit: (data: Partial<Account>) => void;
+  initialData?: {
+    id: number;
+    email: string;
+    password: string;
+    google_id: string;
+    role: string;
+  };
+  onSubmit: (data: any) => void;
 }
 
 const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit }) => {
-  const [username, setUsername] = useState<string>(initialData?.username || '');
+  const [id, setId] = useState<number>(initialData?.id || 0);
+  const [password, setPassword] = useState<string>(initialData?.password || '');
+  const [google_id, setGoogleId] = useState<string>(initialData?.google_id || '');
   const [email, setEmail] = useState<string>(initialData?.email || '');
+  const [role, setRole] = useState<string>(initialData?.role || '');
   // Thêm các state cho các trường khác nếu cần
 
   useEffect(() => {
     if (initialData) {
-      setUsername(initialData.username);
       setEmail(initialData.email);
+      setRole(initialData.role);
       // Cập nhật các trường khác nếu cần
     } else {
-      setUsername('');
       setEmail('');
+      setRole
       // Reset các trường khác nếu cần
     }
   }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data: Partial<Account> = { username, email /* Thêm các trường khác */ };
+    const data: Partial<Account> = {  email, role };
     onSubmit(data);
   };
 
@@ -37,10 +46,10 @@ const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit }) => {
     <form onSubmit={handleSubmit} className={styles.accountForm}>
       <h3>{initialData ? 'Chỉnh sửa tài khoản' : 'Thêm tài khoản'}</h3>
       <Input
-        label="Tên đăng nhập"
+        label="Role"
         type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
         required
       />
       <Input

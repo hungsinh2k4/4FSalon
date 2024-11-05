@@ -83,10 +83,10 @@ const EmployeeList: React.FC = () => {
   if (loading) {
     return <p>Đang tải...</p>;
   }
-
+  
   return (
     <div className={styles.employeeList}>
-      <h2>Danh sách nhân viên</h2>
+      <h2>Quản lý nhân viên</h2>
       <div className={styles.actions}>
         <Button onClick={handleAdd}>Thêm nhân viên</Button>
         <Input

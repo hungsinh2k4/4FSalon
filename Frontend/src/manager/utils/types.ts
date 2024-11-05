@@ -11,7 +11,13 @@ export interface Account {
   picture_url: string | null;
   username: string;
 }
-  
+export interface User {
+  id: number;
+  email: string;
+  password: string;
+  google_id: string;
+  role: string;
+}
   export interface Feedback {
     id: number;
     message: string;
