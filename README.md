@@ -18,6 +18,7 @@ npm install
 npm install axios
 npm install react-icons
 npm install @react-oauth/google
+npm install @fortawesome/free-solid-svg-icons
 
 # Chạy dự án
 npm run dev
