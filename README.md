@@ -19,6 +19,8 @@ npm install axios
 npm install react-icons
 npm install @react-oauth/google
 npm install @fortawesome/free-solid-svg-icons
+npm install @react-google-maps/api
+
 
 # Chạy dự án
 npm run dev
