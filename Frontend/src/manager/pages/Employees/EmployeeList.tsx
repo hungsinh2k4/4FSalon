@@ -24,6 +24,14 @@ const EmployeeList: React.FC = () => {
       setLoading(true);
       try {
         const data = await fetchEmployees();
+        data.map((employee) => {
+          const date = new Date(employee.created_at).toLocaleDateString('vi-VN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          });
+          employee.created_at = date;
+        })
         setEmployees(data);
       } catch (err) {
         setError('Failed to fetch employees.');

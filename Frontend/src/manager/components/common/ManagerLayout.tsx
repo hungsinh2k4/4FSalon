@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
+import Header from '../Header/Header';
 import styles from './ManagerLayout.module.css';
 
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
