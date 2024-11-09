@@ -27,7 +27,7 @@ const Booking: React.FC = () => {
                      <FontAwesomeIcon icon={faLocationDot} className="mr-2" />
                         Chọn địa chỉ chi nhánh </button>
                 </div>
-                <button className="inline-block px-2 py-2 border rounded-lg mt-4 bg-gray-200  hover:bg-blue-500">
+                <button className="inline-block px-2 py-2 border rounded-lg mt-4 w-fit bg-gray-200  hover:bg-blue-500">
                     <FontAwesomeIcon icon={faCity} className="mr-2" />
                     Tìm chi nhánh gần nhất</button>
                 </div> 
@@ -40,14 +40,14 @@ const Booking: React.FC = () => {
                         <FontAwesomeIcon icon={faScissors} className="mr-2" />
                         Chọn dịch vụ với nhiều ưu đãi hấp dẫn</button>
                  </div>
-                <button className="inline-block px-2 py-2 border rounded-lg mt-4 bg-gray-200 hover:bg-blue-500">
+                <button className="inline-block px-2 py-2 border rounded-lg mt-4 bg-gray-200 w-fit hover:bg-blue-500">
                     <FontAwesomeIcon icon={faTicket} className="mr-2" />Voucher</button>
                 </div> 
                 {/* Chọn ngày, giờ & nhân viên */}
                 <div>
                      <h2 className="text-3xl font-bold mb-1">2. Chọn ngày giờ & nhân viên</h2>
                      <div className="flex items-center pb-4">
-                    <button className="inline-block px-2 py-2 border rounded-lg mt-4 bg-gray-200 hover:bg-blue-500">
+                    <button className="inline-block px-2 py-2 border rounded-lg mt-4 w-fit bg-gray-200 hover:bg-blue-500">
                         <FontAwesomeIcon icon={faUserCheck} className="mr-2" />
                         Chọn nhân viên</button>
                  </div>
