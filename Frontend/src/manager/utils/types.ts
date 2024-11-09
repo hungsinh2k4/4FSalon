@@ -63,11 +63,11 @@ export interface User {
     available_from: string;
     available_to: string;
     status: boolean;
+    overal_rating: number;
     branch_id: number;
     created_at: string;
     updated_at: string;
     deleted_at: string | null;
-    picture_url: string | null;
   }
   
   

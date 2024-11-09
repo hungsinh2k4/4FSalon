@@ -1,8 +1,10 @@
 // src/manager/components/tables/EmployeesTable.tsx
-import React from 'react';
-import Button from '../common/Button';
+import React, { useState } from 'react';
 import styles from './EmployeesTable.module.css';
 import { Employee } from '../../utils/types';
+import { FaPen, FaXmark } from 'react-icons/fa6';
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface EmployeesTableProps {
   employees: Employee[];
@@ -11,23 +13,54 @@ interface EmployeesTableProps {
 }
 
 const EmployeesTable: React.FC<EmployeesTableProps> = ({ employees, onDelete, onEdit }) => {
+  
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Employee, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: '' });
+
+  const sorted = [...employees].sort((a, b) => {
+    if (sortConfig.key) {
+      const key = sortConfig.key;
+      const direction = sortConfig.direction === 'asc' ? 1 : -1;
+      if (a[key] != null && b[key] != null && a[key] < b[key]) return -direction;
+      if (a[key] != null && b[key] != null && a[key] > b[key]) return direction;
+    }
+    return 0;
+  });
+  const handleSort = (key: keyof Employee) => {
+    setSortConfig((prevState) => {
+      const direction = prevState.key === key && prevState.direction === 'asc' ? 'desc' : 'asc';
+      return { key, direction };
+    });
+  };
+
+  const getSortIcon = (key: string) => {
+    if (sortConfig.key !== key) return faSort;
+    return sortConfig.direction === 'asc' ? faSortUp : faSortDown;
+  };
+
   return (
-    <table className={styles.table}>
+    <table>
+      <colgroup>
+        <col style={{ width: '5%' }} />
+        <col style={{ width: '20%' }} />
+        <col style={{ width: '10%' }} />
+        <col style={{ width: '15%' }} />
+        <col style={{ width: '10%' }} />
+        <col style={{ width: '10%' }} />
+        <col style={{ width: '10%' }} />
+      </colgroup>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Tên nhân viên</th>
-          <th>SĐT</th>
-          <th>Email</th>
-          <th>Chi nhánh</th>
-          <th>Vị trí</th>
-          <th>Ngày tạo</th>
-          <th>Trạng thái</th>
+          <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
+          <th onClick={() => handleSort('name')}>Tên nhân viên <FontAwesomeIcon icon={getSortIcon('name')} /></th>
+          <th onClick={() => handleSort('phone')}>SĐT <FontAwesomeIcon icon={getSortIcon('phone')} /></th>
+          <th onClick={() => handleSort('email')}>Email <FontAwesomeIcon icon={getSortIcon('email')} /></th>
+          <th onClick={() => handleSort('branch_id')}>Chi nhánh <FontAwesomeIcon icon={getSortIcon('branch_id')} /></th>
+          <th onClick={() => handleSort('work_position')}>Vị trí <FontAwesomeIcon icon={getSortIcon('work_position')} /></th>
           <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
-        {employees.map((employee) => (
+        {sorted.map((employee) => (
           <tr key={employee.id}>
             <td>{employee.id}</td>
             <td>{employee.name}</td>
@@ -35,11 +68,9 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({ employees, onDelete, on
             <td>{employee.email}</td>
             <td>{employee.branch_id}</td>
             <td>{employee.work_position}</td>
-            <td>{employee.created_at}</td>
-            <td>{employee.status ? 'Đang làm việc' : 'Đã nghỉ việc'}</td>
-            <td>
-            <Button variant="primary" width='50px' onClick={() => onEdit(employee)}>Sửa</Button>
-            <Button variant="danger" width='50px' onClick={() => onDelete(employee.id)}>Xóa</Button>
+            <td className={styles.actionList}>
+              <FaPen className={styles.actionEdit} onClick={() => onEdit(employee)}/> 
+              <FaXmark className={styles.actionDelete} onClick={() => onDelete(employee.id)}/>
             </td>
           </tr>
         ))}
