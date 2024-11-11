@@ -2,9 +2,19 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Barber Hair Cutting Effect 3.png";
 import "./Navbar.css";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar: React.FC = () => {
+  const { user, setUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleLogout = () => {
+    // Xử lý đăng xuất
+    setUser(null);
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    window.location.href = "/login";
+  };
 
   return (
     <nav className="bg-white p-4 sticky top-0 left-0 shadow-md z-10">
@@ -30,12 +40,41 @@ const Navbar: React.FC = () => {
           <Link to="/booking" className="nav-items">
             Đặt lịch Hẹn
           </Link>
-          <Link
-            to="/login"
-            className="bg-black ml-16 py-1  text-white px-3 rounded-full hover:bg-gray-600 hover:text-white transition-colors duration-200"
-          >
-            Đăng Nhập
-          </Link>
+          {user ? (
+            <div className="relative">
+              <div
+                className="flex items-center space-x-4 mx-4 cursor-pointer"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <img
+                  src={user.avatar}
+                  alt="Avatar"
+                  className="w-8 h-8 rounded-full"
+                />
+                <span>{user.name}</span>
+              </div>
+              {isOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                  >
+                    Xem thông tin
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/login" className="nav-items">
+              Đăng nhập
+            </Link>
+          )}
         </div>
 
         {/* Button để mở/đóng menu trên màn hình nhỏ */}

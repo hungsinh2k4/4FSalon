@@ -4,16 +4,28 @@ import gglogo from "../assets/Login/icons8-google-48.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import authService from "../services/authService";
+import { useAuth } from "../context/AuthContext";
+import { User } from "../utils/types";
 
 const Login: React.FC = () => {
   const [loginIdentifier, setLoginIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setUser } = useAuth();
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await authService.login(loginIdentifier, password);
+      const response = await authService.login(loginIdentifier, password);
+      const { access_token, user } = response;
+      // console.log(response);
+      sessionStorage.setItem("token", access_token);
+      sessionStorage.setItem("user", JSON.stringify(user));
+      // setUser({
+      //   username: user.name,
+      //   avatar: user.avatar || "", // Ensure avatar is a string
+      // });
+      setUser(user);
       navigate("/"); // Chuyển hướng đến trang chủ hoặc trang khác khi đăng nhập thành công
     } catch (error: any) {
       setError(error.message); // Cập nhật lỗi để hiển thị nếu đăng nhập thất bại

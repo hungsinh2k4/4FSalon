@@ -1,5 +1,7 @@
 // src/manager/services/AuthService.ts
 import axiosInstance from "../api/axiosInstance";
+import { User } from "../utils/types";
+import { getUser } from "../api/user";
 
 interface LoginResponse {
   access_token: string;
@@ -33,15 +35,22 @@ class AuthService {
     return !!this.token;
   }
 
-  public async login(username: string, password: string): Promise<void> {
+  public async login(
+    loginIdentifier: string,
+    password: string
+  ): Promise<{ access_token: string; user: User }> {
     try {
       const response = await axiosInstance.post<LoginResponse>("/auth/login", {
-        email: username,
-        password: password,
+        email: loginIdentifier,
+        password,
       });
       this.token = response.data.access_token;
       sessionStorage.setItem("token", this.token);
       this.setAxiosAuthToken(this.token);
+
+      // Lấy thông tin người dùng sau khi đăng nhập thành công
+      const user = await getUser();
+      return { access_token: this.token, user: user }; // Giả sử user[0] là người dùng hiện tại
     } catch (error: any) {
       throw new Error(error.response?.data?.message || "Đăng nhập thất bại");
     }
