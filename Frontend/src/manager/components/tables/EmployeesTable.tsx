@@ -21,6 +21,8 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({ employees, onDelete, on
           <th>Email</th>
           <th>Chi nhánh</th>
           <th>Vị trí</th>
+          <th>Ngày tạo</th>
+          <th>Trạng thái</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -33,6 +35,8 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({ employees, onDelete, on
             <td>{employee.email}</td>
             <td>{employee.branch_id}</td>
             <td>{employee.work_position}</td>
+            <td>{employee.created_at}</td>
+            <td>{employee.status ? 'Đang làm việc' : 'Đã nghỉ việc'}</td>
             <td>
             <Button variant="primary" width='50px' onClick={() => onEdit(employee)}>Sửa</Button>
             <Button variant="danger" width='50px' onClick={() => onDelete(employee.id)}>Xóa</Button>

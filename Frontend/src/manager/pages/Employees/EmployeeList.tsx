@@ -24,6 +24,14 @@ const EmployeeList: React.FC = () => {
       setLoading(true);
       try {
         const data = await fetchEmployees();
+        data.map((employee) => {
+          const date = new Date(employee.created_at).toLocaleDateString('vi-VN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          });
+          employee.created_at = date;
+        })
         setEmployees(data);
       } catch (err) {
         setError('Failed to fetch employees.');
@@ -83,10 +91,10 @@ const EmployeeList: React.FC = () => {
   if (loading) {
     return <p>Đang tải...</p>;
   }
-
+  
   return (
     <div className={styles.employeeList}>
-      <h2>Danh sách nhân viên</h2>
+      <h2>Quản lý nhân viên</h2>
       <div className={styles.actions}>
         <Button onClick={handleAdd}>Thêm nhân viên</Button>
         <Input

@@ -6,9 +6,7 @@ import styles from './ManagerLogin.module.css';
 const ManagerLogin: React.FC = () => {
   
   return (
-    
     <div className={styles.loginContainer}>
-      
       <LoginForm />
     </div>
   );

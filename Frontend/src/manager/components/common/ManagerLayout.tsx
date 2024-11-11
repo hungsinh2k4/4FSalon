@@ -9,16 +9,12 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div>
-      <Header />
+    <div className={styles.background}>
       <div className={styles.container}>
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-        <main
-          className={styles.content}
-          style={{ marginLeft: isCollapsed ? '50px' : '200px' }}
-        >
+        <div className={styles.main}>
           {children}
-        </main>
+        </div>
       </div>
     </div>
   );
