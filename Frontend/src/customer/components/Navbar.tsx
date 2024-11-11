@@ -16,6 +16,10 @@ const Navbar: React.FC = () => {
     window.location.href = "/login";
   };
 
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
+
   return (
     <nav className="bg-white p-4 sticky top-0 left-0 shadow-md z-10">
       <div className="container mx-auto flex justify-between ">
@@ -43,27 +47,36 @@ const Navbar: React.FC = () => {
           {user ? (
             <div className="relative">
               <div
-                className="flex items-center space-x-4 mx-4 cursor-pointer"
+                className="flex items-center space-x-4 mx-4 cursor-pointer border rounded-full p-1"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <img
-                  src={user.avatar}
+                  src={user.avatar || ""}
                   alt="Avatar"
                   className="w-8 h-8 rounded-full"
                 />
                 <span>{user.name}</span>
               </div>
               {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
+                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg p-2">
                   <Link
                     to="/profile"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    className="block px-4 py-2 text-gray-900 hover:bg-gray-100"
+                    onClick={handleLinkClick}
                   >
                     Xem thông tin
                   </Link>
+                  <Link
+                    to="/lichhen"
+                    className="block px-4 py-2 text-gray-900 hover:bg-gray-100"
+                    onClick={handleLinkClick}
+                  >
+                    Lịch hẹn
+                  </Link>
+
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    className="block w-full text-left px-4 py-2 text-gray-900 hover:bg-gray-100"
                   >
                     Đăng xuất
                   </button>
