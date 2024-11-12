@@ -6,6 +6,7 @@ import styles from './ServiceForm.module.css';
 
 interface ServiceFormProps {
   initialData?: {
+    id: number;
     title: string;
     description: string;
     estimate_time: number;
@@ -15,6 +16,7 @@ interface ServiceFormProps {
 }
 
 const ServiceForm: React.FC<ServiceFormProps> = ({ initialData, onSubmit }) => {
+  const [id, setId] = useState(initialData?.id || 0);
   const [title, setTitle] = useState(initialData?.title || '');
   const [price, setPrice] = useState(initialData?.price || 0);
   const [description, setDescription] = useState(initialData?.description || '');
@@ -23,7 +25,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ initialData, onSubmit }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data = { title, price, description, estimate_time };
+    const data = {id, title, price, description, estimate_time };
     onSubmit(data);
   };
 

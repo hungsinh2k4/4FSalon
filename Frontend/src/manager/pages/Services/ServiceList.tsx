@@ -8,6 +8,7 @@ import ServiceForm from '../../components/forms/ServiceForm';
 import styles from './ServiceList.module.css';
 import { fetchServices, removeService, addService, editService } from '../../services/serviceService';
 import { Service } from '../../utils/types';
+import { FaBagShopping } from 'react-icons/fa6';
 
 const ServiceList: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
@@ -75,36 +76,49 @@ const ServiceList: React.FC = () => {
     }
   };
 
-
   if (loading) {
-    return <p>Đang tải...</p>;
-  }
-
-  return (
-    <div className={styles.serviceList}>
-      <h2>Danh sách dịch vụ</h2>
-      <div className={styles.actions}>
-        <Button onClick={handleAdd}>Thêm dịch vụ</Button>
-        <Input
-          label=""
-          type="text"
-          placeholder="Tìm kiếm dịch vụ..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className={styles.searchInput}
-        />
+    return (
+      <div className={styles.page}>
+        <div className={styles.header}>
+          
+            <div className={styles.headerTitle}>
+              <div className={styles.iconWrapper}>
+                <FaBagShopping /> <p>Quản lý dịch vụ</p>
+              </div>
+  
+            </div>
+            <div className={styles.addButton} onClick={handleAdd}>
+              + Thêm dịch vụ
+            </div>
+        </div>
+        <p>Đang tải...</p>
       </div>
-      {error && <p className={styles.error}>{error}</p>}
+    );
+  }
+  
+  return (
+    <div className={styles.page}>
+      <div className={styles.header}>
+        
+          <div className={styles.headerTitle}>
+            <div className={styles.iconWrapper}>
+              <FaBagShopping /> <p>Quản lý dịch vụ</p>
+            </div>
+
+          </div>
+          <div className={styles.addButton} onClick={handleAdd}>
+            + Thêm dịch vụ
+          </div>
+      </div>
       <ServicesTable services={services} onDelete={handleDelete} onEdit={handleEdit} />
       
-      {/* Modal cho Add/Edit */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={currentService ? 'Chỉnh sửa dịch vụ' : 'Thêm dịch vụ'}
+        title={currentService ? 'Chỉnh sửa nhân viên' : 'Thêm nhân viên'}
       >
         <ServiceForm initialData={currentService || undefined} onSubmit={handleFormSubmit} />
-      </Modal>  
+      </Modal>
     </div>
   );
 };

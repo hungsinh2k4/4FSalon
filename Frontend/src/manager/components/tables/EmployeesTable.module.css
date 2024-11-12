@@ -1,93 +1,24 @@
-/* src/manager/components/tables/AccountsTable.module.css */
-
-:root {
-  --primary-color: #2196F3; /* Light Blue */
-  --secondary-color: #f5f5f5; /* Light Gray */
-  --text-color: #212121;     /* Dark Text */
-  --border-color: #e0e0e0;   /* Light Border */
-  --background-color: #ffffff; /* White */
+.actionList{
+    display: flex;
+    align-items: center;
+    height: 50px;
 }
-
-.table th:nth-child(1),
-.table td:nth-child(1) {
-  width: 5%; /* ID */
+.actionEdit{
+    color: #44ad73cf;
+    margin-right: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
-
-.table th:nth-child(2),
-.table td:nth-child(2) {
-  width: 15%; /* 	Tên nhân viên */
+.actionEdit:hover{
+    transform: scale(1.5) rotate(-30deg);
+    color: #44ad73;
 }
-
-.table th:nth-child(3),
-.table td:nth-child(3) {
-  width: 10%; /* 	SĐT */
+.actionDelete{
+    color: #ff0000;
+    cursor: pointer;
+    transition: transform 0.4s ease, color 0.2s ease;
 }
-
-.table th:nth-child(4),
-.table td:nth-child(4) {
-  width: 20%; /* Email */
+.actionDelete:hover{
+    transform: scale(2.0) rotate(90deg);
+    color: #ff3333;
 }
-
-.table th:nth-child(5),
-.table td:nth-child(5) {
-  width: 10%; /* 	Chi nhánh */
-}
-.table th:nth-child(6),
-.table td:nth-child(6) {
-  width: 10%; /* Vị trí */
-}
-.table th:nth-child(7),
-.table td:nth-child(7) {
-  width: 10%; /* Ngày tạo */
-}
-.table th:nth-child(8),
-.table td:nth-child(8) {
-  width: 15%; /* Hành động */
-}
-
-.table {
-  width: 100%;
-  margin-top: 20px;
-  border-collapse: collapse;
-  background-color: var(--background-color);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.5s ease;
-}
-
-.table thead {
-  background-color: var(--primary-color);
-}
-
-
-.table td {
-  padding: 5px;
-  border-bottom: 1px solid var(--border-color);
-  text-align: center;
-  color: var(--text-color);
-}
-.table th {
-  padding: 5px;
-  border-bottom: 1px solid var(--border-color);
-  text-align: center;
-  color: var(--text-color);
-}
-
-.table th {
-  color: white;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.table tr:hover {
-  background-color: var(--secondary-color);
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    }
-  to {
-    opacity: 1;
-  }
-}
-  
