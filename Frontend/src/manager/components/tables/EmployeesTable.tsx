@@ -14,7 +14,7 @@ interface EmployeesTableProps {
 
 const EmployeesTable: React.FC<EmployeesTableProps> = ({ employees, onDelete, onEdit }) => {
   
-  const [sortConfig, setSortConfig] = useState<{ key: keyof Employee, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: '' });
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Employee, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: 'asc' });
 
   const sorted = [...employees].sort((a, b) => {
     if (sortConfig.key) {

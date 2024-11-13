@@ -1,8 +1,6 @@
 // src/manager/pages/Employees/EmployeeList.tsx
 import React, { useEffect, useState } from 'react';
 import EmployeesTable from '../../components/tables/EmployeesTable';
-import Button from '../../components/common/Button';
-import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
 import EmployeeForm from '../../components/forms/EmployeeForm';
 import styles from './EmployeeList.module.css';

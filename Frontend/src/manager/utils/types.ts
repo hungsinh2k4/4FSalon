@@ -48,7 +48,7 @@ export interface User {
   export interface Appointment {
     id: number;
     clientName: string;
-    serviceId: number;
+    service_id: number;
     date: string;
     time: string;
     // Thêm các trường khác nếu cần
