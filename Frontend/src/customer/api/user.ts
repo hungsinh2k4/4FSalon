@@ -13,10 +13,7 @@ export const createUser = async (data: Partial<User>): Promise<User> => {
   return response.data;
 };
 
-export const updateUser = async (
-  id: number,
-  data: Partial<User>
-): Promise<User> => {
-  const response = await axiosInstance.patch(`api/users/${id}`, data);
+export const updateUser = async (data: Partial<User>): Promise<User> => {
+  const response = await axiosInstance.patch("api/users/profile", data);
   return response.data;
 };

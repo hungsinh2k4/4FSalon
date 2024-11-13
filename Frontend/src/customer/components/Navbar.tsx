@@ -20,6 +20,8 @@ const Navbar: React.FC = () => {
     setIsOpen(false);
   };
 
+  console.log(user);
+
   return (
     <nav className="bg-white p-4 sticky top-0 left-0 shadow-md z-10">
       <div className="container mx-auto flex justify-between ">
@@ -51,7 +53,7 @@ const Navbar: React.FC = () => {
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <img
-                  src={user.avatar || ""}
+                  src={user.avatar || "kannastare.png"}
                   alt="Avatar"
                   className="w-8 h-8 rounded-full"
                 />
@@ -84,7 +86,10 @@ const Navbar: React.FC = () => {
               )}
             </div>
           ) : (
-            <Link to="/login" className="nav-items">
+            <Link
+              to="/login"
+              className="bg-black text-white px-3 rounded-full hover:bg-gray-600 hover:text-white transition-colors duration-200 mx-4"
+            >
               Đăng nhập
             </Link>
           )}
