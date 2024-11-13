@@ -3,7 +3,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './Sidebar.module.css';
-
+import AuthService from '../../services/authService';
 
 /* Import các icon từ React Icons */
 
@@ -16,15 +16,10 @@ import {
   FaCalendarCheck, //appointment
   FaUsers, //employee
   FaBuilding, //branch
-  FaAngleLeft, //collapse
-  FaAngleRight // expand
+  FaDoorOpen, //logout
 } from 'react-icons/fa6';
 import logo from '../../assets/images/logo.png';
 // Định nghĩa giao diện cho các props
-interface SidebarProps {
-  isCollapsed: boolean;
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
-}
 const navItems1 = [
   { to: "/manager/dashboard", linkText: "Dashboard", icon: <FaBuffer className={styles.icon} /> },
   { to: "/manager/accounts", linkText: "Tài Khoản", icon: <FaUser className={styles.icon} /> },
@@ -36,15 +31,15 @@ const navItems1 = [
   { to: "/manager/employees", linkText: "Nhân Viên", icon: <FaUsers className={styles.icon} /> },
   { to: "/manager/services", linkText: "Dịch Vụ", icon: <FaBagShopping className={styles.icon} /> },
 ];
-const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
-  const handleToggle = () => {
-    setIsCollapsed(!isCollapsed);
+const Sidebar: React.FC = () => {
+  const log = () => {
+    AuthService.logout();
   };
   return (
     <div className={styles.sidebar}>
-      <div className={styles.logo}>
+      <div className={styles.logobar}>
           <img src={logo} className={styles.logo} alt="logo" />
-          
+          MANAGER
       </div>
       <div className={styles.menu}>
         <nav className={styles.nav}>
@@ -62,29 +57,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
           ))}
         </nav>
       </div>
-    </div>
-  );
-  /*
-  return (
-    <div className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
-      
-      <div className={styles.header}>
-        
-        <button className={styles.toggleButton} onClick={handleToggle}>
-          {isCollapsed ? (
-            <FaAngleRight className={styles.toggleIcon} />
-          ) : (
-            <FaAngleLeft className={styles.toggleIcon} />
-          )}
-        </button>
-      </div>
-      <div className={styles.scroll}>
-        
-        
+      <div className={styles.logout} onClick={log}>
+        <FaDoorOpen className={styles.logouticon} />
+        <span className={styles.loggouttext}>Đăng Xuất</span>
       </div>
     </div>
   );
-  */
+
 };
 
 export default Sidebar;
