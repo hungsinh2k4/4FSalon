@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
+import { User } from "../utils/types";
+import { updateUser } from "../api/user";
+import { text } from "@fortawesome/fontawesome-svg-core";
 const Profile: React.FC = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState(user?.avatar || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -23,7 +25,6 @@ const Profile: React.FC = () => {
   const handleSaveChanges = () => {
     // Xử lý lưu dữ liệu thay đổi lên server
     if (selectedFile) {
-      // Thực hiện upload file lên server
     }
     setIsEditing(false);
   };
@@ -32,13 +33,24 @@ const Profile: React.FC = () => {
     <div className="container mx-auto p-4">
       {/* <h1 className="text-2xl font-bold mb-4">Thông tin tài khoản</h1> */}
       <div className="mt-6 flex space-x-4 mx-4 mb-4">
-        <Link to="/" className="text-blue-600 hover:underline">
-          Home /
+        <Link
+          to="/"
+          className="text-gray-600 hover:text-blue-400 hover:underline"
+        >
+          Home
         </Link>
-        <Link to="/profile" className="text-blue-600 hover:underline">
-          Profile /
+        <p>/</p>
+        <Link
+          to="/profile"
+          className="text-gray-600 hover:text-blue-400 hover:underline"
+        >
+          Profile
         </Link>
-        <Link to="/change-password" className="text-blue-600 hover:underline">
+        <p>/</p>
+        <Link
+          to="/change-password"
+          className="text-gray-600 hover:text-blue-400 hover:underline"
+        >
           Change Password
         </Link>
       </div>
@@ -47,7 +59,7 @@ const Profile: React.FC = () => {
           Thông tin tài khoản
         </h2>
         <div className="flex items-center mb-6">
-          <div className="w-1/2 mr-4">
+          <div className="w-full mr-4">
             <label className="block text-lg font-semibold rounded-full">
               Tên:
             </label>
@@ -105,7 +117,7 @@ const Profile: React.FC = () => {
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col items-center">
+          {/* <div className="w-1/2 flex flex-col items-center">
             <div className="relative">
               <img
                 src={avatarPreview || ""}
@@ -124,7 +136,7 @@ const Profile: React.FC = () => {
             <button className="px-3 py-1 bg-gray-200 rounded-md mt-2 text-sm">
               Chọn tệp
             </button>
-          </div>
+          </div> */}
         </div>
 
         <div className="flex gap-4">
@@ -142,6 +154,12 @@ const Profile: React.FC = () => {
               Lưu thay đổi
             </button>
           )}
+          <Link
+            to={"/change-password"}
+            className="text-center bg-blue-600 text-white py-2 px-4 rounded-lg w-1/6"
+          >
+            Đổi mật khẩu
+          </Link>
         </div>
       </div>
     </div>

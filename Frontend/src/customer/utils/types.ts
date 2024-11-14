@@ -18,7 +18,7 @@ export interface User {
   phone: string;
   point: Int16Array;
   avatar: string;
-  isGoogleAccount: boolean;
+  isGoogleAccount: boolean;       
   //   password: string;
   //   created_at: string;
   //   updated_at: string;

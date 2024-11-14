@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 import { User } from "../utils/types";
+import { GoogleLogin } from "react-google-login";
 
 const Login: React.FC = () => {
   const [loginIdentifier, setLoginIdentifier] = useState("");
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { setUser } = useAuth();
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -31,6 +33,56 @@ const Login: React.FC = () => {
       setError(error.message); // Cập nhật lỗi để hiển thị nếu đăng nhập thất bại
       console.error("Login failed:", error);
     }
+  };
+
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const googleResponse = await authService.loginWithGoogle();
+  //     const { access_token, user } = googleResponse;
+  //     sessionStorage.setItem("token", access_token);
+  //     sessionStorage.setItem("user", JSON.stringify(user));
+  //     setUser(user);
+  //     navigate("/"); // Chuyển hướng đến trang chủ hoặc trang khác khi đăng nhập thành công
+  //   } catch (error: any) {
+  //     setError(error.message); // Cập nhật lỗi để hiển thị nếu đăng nhập thất bại
+  //     console.error("Google login failed:", error);
+  //   }
+  // };
+
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const user = await authService.loginWithGoogle();
+  //     const { name, email } = user;
+
+  //     // Lưu thông tin người dùng vào sessionStorage
+  //     sessionStorage.setItem("userName", name || ""); // Thêm kiểm tra null cho name
+  //     sessionStorage.setItem("userEmail", email || ""); // Thêm kiểm tra null cho email
+
+  //     setUser(user); // Cập nhật trạng thái người dùng với tên và email
+  //     navigate("/"); // Chuyển hướng đến trang chủ hoặc trang khác khi đăng nhập thành công
+  //   } catch (error: any) {
+  //     setError(error.message); // Cập nhật lỗi để hiển thị nếu đăng nhập thất bại
+  //     console.error("Google login failed:", error);
+  //   }
+  // };
+
+  const handleGoogleLoginSuccess = async (response: any) => {
+    try {
+      const { tokenId } = response;
+      const googleResponse = await authService.loginWithGoogle(tokenId);
+      const { access_token, user } = googleResponse;
+      sessionStorage.setItem("token", access_token);
+      sessionStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
+      navigate("/"); // Chuyển hướng đến trang chủ hoặc trang khác khi đăng nhập thành công
+    } catch (error: any) {
+      setError(error.message); // Cập nhật lỗi để hiển thị nếu đăng nhập thất bại
+      console.error("Google login failed:", error);
+    }
+  };
+  const handleGoogleLoginFailure = (response: any) => {
+    setError("Đăng nhập bằng Google thất bại");
+    console.error("Google login failed:", response);
   };
 
   return (
@@ -88,12 +140,23 @@ const Login: React.FC = () => {
           <span className="text-sm mx-2">hoặc</span>
           <span className="w-full border-t"></span>
         </div>
-
-        <button className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100">
-          <img src={gglogo} alt="Google" className="w-5 h-5 mr-2" />
-          Đăng nhập với tài khoản Google
-        </button>
-
+        <GoogleLogin
+          clientId="690638096410-1jk9fil7m1mjfde7781baju4oadbha8k.apps.googleusercontent.com"
+          buttonText="Đăng nhập với tài khoản Google"
+          onSuccess={handleGoogleLoginSuccess}
+          onFailure={handleGoogleLoginFailure}
+          cookiePolicy={"single_host_origin"}
+          render={(renderProps) => (
+            <button
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+              className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100"
+            >
+              <img src={gglogo} alt="Google" className="w-5 h-5 mr-2" />
+              Đăng nhập với tài khoản Google
+            </button>
+          )}
+        />
         <p className="text-center mt-4 text-sm">
           Không có tài khoản?{" "}
           <Link to="/register" className="nav-items">
