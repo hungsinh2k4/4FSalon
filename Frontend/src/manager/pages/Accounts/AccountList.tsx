@@ -26,14 +26,6 @@ const AccountList: React.FC = () => {
       setLoading(true);
       try {
         const data = await fetchAccounts();
-        data.map((account) => {
-          const date = new Date(account.created_at).toLocaleDateString('vi-VN', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-          });
-          account.created_at = date;
-        });
         setAccounts(data);
       } catch (err) {
         setError('Failed to fetch accounts.');

@@ -45,6 +45,7 @@ class AuthService {
 
   public async logout(): Promise<void> {
     try {
+      window.location.href = '/manager/login';
       await axiosInstance.post('/auth/logout');
     } catch (error: any) {
       console.error('Logout failed:', error);
@@ -52,7 +53,6 @@ class AuthService {
       this.token = null;
       sessionStorage.removeItem('token');
       this.setAxiosAuthToken(this.token);
-      window.location.href = '/manager/login';
     }
   }
 }

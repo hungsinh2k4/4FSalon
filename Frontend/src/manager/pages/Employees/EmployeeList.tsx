@@ -8,7 +8,7 @@ import EmployeeForm from '../../components/forms/EmployeeForm';
 import styles from './EmployeeList.module.css';
 import { fetchEmployees, removeEmployee, addEmployee, editEmployee } from '../../services/employeeService';
 import { Employee } from '../../utils/types';
-
+import { FaUsers } from 'react-icons/fa6';
 const EmployeeList: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,14 +24,6 @@ const EmployeeList: React.FC = () => {
       setLoading(true);
       try {
         const data = await fetchEmployees();
-        data.map((employee) => {
-          const date = new Date(employee.created_at).toLocaleDateString('vi-VN', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-          });
-          employee.created_at = date;
-        })
         setEmployees(data);
       } catch (err) {
         setError('Failed to fetch employees.');
@@ -89,27 +81,41 @@ const EmployeeList: React.FC = () => {
   );
 
   if (loading) {
-    return <p>Đang tải...</p>;
+    return (
+      <div className={styles.page}>
+        <div className={styles.header}>
+          
+            <div className={styles.headerTitle}>
+              <div className={styles.iconWrapper}>
+                <FaUsers /> <p>Quản lý nhân viên</p>
+              </div>
+  
+            </div>
+            <div className={styles.addButton} onClick={handleAdd}>
+              + Thêm nhân viên
+            </div>
+        </div>
+        <p>Đang tải...</p>
+      </div>
+    );
   }
   
   return (
-    <div className={styles.employeeList}>
-      <h2>Quản lý nhân viên</h2>
-      <div className={styles.actions}>
-        <Button onClick={handleAdd}>Thêm nhân viên</Button>
-        <Input
-          label=""
-          type="text"
-          placeholder="Tìm kiếm nhân viên..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className={styles.searchInput}
-        />
+    <div className={styles.page}>
+      <div className={styles.header}>
+        
+          <div className={styles.headerTitle}>
+            <div className={styles.iconWrapper}>
+              <FaUsers /> <p>Quản lý nhân viên</p>
+            </div>
+
+          </div>
+          <div className={styles.addButton} onClick={handleAdd}>
+            + Thêm nhân viên
+          </div>
       </div>
-      {error && <p className={styles.error}>{error}</p>}
       <EmployeesTable employees={filteredEmployees} onDelete={handleDelete} onEdit={handleEdit} />
       
-      {/* Modal cho Add/Edit */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
