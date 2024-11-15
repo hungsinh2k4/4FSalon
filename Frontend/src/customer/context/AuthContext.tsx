@@ -27,11 +27,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setUser(user);
     } catch (error) {
       console.error("Failed to fetch user:", error);
-    } 
+    }
   }, []);
 
   useEffect(() => {
-    fetchUser();
+    if (!user && localStorage.getItem("user")) {
+      fetchUser();
+    } else {
+      console.log("User already exists");
+    }
+    // fetchUser();
   }, []);
 
   return (

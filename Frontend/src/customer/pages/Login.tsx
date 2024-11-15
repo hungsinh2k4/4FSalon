@@ -33,7 +33,11 @@ const Login: React.FC = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const oauthWindow = await window.open("http://localhost:8080/auth/google", "", "width=500,height=600");
+    const oauthWindow = await window.open(
+      "https://fourfsalonserver.onrender.com/auth/google",
+      "",
+      "width=500,height=600"
+    );
 
     window.addEventListener("message", (event) => {
       if (event.origin !== API_BASE_URL) return;
@@ -44,12 +48,12 @@ const Login: React.FC = () => {
       }
     });
   };
-  
+
   const handleToken = async (access_token: string) => {
     const { user } = await authService.loginWithGoogle(access_token);
     setUser(user);
     console.log("Logged in with Google successfully");
-  }
+  };
 
   return (
     <div className="container mx-auto min-h-screen flex items-center justify-center bg-gray-100">
@@ -106,7 +110,10 @@ const Login: React.FC = () => {
           <span className="text-sm mx-2">hoặc</span>
           <span className="w-full border-t"></span>
         </div>
-        <button onClick={handleGoogleLogin} className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100">
+        <button
+          onClick={handleGoogleLogin}
+          className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100"
+        >
           <img src={gglogo} alt="Google" className="w-5 h-5 mr-2" />
           Đăng nhập với tài khoản Google
         </button>
