@@ -23,8 +23,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const fetchUser = React.useCallback(async () => {
     try {
-      const user = await getUser();
-      setUser(user);
+      if (localStorage.getItem("token")) {
+        const user = await getUser();
+        setUser(user);
+      }
     } catch (error) {
       console.error("Failed to fetch user:", error);
     } 
