@@ -25,7 +25,15 @@ const ServiceList: React.FC = () => {
       setLoading(true);
       try {
         const data = await fetchServices();
-        setServices(data);
+        const reformattedData = data.map((service: any) => ({
+          ...service,
+          created_at: new Date(service.created_at).toLocaleDateString('vi-VN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          }),
+        }));
+        setServices(reformattedData);
       } catch (err) {
         setError('Failed to fetch services.');
       } finally {

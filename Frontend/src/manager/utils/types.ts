@@ -32,9 +32,9 @@ export interface User {
     description: string;
     estimate_time: number;
     price: number;
-    createAt: string;
-    updateAt: string;
-    deleteAt: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
   }
   
   export interface Schedule {

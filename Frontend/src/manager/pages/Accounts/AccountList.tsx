@@ -25,7 +25,15 @@ const AccountList: React.FC = () => {
       setLoading(true);
       try {
         const data = await fetchAccounts();
-        setAccounts(data);
+        const reformattedData = data.map((account: any) => ({
+          ...account,
+          created_at: new Date(account.created_at).toLocaleDateString('vi-VN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          }),
+        }));
+        setAccounts(reformattedData);
       } catch (err) {
         setError('Failed to fetch accounts.');
       } finally {
@@ -136,7 +144,7 @@ const AccountList: React.FC = () => {
         
           <div className={styles.headerTitle}>
             <div className={styles.iconWrapper}>
-              <FaUsers /> <p>Quản lý nhân viên</p>
+              <FaUsers /> <p>Quản lý tài khoản</p>
             </div>
 
           </div>

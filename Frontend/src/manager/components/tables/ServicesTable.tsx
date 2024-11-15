@@ -45,6 +45,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
             <col style={{ width: '10%' }} />
             <col style={{ width: '10%' }} />
             <col style={{ width: '10%' }} />
+            <col style={{ width: '10%' }} />
         </colgroup>
         <thead>
           <tr>
@@ -52,6 +53,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
             <th onClick={() => handleSort('title')}>Tên dịch vụ <FontAwesomeIcon icon={getSortIcon('title')} /></th>
             <th onClick={() => handleSort('price')}>Giá <FontAwesomeIcon icon={getSortIcon('price')} /></th>
             <th onClick={() => handleSort('estimate_time')}>Thời gian <FontAwesomeIcon icon={getSortIcon('estimate_time')} /></th>
+            <th onClick={() => handleSort('created_at')}>Ngày tạo <FontAwesomeIcon icon={getSortIcon('created_at')} /></th>
             <th>Hành động</th>
           </tr>
         </thead>
@@ -60,8 +62,9 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
             <tr key={service.id}>
               <td>{service.id}</td>
               <td>{service.title}</td>
-              <td>{service.price}đ</td>
+              <td>{service.price.toLocaleString('vi-VN')}vnđ</td>
               <td>{service.estimate_time} phút</td>
+              <td>{service.created_at}</td>
               <td className={styles.actionList}>
                 <FaPen className={styles.actionEdit} onClick={() => onEdit(service)}/> 
                 <FaXmark className={styles.actionDelete} onClick={() => onDelete(service.id)}/>
