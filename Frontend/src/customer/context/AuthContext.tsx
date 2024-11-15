@@ -7,6 +7,7 @@ import React, {
   useEffect,
 } from "react";
 import { User } from "../utils/types";
+import { getUser } from "../api/user";
 
 interface AuthContextType {
   user: User | null;
@@ -20,11 +21,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  const fetchUser = React.useCallback(async () => {
+    try {
+      const user = await getUser();
+      setUser(user);
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+    } 
+  }, []);
+
   useEffect(() => {
-    const storedUser = sessionStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    fetchUser();
   }, []);
 
   return (

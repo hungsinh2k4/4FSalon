@@ -5,47 +5,51 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 import { useAuth } from "../context/AuthContext";
+import { API_BASE_URL } from "../utils/constants";
 
 const Login: React.FC = () => {
   const [loginIdentifier, setLoginIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
-    if (token && user) {
-      setUser(JSON.parse(user));
-      authService.setAxiosAuthToken(token);
+    if (user) {
       navigate("/");
     }
-  }, [setUser]);
+  }, [user]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // const user = localStorage.getItem("user");
-      const token = localStorage.getItem("token");
-      if (token) {
-        authService.setAxiosAuthToken(token);
-        navigate("/"); // Chuyển hướng đến trang chủ nếu đã có thông tin người dùng
-        return;
-      }
       const response = await authService.login(loginIdentifier, password);
-      const { access_token, user: loggedInUser } = response;
-      sessionStorage.setItem("token", access_token);
-      sessionStorage.setItem("user", JSON.stringify(loggedInUser));
-      localStorage.setItem("token", access_token);
-      localStorage.setItem("user", JSON.stringify(loggedInUser));
+      const { user: loggedInUser } = response;
       setUser(loggedInUser);
-      navigate("/"); // Chuyển hướng đến trang chủ hoặc trang khác khi đăng nhập thành công
     } catch (error: any) {
       setError(error.message); // Cập nhật lỗi để hiển thị nếu đăng nhập thất bại
       console.error("Login failed:", error);
     }
   };
+
+  const handleGoogleLogin = async () => {
+    const oauthWindow = await window.open("http://localhost:8080/auth/google", "", "width=500,height=600");
+
+    window.addEventListener("message", (event) => {
+      if (event.origin !== API_BASE_URL) return;
+
+      const { access_token } = event.data;
+      if (access_token) {
+        handleToken(access_token);
+      }
+    });
+  };
+  
+  const handleToken = async (access_token: string) => {
+    const { user } = await authService.loginWithGoogle(access_token);
+    setUser(user);
+    console.log("Logged in with Google successfully");
+  }
 
   return (
     <div className="container mx-auto min-h-screen flex items-center justify-center bg-gray-100">
@@ -102,7 +106,7 @@ const Login: React.FC = () => {
           <span className="text-sm mx-2">hoặc</span>
           <span className="w-full border-t"></span>
         </div>
-        <button className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100">
+        <button onClick={handleGoogleLogin} className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100">
           <img src={gglogo} alt="Google" className="w-5 h-5 mr-2" />
           Đăng nhập với tài khoản Google
         </button>

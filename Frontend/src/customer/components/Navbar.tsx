@@ -13,8 +13,6 @@ const Navbar: React.FC = () => {
     setUser(null);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
     window.location.href = "/login";
   };
 

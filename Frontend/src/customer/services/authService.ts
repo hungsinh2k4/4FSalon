@@ -9,7 +9,7 @@ interface LoginResponse {
 }
 class AuthService {
   private static instance: AuthService;
-  private token: string | null = sessionStorage.getItem("token");
+  private token: string | null = localStorage.getItem("token");
 
   private constructor() {
     this.setAxiosAuthToken(this.token);
@@ -50,6 +50,7 @@ class AuthService {
 
       // Lấy thông tin người dùng sau khi đăng nhập thành công
       const user = await getUser();
+      localStorage.setItem("user", JSON.stringify(user));
       return { access_token: this.token, user: user }; // Giả sử user[0] là người dùng hiện tại
     } catch (error: any) {
       throw new Error(error.response?.data?.message || "Đăng nhập thất bại");
@@ -57,19 +58,14 @@ class AuthService {
   }
 
   public async loginWithGoogle(
-    tokenId: string
-  ): Promise<{ access_token: string; user: User }> {
+    token: string
+  ): Promise<{ user: User }> {
     try {
-      const response = await axiosInstance.post<LoginResponse>("/auth/google", {
-        tokenId,
-      });
-      this.token = response.data.access_token;
+      this.token = token;
+      const user = await getUser();
       localStorage.setItem("token", this.token);
-      this.setAxiosAuthToken(this.token);
-
-      // Lấy thông tin người dùng từ Google sau khi đăng nhập thành công
-      const user = response.data.user;
-      return { access_token: this.token, user: user };
+      localStorage.setItem("user", JSON.stringify(user));
+      return { user: user };
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Đăng nhập bằng Google thất bại"
