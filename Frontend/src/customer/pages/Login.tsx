@@ -32,12 +32,7 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    const oauthWindow = await window.open(
-      "https://fourfsalonserver.onrender.com/auth/google",
-      "",
-      "width=500,height=600"
-    );
+    const oauthWindow = await window.open(`${API_BASE_URL}/auth/google`, "", "width=500,height=600");
 
     window.addEventListener("message", (event) => {
       if (event.origin !== API_BASE_URL) return;
