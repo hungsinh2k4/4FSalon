@@ -33,6 +33,7 @@ const Login: React.FC = () => {
   };
 
   const handleGoogleLogin = async () => {
+    console.log("handleGoogleLogin");
     const oauthWindow = await window.open(
       `${API_BASE_URL}/auth/google`,
       "",
@@ -40,10 +41,15 @@ const Login: React.FC = () => {
     );
 
     window.addEventListener("message", (event) => {
-      if (event.origin !== API_BASE_URL) return;
+      if (event.origin !== API_BASE_URL) {
+        console.log("Invalid origin", event.origin);
+        return;
+      }
 
       const { access_token } = event.data;
+      console.log("access_token", access_token);
       if (access_token) {
+        console.log("access_token", access_token);
         handleToken(access_token);
       }
     });

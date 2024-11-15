@@ -1,24 +1,10 @@
-// src/customer/utils/types.ts
-// export interface Account {
-//   id: number;
-//   email: string;
-//   password: string;
-//   phoneNumber: string;
-//   google_id: string;
-//   role: string;
-//   created_at: string;
-//   updated_at: string;
-//   deleted_at: string | null;
-//   picture_url: string | null;
-//   username: string;
-// }
 export interface User {
   name: string;
   email: string;
   phone: string;
   point: Int16Array;
   avatar: string;
-  isGoogleAccount: boolean;       
+  isGoogleAccount: boolean;
   //   password: string;
   //   created_at: string;
   //   updated_at: string;

@@ -57,13 +57,11 @@ class AuthService {
     }
   }
 
-  public async loginWithGoogle(
-    token: string
-  ): Promise<{ user: User }> {
+  public async loginWithGoogle(token: string): Promise<{ user: User }> {
     try {
       this.token = token;
-      const user = await getUser();
       localStorage.setItem("token", this.token);
+      const user = await getUser();
       localStorage.setItem("user", JSON.stringify(user));
       return { user: user };
     } catch (error: any) {
