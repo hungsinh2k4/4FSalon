@@ -1,36 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../assets/Barber Hair Cutting Effect 3.png";
 import gglogo from "../assets/Login/icons8-google-48.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 import { useAuth } from "../context/AuthContext";
-import { User } from "../utils/types";
+import { API_BASE_URL } from "../utils/constants";
 
 const Login: React.FC = () => {
   const [loginIdentifier, setLoginIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await authService.login(loginIdentifier, password);
-      const { access_token, user } = response;
-      // console.log(response);
-      sessionStorage.setItem("token", access_token);
-      sessionStorage.setItem("user", JSON.stringify(user));
-      // setUser({
-      //   username: user.name,
-      //   avatar: user.avatar || "", // Ensure avatar is a string
-      // });
-      setUser(user);
-      navigate("/"); // Chuyển hướng đến trang chủ hoặc trang khác khi đăng nhập thành công
+      const { user: loggedInUser } = response;
+      setUser(loggedInUser);
     } catch (error: any) {
       setError(error.message); // Cập nhật lỗi để hiển thị nếu đăng nhập thất bại
       console.error("Login failed:", error);
     }
+  };
+
+  const handleGoogleLogin = async () => {
+    console.log("handleGoogleLogin");
+    const oauthWindow = await window.open(
+      `${API_BASE_URL}/auth/google`,
+      "",
+      "width=500,height=600"
+    );
+
+    window.addEventListener("message", (event) => {
+      if (event.origin !== API_BASE_URL) {
+        console.log("Invalid origin", event.origin);
+        return;
+      }
+
+      const { access_token } = event.data;
+      console.log("access_token", access_token);
+      if (access_token) {
+        console.log("access_token", access_token);
+        handleToken(access_token);
+      }
+    });
+  };
+
+  const handleToken = async (access_token: string) => {
+    const { user } = await authService.loginWithGoogle(access_token);
+    setUser(user);
+    console.log("Logged in with Google successfully");
   };
 
   return (
@@ -88,12 +116,13 @@ const Login: React.FC = () => {
           <span className="text-sm mx-2">hoặc</span>
           <span className="w-full border-t"></span>
         </div>
-
-        <button className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100">
+        <button
+          onClick={handleGoogleLogin}
+          className="mt-4 flex items-center justify-center w-full border py-2 rounded-lg bg-white shadow-md hover:bg-gray-100"
+        >
           <img src={gglogo} alt="Google" className="w-5 h-5 mr-2" />
           Đăng nhập với tài khoản Google
         </button>
-
         <p className="text-center mt-4 text-sm">
           Không có tài khoản?{" "}
           <Link to="/register" className="nav-items">
