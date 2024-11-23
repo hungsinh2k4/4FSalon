@@ -1,0 +1,138 @@
+.calendarContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.calendarTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendarColumnHeader {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: #f4f4f4;
+  text-align: center;
+  font-weight: bold;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 100px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+.calendarCell {
+  border: 1px solid #ddd;
+  position: relative;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.dateNumber {
+  margin: auto;
+  width: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.dateNumberToday {
+  margin: auto;
+  width: 20px;
+  color: #fff;
+  background-color: #007bff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 50%;
+}
+
+.pastDay {
+  color: #aaa;
+}
+
+.eventContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.event {
+  display: flex;
+  align-items: center;
+  margin: 2px 0;;
+  color: white;
+  background-color: #007bff;
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.calendarCell:hover {
+  background-color: #f0f8ff;
+}
+
+.dayOfWeek {
+  border: 1px solid #ddd;
+  padding: 10px 0;
+  font-size: 14px;
+}
+
+.headerButtonWrapper {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.headerDatePicker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+
+.directionButtonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.directionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #f0f8ff;
+  color: #4f4f50;
+  cursor: pointer;
+}
+
+.directionButton:hover {
+  background-color: #848484;
+  border-radius: 50%;
+}
+
+.todayButton {
+  width: 100px;
+  background-color: none;
+  color: black;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}

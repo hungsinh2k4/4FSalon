@@ -39,9 +39,23 @@ export interface User {
   
   export interface Schedule {
     id: number;
+    employee_id: number;
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+    sunday: boolean;
+    employee: Employee;
+    // Thêm các trường khác nếu cần
+  }
+
+  export interface Absence {
+    id: number;
+    employee_id: number;
     date: string;
-    startTime: string;
-    endTime: string;
+    employee: Employee;
     // Thêm các trường khác nếu cần
   }
   

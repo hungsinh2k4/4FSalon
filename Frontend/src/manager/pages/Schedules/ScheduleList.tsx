@@ -1,36 +1,62 @@
 // src/manager/pages/Schedules/ScheduleList.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import SchedulesTable from '../../components/tables/SchedulesTable';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
+
 import ScheduleForm from '../../components/forms/ScheduleForm';
 import styles from './ScheduleList.module.css';
-import { fetchSchedules, removeSchedule, addSchedule, editSchedule } from '../../services/scheduleService';
+import { fetchSchedules, fetchSchedulesByBranch, removeSchedule, addSchedule, editSchedule, removeAbsence, addAbsence, fetchAbsencesByBranch } from '../../services/scheduleService';
+import { Absence, Schedule } from '../../utils/types';
+import { fetchBranches } from '../../services/branchService';
+import CalendarTable from '../../components/tables/CalendarTable';
+import { Calendar, Badge, List } from 'rsuite';
+import 'rsuite/Calendar/styles/index.css';
+import AbsentTable from '../../components/tables/AbsentTable';
+import { FaCalendar } from 'react-icons/fa6';
 
-interface Schedule {
+// Removed local Schedule interface as it is imported from scheduleService
+interface Branch {
   id: number;
-  date: string;
-  startTime: string;
-  endTime: string;
-  // Thêm các trường khác nếu cần
+  name: string;
 }
 
 const ScheduleList: React.FC = () => {
+  const currentDate = new Date();
+
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [branches, setBranches] = useState<Branch[]>([]);
+  const [selectedBranch, setSelectedBranch] = useState<number | null>(null); // State để lọc theo chi nhánh
+  const [absences, setAbsences] = useState<Absence[]>([]); // State để kiểm soát lịch nghỉ
+  const [year, setYear] = useState<number>(currentDate.getFullYear()); // State để kiểm soát năm
+  const [month, setMonth] = useState<number>(currentDate.getMonth()); // State để kiểm soát tháng
+  const [isTableView, setIsTableView] = useState<boolean>(true); 
 
   // State để kiểm soát modal
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentSchedule, setCurrentSchedule] = useState<Schedule | null>(null); // null cho Add, schedule cụ thể cho Edit
 
   useEffect(() => {
+    const loadBranches = async () => {
+      try {
+        const data = await fetchBranches();
+        setBranches(data);
+      } catch (err) {
+        setError('Failed to fetch branches.');
+      }
+    };
+    loadBranches();
+  }, []);
+
+  useEffect(() => {
     const loadSchedules = async () => {
       setLoading(true);
       try {
-        const data = await fetchSchedules();
+        const data = (!selectedBranch) ? await fetchSchedules() : await fetchSchedulesByBranch(selectedBranch);
         setSchedules(data);
       } catch (err) {
         setError('Failed to fetch schedule.');
@@ -38,8 +64,25 @@ const ScheduleList: React.FC = () => {
         setLoading(false);
       }
     };
+    const loadAbsences = async () => {
+      try {
+        if (selectedBranch !== null) {
+          const data = await fetchAbsencesByBranch(selectedBranch);
+          setAbsences(data);
+        }
+      } catch (err) {
+        setError('Failed to fetch absences.');
+      }
+    }
+    loadAbsences();
     loadSchedules();
-  }, []);
+  }, [selectedBranch]);
+
+  
+
+  const handleSelectBranch = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedBranch(Number(e.target.value) || null);
+  }
 
   const handleDelete = async (id: number) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa lịch làm việc này?')) {
@@ -81,32 +124,102 @@ const ScheduleList: React.FC = () => {
     }
   };
 
-  const filteredSchedules = schedules.filter((schedule) =>
-    schedule.date.includes(searchTerm) // Ví dụ tìm kiếm theo ngày
-  );
+  const handleAddAbsence = async (employee_id: number, day: number) => {
+    const date = new Date(year, month, day);
+    const response = await addAbsence({ employee_id, date: date.toISOString() });
+    setAbsences([...absences, response]);
+  };
+
+  const handleDeleteAbsence = async (id: number) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa lịch nghỉ này?')) {
+      try {
+        await removeAbsence(id);
+        setAbsences(absences.filter((absence) => absence.id !== id));
+      } catch (err) {
+        setError('Failed to remove absence day.');
+      }
+    }
+  }
+
+  const handleOnChange = useCallback((year: number, month: number)=> {
+    setYear(year);
+    setMonth(month);
+  }, [year, month]);
+
+  // const filteredSchedules = schedules.filter((schedule) =>
+  //   schedule.branches.includes(searchTerm) // Ví dụ tìm kiếm theo ngày
+  // );
 
   if (loading) {
     return <p>Đang tải...</p>;
   }
 
   return (
-    <div className={styles.scheduleList}>
-      <h2>Danh sách lịch làm việc</h2>
-      <div className={styles.actions}>
-        <Button onClick={handleAdd}>Thêm lịch</Button>
-        <Input
-          label=""
-          type="text"
-          placeholder="Tìm kiếm theo ngày..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className={styles.searchInput}
-        />
+    <div className={styles.page}>
+      <div className={styles.header}>
+        
+        <div className={styles.headerTitle}>
+          <div className={styles.iconWrapper}>
+            <FaCalendar /> <p>Quản lý lịch làm việc</p>
+          </div>
+        </div>
+        <div className={styles.addButton} onClick={handleAdd}>
+          + Thêm nhân viên
+        </div>
+    </div>
+      <div>
+        <select
+          className={styles.branchSelect}
+          onChange={handleSelectBranch}
+          value={selectedBranch || 'All'}
+        >
+          <option>All</option>
+          {branches.map((branch) => (
+            <option key={branch.id} value={branch.id}>
+              {branch.name}
+            </option>
+          ))}
+        </select>
       </div>
-      {error && <p className={styles.error}>{error}</p>}
-      <SchedulesTable schedules={filteredSchedules} onDelete={handleDelete} onEdit={handleEdit} />
-      
+      <SchedulesTable schedules={schedules} onDelete={handleDelete} onEdit={handleEdit} />
+      <div className={styles.divider}>
+        <label> Tùy chọn lịch làm việc </label>
+      </div>
+      {selectedBranch ?
+        <div>
+          <div className={styles.header}>
+            <div className={styles.addButton} onClick={handleAdd}>+ Thêm ngày nghỉ</div>
+            <Button className={styles.viewButton} onClick={() => setIsTableView(!isTableView)}>
+              {isTableView ? 'Xem lịch' : 'Xem bảng'}
+            </Button>
+          </div>
+          {isTableView ? 
+          <CalendarTable 
+            year={year} 
+            month={month} 
+            absences={absences} 
+            schedules={schedules}
+            onChange={handleOnChange}
+            onCreate={handleAddAbsence} 
+            onDelete={handleDeleteAbsence}
+            />
+            :
+            <AbsentTable absences={absences} onDelete={handleDeleteAbsence} />
+          }
+        </div>
+        : 
+        <div>
+          <label> Chọn chi nhánh để tùy chỉnh lịch nghỉ </label>
+        </div>
+      }
       {/* Modal cho Add/Edit */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={currentSchedule ? 'Chỉnh sửa lịch làm việc' : 'Thêm lịch làm việc'}
+      >
+        <ScheduleForm initialData={currentSchedule || undefined} onSubmit={handleFormSubmit} />
+      </Modal>
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

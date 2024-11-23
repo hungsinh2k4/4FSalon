@@ -1,17 +1,49 @@
 /* src/manager/components/tables/SchedulesTable.module.css */
+.tableContainer {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  max-height: 400px;
+}
+
 .table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
   }
   
   .table th, .table td {
     padding: 12px;
     border: 1px solid #ddd;
-    text-align: left;
+    text-align: center;
   }
   
   .table th {
     background-color: #f2f2f2;
   }
+
+
+.actionList{
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+.actionEdit{
+    color: #44ad73cf;
+    margin-right: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+.actionEdit:hover{
+    transform: scale(1.5) rotate(-30deg);
+    color: #44ad73;
+}
+.actionDelete{
+    color: #ff0000;
+    cursor: pointer;
+    transition: transform 0.4s ease, color 0.2s ease;
+}
+.actionDelete:hover{
+    transform: scale(2.0) rotate(90deg);
+    color: #ff3333;
+}
   
