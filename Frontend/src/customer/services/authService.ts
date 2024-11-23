@@ -96,6 +96,20 @@ class AuthService {
       throw error;
     }
   }
+  public async changePassword(
+    currentPassword: string,
+    newPassword: string
+  ): Promise<void> {
+    try {
+      await axiosInstance.post(`/auth/change-password`, {
+        currentPassword,
+        newPassword,
+      });
+    } catch (error: any) {
+      console.error("Change password failed:", error);
+      throw error;
+    }
+  }
 }
 
 const authService = AuthService.getInstance();
