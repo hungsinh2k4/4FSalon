@@ -21,9 +21,10 @@ export interface Feedback {
 
 export interface Service {
   id: number;
-  name: string;
+  title: string;
   price: number;
   estimatedTime: string;
+  description : string;
   // Thêm các trường khác nếu cần
 }
 
@@ -46,21 +47,30 @@ export interface Appointment {
 
 export interface Employee {
   id: number;
-  email: string;
-  password: string;
-  google_id: string;
-  role: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
-  picture_url: string | null;
+    name: string;
+    email: string;
+    phone: string;
+    work_position: string;
+    available_from: string;
+    available_to: string;
+    status: boolean;
+    overal_rating: number;
+    branch_id: number;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
 }
 
 export interface Branch {
   id: number;
   name: string;
   address: string;
-  seats: number;
-  facilities: string;
+  phone: number;
+  email: string;
   // Thêm các trường khác nếu cần
+}
+
+export interface Employee_date {
+  start_time: Date;
+  end_time: Date;
 }

@@ -1,8 +1,6 @@
 // src/manager/pages/Schedules/ScheduleList.tsx
 import React, { useCallback, useEffect, useState } from 'react';
 import SchedulesTable from '../../components/tables/SchedulesTable';
-import Button from '../../components/common/Button';
-import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
 
 import ScheduleForm from '../../components/forms/ScheduleForm';
@@ -11,7 +9,6 @@ import { fetchSchedules, fetchSchedulesByBranch, removeSchedule, addSchedule, ed
 import { Absence, Schedule } from '../../utils/types';
 import { fetchBranches } from '../../services/branchService';
 import CalendarTable from '../../components/tables/CalendarTable';
-import { Calendar, Badge, List } from 'rsuite';
 import 'rsuite/Calendar/styles/index.css';
 import AbsentTable from '../../components/tables/AbsentTable';
 import { FaCalendar } from 'react-icons/fa6';
@@ -181,19 +178,26 @@ const ScheduleList: React.FC = () => {
           ))}
         </select>
       </div>
+      <div className={styles.divider}>
+        <label> Danh sách lịch làm việc </label>
+      </div>
       <SchedulesTable schedules={schedules} onDelete={handleDelete} onEdit={handleEdit} />
       <div className={styles.divider}>
-        <label> Tùy chọn lịch làm việc </label>
+        <label> Danh sách lịch nghỉ</label>
       </div>
       {selectedBranch ?
         <div>
           <div className={styles.header}>
+            <div className={styles.switchWrapper}>
+              <label> Chế độ bảng </label>
+              <label className={styles.switch}>
+                <input type="checkbox" checked={!isTableView} onChange={() => setIsTableView(!isTableView)} />
+                <span className={`${styles.slider} ${styles.sliderRound}`}></span>
+              </label>
+            </div>
             <div className={styles.addButton} onClick={handleAdd}>+ Thêm ngày nghỉ</div>
-            <Button className={styles.viewButton} onClick={() => setIsTableView(!isTableView)}>
-              {isTableView ? 'Xem lịch' : 'Xem bảng'}
-            </Button>
           </div>
-          {isTableView ? 
+          {!isTableView ? 
           <CalendarTable 
             year={year} 
             month={month} 
