@@ -10,6 +10,7 @@ import Register from "./pages/register";
 import { AuthProvider } from "./context/AuthContext";
 import Profile from "./pages/Profile"; // Thêm tuyến đường cho Profile
 import ChangePassword from "./pages/ChangePassword"; // Thêm tuyến đường cho ChangePassword
+import FindNearestShop from "./pages/findNearestShop";
 
 const App: React.FC = () => {
   return (
@@ -23,7 +24,7 @@ const App: React.FC = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/about-us" element={<Vechungtoi />} />
             <Route path="/booking" element={<Booking />} />
-            <Route path="/find-nearest-shop" element={<Booking />} />
+            <Route path="/find-nearest-shop" element={<FindNearestShop />} />
             <Route path="/profile" element={<Profile />} />{" "}
             <Route path="/change-password" element={<ChangePassword />} />{" "}
             {/* Thêm tuyến đường cho Profile */}
