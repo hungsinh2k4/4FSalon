@@ -56,6 +56,7 @@ export interface User {
   
   export interface Employee {
     id: number;
+    big_avatar_url: string;
     name: string;
     email: string;
     phone: string;
@@ -68,6 +69,7 @@ export interface User {
     created_at: string;
     updated_at: string;
     deleted_at: string | null;
+    small_avatar_url: string;
   }
   
   
