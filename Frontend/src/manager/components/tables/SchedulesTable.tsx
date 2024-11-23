@@ -1,9 +1,10 @@
 // src/manager/components/tables/SchedulesTable.tsx
-import React from 'react';
-import Button from '../common/Button';
+import React, { useState } from 'react';
 import styles from './SchedulesTable.module.css';
 import { Employee } from '../../utils/types';
 import { FaCheck, FaPen, FaX } from 'react-icons/fa6';
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Schedule {
   id: number;
@@ -26,6 +27,29 @@ interface SchedulesTableProps {
 }
 
 const SchedulesTable: React.FC<SchedulesTableProps> = ({ schedules, onDelete, onEdit }) => {
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Schedule, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: 'asc' });
+
+  const sorted = [...schedules].sort((a, b) => {
+    if (sortConfig.key) {
+      const key = sortConfig.key;
+      const direction = sortConfig.direction === 'asc' ? 1 : -1;
+      if (a[key] != null && b[key] != null && a[key] < b[key]) return -direction;
+      if (a[key] != null && b[key] != null && a[key] > b[key]) return direction;
+    }
+    return 0;
+  });
+  const handleSort = (key: keyof Schedule) => {
+    setSortConfig((prevState) => {
+      const direction = prevState.key === key && prevState.direction === 'asc' ? 'desc' : 'asc';
+      return { key, direction };
+    });
+  };
+
+  const getSortIcon = (key: string) => {
+    if (sortConfig.key !== key) return faSort;
+    return sortConfig.direction === 'asc' ? faSortUp : faSortDown;
+  };
+
   return (
     <div className={styles.tableContainer}>
     <table className={styles.table}>
@@ -36,21 +60,21 @@ const SchedulesTable: React.FC<SchedulesTableProps> = ({ schedules, onDelete, on
       </colgroup>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Mã nhân viên</th>
-          <th>Tên nhân viên</th>
-          <th>Thứ 2</th>
-          <th>Thứ 3</th>
-          <th>Thứ 4</th>
-          <th>Thứ 5</th>
-          <th>Thứ 6</th>
-          <th>Thứ 7</th>
-          <th>Chủ nhật</th>
+          <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
+          <th onClick={() => handleSort('employee_id')}>Mã <FontAwesomeIcon icon={getSortIcon('employee_id')} /></th>
+          <th onClick={() => handleSort('employee')}>Tên <FontAwesomeIcon icon={getSortIcon('employee')} /></th>
+          <th onClick={() => handleSort('monday')}>Thứ 2 <FontAwesomeIcon icon={getSortIcon('monday')} /></th>
+          <th onClick={() => handleSort('tuesday')}>Thứ 3 <FontAwesomeIcon icon={getSortIcon('tuesday')} /></th>
+          <th onClick={() => handleSort('wednesday')}>Thứ 4 <FontAwesomeIcon icon={getSortIcon('wednesday')} /></th>
+          <th onClick={() => handleSort('thursday')}>Thứ 5 <FontAwesomeIcon icon={getSortIcon('thursday')} /></th>
+          <th onClick={() => handleSort('friday')}>Thứ 6 <FontAwesomeIcon icon={getSortIcon('friday')} /></th>
+          <th onClick={() => handleSort('saturday')}>Thứ 7 <FontAwesomeIcon icon={getSortIcon('saturday')} /></th>
+          <th onClick={() => handleSort('sunday')}>Chủ nhật <FontAwesomeIcon icon={getSortIcon('sunday')} /></th>
           <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
-        {schedules.map((schedule) => (
+        {sorted.map((schedule) => (
           <tr key={schedule.id}>
             <td>{schedule.id}</td>
             <td>{schedule.employee.id}</td>

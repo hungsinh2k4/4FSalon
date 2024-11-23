@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "./AbsentTable.module.css";
 import { Absence } from "../../utils/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FaPen, FaXmark } from "react-icons/fa6";
+import { FaXmark } from "react-icons/fa6";
 
 
 interface AbsentTableProps {
@@ -12,7 +12,7 @@ interface AbsentTableProps {
 }
 
 const AbsentTable: React.FC<AbsentTableProps> = ({absences, onDelete}) => {
-	const [sortConfig, setSortConfig] = useState<{ key: keyof Absence, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: 'asc' });
+	const [sortConfig, setSortConfig] = useState<{ key: keyof Absence, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: 'desc' });
 
   const sorted = [...absences].sort((a, b) => {
     if (sortConfig.key) {
@@ -35,7 +35,6 @@ const AbsentTable: React.FC<AbsentTableProps> = ({absences, onDelete}) => {
     return sortConfig.direction === 'asc' ? faSortUp : faSortDown;
   };
   
-
 	return (
 		<table>
       <colgroup>
@@ -48,10 +47,10 @@ const AbsentTable: React.FC<AbsentTableProps> = ({absences, onDelete}) => {
       <thead> 
         <tr>
           <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
-          <th onClick={() => handleSort('employee_id')}>Mã nhân viên <FontAwesomeIcon icon={getSortIcon('id')} /></th>
+          <th onClick={() => handleSort('employee_id')}>Mã nhân viên <FontAwesomeIcon icon={getSortIcon('employee_id')} /></th>
 					<th onClick={() => handleSort('employee')}>Tên <FontAwesomeIcon icon={getSortIcon('employee')} /></th>
 					<th onClick={() => handleSort('date')}>Ngày <FontAwesomeIcon icon={getSortIcon('date')} /></th>
-          <th onClick={() => handleSort('id')}>Hành động</th>
+          <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
