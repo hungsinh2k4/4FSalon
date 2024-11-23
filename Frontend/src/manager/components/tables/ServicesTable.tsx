@@ -5,7 +5,7 @@ import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 import { FaPen, FaXmark } from 'react-icons/fa6';
 
 import Button from '../common/Button';
-import styles from './ServicesTable.module.css';
+import styles from '../../components/common/global.module.css';
 import { Service } from '../../utils/types';
 
 interface ServicesTableProps {
@@ -15,7 +15,7 @@ interface ServicesTableProps {
 }
 
 const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdit }) => {
-  const [sortConfig, setSortConfig] = useState<{ key: keyof Service, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: '' });
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Service, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: 'asc' });
 
   const sorted = [...services].sort((a, b) => {
     if (sortConfig.key) {
@@ -38,13 +38,13 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
     return sortConfig.direction === 'asc' ? faSortUp : faSortDown;
   };
   return (
+    <div className={styles.tableContainer}>
       <table>
         <colgroup>
-            <col style={{ width: '5%' }} />
-            <col style={{ width: '20%' }} />
-            <col style={{ width: '10%' }} />
-            <col style={{ width: '10%' }} />
-            <col style={{ width: '10%' }} />
+            <col style={{ width: '7%' }} />
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '12%' }} />
             <col style={{ width: '10%' }} />
         </colgroup>
         <thead>
@@ -53,7 +53,6 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
             <th onClick={() => handleSort('title')}>Tên dịch vụ <FontAwesomeIcon icon={getSortIcon('title')} /></th>
             <th onClick={() => handleSort('price')}>Giá <FontAwesomeIcon icon={getSortIcon('price')} /></th>
             <th onClick={() => handleSort('estimate_time')}>Thời gian <FontAwesomeIcon icon={getSortIcon('estimate_time')} /></th>
-            <th onClick={() => handleSort('created_at')}>Ngày tạo <FontAwesomeIcon icon={getSortIcon('created_at')} /></th>
             <th>Hành động</th>
           </tr>
         </thead>
@@ -64,7 +63,6 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
               <td>{service.title}</td>
               <td>{service.price.toLocaleString('vi-VN')}vnđ</td>
               <td>{service.estimate_time} phút</td>
-              <td>{service.created_at}</td>
               <td className={styles.actionList}>
                 <FaPen className={styles.actionEdit} onClick={() => onEdit(service)}/> 
                 <FaXmark className={styles.actionDelete} onClick={() => onDelete(service.id)}/>
@@ -73,6 +71,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
           ))}
         </tbody>
       </table>
+    </div>
   );
 };
 
