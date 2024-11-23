@@ -11,8 +11,8 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     // Xử lý đăng xuất
     setUser(null);
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     window.location.href = "/login";
   };
 

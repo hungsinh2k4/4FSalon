@@ -5,11 +5,11 @@ import { getUser } from "../api/user";
 
 interface LoginResponse {
   access_token: string;
+  user: User;
 }
-
 class AuthService {
   private static instance: AuthService;
-  private token: string | null = sessionStorage.getItem("token");
+  private token: string | null = localStorage.getItem("token");
 
   private constructor() {
     this.setAxiosAuthToken(this.token);
@@ -22,7 +22,7 @@ class AuthService {
     return AuthService.instance;
   }
 
-  private setAxiosAuthToken(token: string | null) {
+  public setAxiosAuthToken(token: string | null) {
     if (token) {
       axiosInstance.defaults.headers["Authorization"] = `Bearer ${token}`;
       console.log("Set token", `Bearer ${token}`);
@@ -45,14 +45,29 @@ class AuthService {
         password,
       });
       this.token = response.data.access_token;
-      sessionStorage.setItem("token", this.token);
+      localStorage.setItem("token", this.token);
       this.setAxiosAuthToken(this.token);
 
       // Lấy thông tin người dùng sau khi đăng nhập thành công
       const user = await getUser();
+      localStorage.setItem("user", JSON.stringify(user));
       return { access_token: this.token, user: user }; // Giả sử user[0] là người dùng hiện tại
     } catch (error: any) {
       throw new Error(error.response?.data?.message || "Đăng nhập thất bại");
+    }
+  }
+
+  public async loginWithGoogle(token: string): Promise<{ user: User }> {
+    try {
+      this.token = token;
+      localStorage.setItem("token", this.token);
+      const user = await getUser();
+      localStorage.setItem("user", JSON.stringify(user));
+      return { user: user };
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message || "Đăng nhập bằng Google thất bại"
+      );
     }
   }
 
@@ -63,7 +78,7 @@ class AuthService {
       console.error("Logout failed:", error);
     } finally {
       this.token = null;
-      sessionStorage.removeItem("token");
+      localStorage.removeItem("token");
       this.setAxiosAuthToken(this.token);
       window.location.href = "/login";
     }
