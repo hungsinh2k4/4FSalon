@@ -5,7 +5,7 @@ import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 import { FaPen, FaXmark } from 'react-icons/fa6';
 
 import Button from '../common/Button';
-import styles from './ServicesTable.module.css';
+import styles from '../../components/common/global.module.css';
 import { Service } from '../../utils/types';
 
 interface ServicesTableProps {
@@ -15,7 +15,7 @@ interface ServicesTableProps {
 }
 
 const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdit }) => {
-  const [sortConfig, setSortConfig] = useState<{ key: keyof Service, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: '' });
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Service, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: 'asc' });
 
   const sorted = [...services].sort((a, b) => {
     if (sortConfig.key) {
@@ -38,12 +38,13 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
     return sortConfig.direction === 'asc' ? faSortUp : faSortDown;
   };
   return (
+    <div className={styles.tableContainer}>
       <table>
         <colgroup>
-            <col style={{ width: '5%' }} />
-            <col style={{ width: '20%' }} />
-            <col style={{ width: '10%' }} />
-            <col style={{ width: '10%' }} />
+            <col style={{ width: '7%' }} />
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '12%' }} />
             <col style={{ width: '10%' }} />
         </colgroup>
         <thead>
@@ -60,7 +61,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
             <tr key={service.id}>
               <td>{service.id}</td>
               <td>{service.title}</td>
-              <td>{service.price}đ</td>
+              <td>{service.price.toLocaleString('vi-VN')}vnđ</td>
               <td>{service.estimate_time} phút</td>
               <td className={styles.actionList}>
                 <FaPen className={styles.actionEdit} onClick={() => onEdit(service)}/> 
@@ -70,6 +71,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
           ))}
         </tbody>
       </table>
+    </div>
   );
 };
 

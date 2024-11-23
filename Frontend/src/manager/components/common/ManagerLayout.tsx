@@ -5,11 +5,10 @@ import Sidebar from '../Sidebar/Sidebar';
 import styles from './ManagerLayout.module.css';
 
 const ManagerLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <div className={styles.container}>
-      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <Sidebar/>
       <div className={styles.main}>
         {children}
       </div>

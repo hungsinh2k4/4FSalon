@@ -32,23 +32,37 @@ export interface User {
     description: string;
     estimate_time: number;
     price: number;
-    createAt: string;
-    updateAt: string;
-    deleteAt: string | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
   }
   
   export interface Schedule {
     id: number;
+    employee_id: number;
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+    sunday: boolean;
+    employee: Employee;
+    // Thêm các trường khác nếu cần
+  }
+
+  export interface Absence {
+    id: number;
+    employee_id: number;
     date: string;
-    startTime: string;
-    endTime: string;
+    employee: Employee;
     // Thêm các trường khác nếu cần
   }
   
   export interface Appointment {
     id: number;
     clientName: string;
-    serviceId: number;
+    service_id: number;
     date: string;
     time: string;
     // Thêm các trường khác nếu cần

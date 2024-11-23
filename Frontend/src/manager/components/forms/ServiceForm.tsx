@@ -13,9 +13,10 @@ interface ServiceFormProps {
     price: number;
   };
   onSubmit: (data: any) => void;
+  type: string;
 }
 
-const ServiceForm: React.FC<ServiceFormProps> = ({ initialData, onSubmit }) => {
+const ServiceForm: React.FC<ServiceFormProps> = ({ initialData, onSubmit, type }) => {
   const [id, setId] = useState(initialData?.id || 0);
   const [title, setTitle] = useState(initialData?.title || '');
   const [price, setPrice] = useState(initialData?.price || 0);
@@ -59,7 +60,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ initialData, onSubmit }) => {
         onChange={(e) => setEstimateTime(Number(e.target.value))}
         required
       />
-      <Button type="submit">Lưu</Button>
+      <Button type="submit">{type}</Button>
     </form>
   );
 };

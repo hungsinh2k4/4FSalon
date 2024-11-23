@@ -1,8 +1,11 @@
 // src/manager/components/tables/AccountsTable.tsx
-import React from 'react';
-import Button from '../common/Button';
+import React, {useState} from 'react';
 import styles from './AccountsTable.module.css';
 import { Account } from '../../utils/types';
+import { FaPen, FaXmark } from 'react-icons/fa6';
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 interface AccountsTableProps {
   accounts: Account[];
@@ -11,27 +14,58 @@ interface AccountsTableProps {
 }
 
 const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdit }) => {
+  
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Account, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: 'asc' });
+
+  const sorted = [...accounts].sort((a, b) => {
+    if (sortConfig.key) {
+      const key = sortConfig.key;
+      const direction = sortConfig.direction === 'asc' ? 1 : -1;
+      if (a[key] != null && b[key] != null && a[key] < b[key]) return -direction;
+      if (a[key] != null && b[key] != null && a[key] > b[key]) return direction;
+    }
+    return 0;
+  });
+  const handleSort = (key: keyof Account) => {
+    setSortConfig((prevState) => {
+      const direction = prevState.key === key && prevState.direction === 'asc' ? 'desc' : 'asc';
+      return { key, direction };
+    });
+  };
+
+  const getSortIcon = (key: string) => {
+    if (sortConfig.key !== key) return faSort;
+    return sortConfig.direction === 'asc' ? faSortUp : faSortDown;
+  };
+
   return (
-    <table className={`${styles.table} fadeIn`}>
+    <table>
+      <colgroup>
+        <col style={{ width: '5%' }} />
+        <col style={{ width: '20%' }} />
+        <col style={{ width: '10%' }} />
+        <col style={{ width: '15%' }} />
+        <col style={{ width: '10%' }} />
+      </colgroup>
       <thead> 
         <tr>
-          <th>ID</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Ngày tạo</th>
-          <th>Hành động</th>
+          <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
+          <th onClick={() => handleSort('email')}>Emai <FontAwesomeIcon icon={getSortIcon('email')} />l</th>
+          <th onClick={() => handleSort('role')}>Role <FontAwesomeIcon icon={getSortIcon('role')} /></th>
+          <th onClick={() => handleSort('created_at')}> <FontAwesomeIcon icon={getSortIcon('create_at')} />Ngày tạo</th>
+          <th onClick={() => handleSort('id')}>Hành động</th>
         </tr>
       </thead>
       <tbody>
-        {accounts.map((account) => (
+        {sorted.map((account) => (
           <tr key={account.id}>
             <td>{account.id}</td>
             <td>{account.email}</td>
             <td>{account.role}</td>
             <td>{account.created_at}</td>
-            <td>
-              <Button variant="primary" width='50px' onClick={() => onEdit(account)}>Sửa</Button>
-              <Button variant="danger" width='50px' onClick={() => onDelete(account.id)}>Xóa</Button>
+            <td className={styles.actionList}>
+            <FaPen className={styles.actionEdit} onClick={() => onEdit(account)}/> 
+              <FaXmark className={styles.actionDelete} onClick={() => onDelete(account.id)}/>
             </td>
           </tr>
         ))}

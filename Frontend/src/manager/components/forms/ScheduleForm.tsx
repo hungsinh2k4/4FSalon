@@ -6,52 +6,99 @@ import styles from './ScheduleForm.module.css';
 
 interface ScheduleFormProps {
   initialData?: {
-    date: string;
-    startTime: string;
-    endTime: string;
+    employee_id: number;
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+    sunday: boolean;
     // Thêm các trường cần thiết
   };
   onSubmit: (data: any) => void;
 }
 
 const ScheduleForm: React.FC<ScheduleFormProps> = ({ initialData, onSubmit }) => {
-  const [date, setDate] = useState(initialData?.date || '');
-  const [startTime, setStartTime] = useState(initialData?.startTime || '');
-  const [endTime, setEndTime] = useState(initialData?.endTime || '');
+  const [employeeId, setEmployeeId] = useState(initialData?.employee_id || '');
+  const [monday, setMonday] = useState(initialData?.monday || false);
+  const [tuesday, setTuesday] = useState(initialData?.tuesday || false);
+  const [wednesday, setWednesday] = useState(initialData?.wednesday || false);
+  const [thursday, setThursday] = useState(initialData?.thursday || false);
+  const [friday, setFriday] = useState(initialData?.friday || false);
+  const [saturday, setSaturday] = useState(initialData?.saturday || false);
+  const [sunday, setSunday] = useState(initialData?.sunday || false);
   // Thêm các state cho các trường khác
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data = { date, startTime, endTime /* Thêm các trường khác */ };
+    const data = { employeeId, monday, tuesday, wednesday, thursday, friday, saturday, sunday/* Thêm các trường khác */ };
     onSubmit(data);
   };
 
   return (
+    <div>
     <form onSubmit={handleSubmit} className={styles.scheduleForm}>
       <Input
-        label="Ngày"
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
+        label="ID nhân viên"
+        type="number"
+        value={employeeId}
+        onChange={(e) => setEmployeeId(e.target.value)}
         required
       />
       <Input
-        label="Thời gian bắt đầu"
-        type="time"
-        value={startTime}
-        onChange={(e) => setStartTime(e.target.value)}
+        label="Thứ 2"
+        type="checkbox"
+        checked={monday}
+        onChange={(e) => setMonday(e.target.checked)}
         required
       />
       <Input
-        label="Thời gian kết thúc"
-        type="time"
-        value={endTime}
-        onChange={(e) => setEndTime(e.target.value)}
+        label="Thứ 3"
+        type="checkbox"
+        checked={tuesday}
+        onChange={(e) => setTuesday(e.target.checked)}
+        required
+      />
+      <Input
+        label="Thứ 4"
+        type="checkbox"
+        checked={wednesday}
+        onChange={(e) => setWednesday(e.target.checked)}
+        required
+      />
+      <Input
+        label="Thứ 5"
+        type="checkbox"
+        checked={thursday}
+        onChange={(e) => setThursday(e.target.checked)}
+        required
+      />
+      <Input
+        label="Thứ 6"
+        type="checkbox"
+        checked={friday}
+        onChange={(e) => setFriday(e.target.checked)}
+        required
+      />
+      <Input
+        label="Thứ 7"
+        type="checkbox"
+        checked={saturday}
+        onChange={(e) => setSaturday(e.target.checked)}
+        required
+      />
+      <Input
+        label="Chủ nhật"
+        type="checkbox"
+        checked={sunday}
+        onChange={(e) => setSunday(e.target.checked)}
         required
       />
       {/* Thêm các Input khác */}
       <Button type="submit">Lưu</Button>
     </form>
+    </div>
   );
 };
 
