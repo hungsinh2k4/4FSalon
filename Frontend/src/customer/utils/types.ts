@@ -37,10 +37,16 @@ export interface Schedule {
 
 export interface Appointment {
   id: number;
-  clientName: string;
-  serviceId: number;
+  title : string;
   date: string;
-  time: string;
+  start_time: string | null;
+  estimatedEndTime: string;
+  status: string;
+  finalPrice: number;
+  employeeId: number;
+  userId: number;
+  serviceId: number;
+  branchId: number;
   // Thêm các trường khác nếu cần
 }
 

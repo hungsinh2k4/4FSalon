@@ -8,12 +8,19 @@ import {
   faTicket,
   faUserCheck,
 } from "@fortawesome/free-solid-svg-icons";
+
+import ServiceList from "../components/Booking/ServiceList";
+import BranchList from "../components/Booking/BranchList";
+import TimePicker from "../components/Booking/TimePicker";
 import { useState } from "react";
 import { useEffect } from "react";
 import { fetchBranches } from "../services/BookingService";
 import { Branch, Employee, Service } from "../utils/types";
 import { fetchEmployeebyBranchId } from "../services/employeeService";
 import { fetchServices } from "../services/serviceService";
+import { addBranch } from "../services/appointment";
+
+import EmployeeList from "../components/Booking/EmployeeList";
 const Booking: React.FC = () => {
   const [branches, setBranches] = useState<Branch[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,6 +34,11 @@ const Booking: React.FC = () => {
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [filteredList, setFilteredList] = useState([]);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [errorEmployee, setErrorEmployee] = useState<string | null>(null);
+  const [errorBranch, setErrorBranch] = useState<string | null>(null);
+  const [errorService, setErrorService] = useState<string | null>(null);
+  const [successInfo, setSuccessInfo] = useState<any | null>(null);
 
   //Branch
   useEffect(() => {
@@ -110,7 +122,7 @@ const Booking: React.FC = () => {
       )
     );
   }, []);
-  
+
   useEffect(() => {
     setServices(
       services.filter(
@@ -123,6 +135,65 @@ const Booking: React.FC = () => {
       )
     );
   }, []);
+
+  const handleConfirm = async () => {
+    let hasError = false;
+
+    if (!selectedEmployee) {
+      setErrorEmployee("Vui lòng chọn nhân viên.");
+      hasError = true;
+    } else {
+      setErrorEmployee(null);
+    }
+
+    if (!selectedBranch) {
+      setErrorBranch("Vui lòng chọn chi nhánh.");
+      hasError = true;
+    } else {
+      setErrorBranch(null);
+    }
+
+    if (!selectedService) {
+      setErrorService("Vui lòng chọn dịch vụ.");
+      hasError = true;
+    } else {
+      setErrorService(null);
+    }
+
+    if (hasError) return;
+    try {
+      // Gửi API
+      const response = await addBranch({
+        title : selectedService?.title,
+        date: Date(),
+        start_time: selectedTime,
+        estimatedEndTime: selectedService?.estimatedTime,
+        status : "pending",
+        finalPrice: selectedService?.price,
+        employeeId: selectedEmployee?.id,
+        serviceId : selectedService?.id,
+        branchId : selectedBranch?.id,
+      });
+
+      // Nếu thành công, lưu thông tin và hiện thông báo
+      setSuccessInfo({
+        service: "Cắt tóc",
+        employee: "Ironman",
+        address: "19x Nguyễn Trãi, Thanh Xuân, Hà Nội",
+        time: "10/10/2024, 10:00AM - 13:00PM",
+        price: "350,000 VND",
+        status: "Chờ xác nhận",
+      });
+    } catch (error) {
+      console.error("Lỗi khi xác nhận lịch hẹn:", error);
+      alert("Đã xảy ra lỗi, vui lòng thử lại.");
+    }
+  };
+  // Hàm xử lý khi thời gian được chọn
+  const handleTimeSelect = (time: string | null) => {
+    setSelectedTime(time);
+    console.log("Selected time:", time);
+  };
 
   return (
     <div
@@ -209,43 +280,54 @@ const Booking: React.FC = () => {
                 <option value="next-week">Tuần sau</option>
               </select>
             </div>
-            <div className="grid grid-cols-4 gap-2 w-full">
-              {[
-                "7:00",
-                "8:00",
-                "9:00",
-                "10:00",
-                "11:00",
-                "13:00",
-                "14:00",
-                "7:20",
-                "8:20",
-                "9:20",
-                "10:20",
-                "11:20",
-                "13:20",
-                "14:20",
-                "7:40",
-                "8:40",
-                "9:40",
-                "10:40",
-                "11:40",
-                "13:40",
-                "14:40",
-              ].map((time, index) => (
-                <button
-                  key={index}
-                  className="p-2 bg-gray-300 rounded-lg text-center hover:bg-gray-400"
-                >
-                  {time}
-                </button>
-              ))}
-            </div>
+            <TimePicker onTimeSelect={handleTimeSelect} />
           </div>
 
-          <button className="mt-6 w-full p-3 bg-blue-500 text-white rounded-lg">
+          <button
+            className="mt-6 w-full p-3 bg-blue-500 text-white rounded-lg"
+            onClick={handleConfirm}
+          >
             Xác nhận lịch hẹn
           </button>
+          {errorEmployee && (
+            <p className="text-red-500 mt-2">{errorEmployee}</p>
+          )}
+          {errorBranch && <p className="text-red-500 mt-2">{errorBranch}</p>}
+          {errorService && <p className="text-red-500 mt-2">{errorService}</p>}
+          {successInfo && (
+            <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                <div className="flex items-center mb-4">
+                  <span className="text-green-500 text-xl mr-2">✔</span>
+                  <h2 className="text-lg font-bold">Đặt lịch thành công</h2>
+                </div>
+                <p>
+                  <strong>Dịch vụ:</strong> {successInfo.service}
+                </p>
+                <p>
+                  <strong>Nhân viên:</strong> {successInfo.employee}
+                </p>
+                <p>
+                  <strong>Địa chỉ:</strong> {successInfo.address}
+                </p>
+                <p>
+                  <strong>Thời gian:</strong> {successInfo.time}
+                </p>
+                <p>
+                  <strong>Tổng tiền ước tính:</strong> {successInfo.price}
+                </p>
+                <p>
+                  <strong>Trạng thái:</strong> {successInfo.status}
+                </p>
+                <button
+                  onClick={() => setSuccessInfo(null)}
+                  className="mt-4 w-full p-2 bg-blue-500 text-white rounded-lg"
+                >
+                  Đóng
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Phần bên phải */}
@@ -260,111 +342,27 @@ const Booking: React.FC = () => {
               icon={faSearch}
               className="absolute top-5  left-4 text-gray-500 font-bold"
             />
-            {viewType === "branches" && (
-              <div className="mt-2 max-h-[500px] overflow-y-auto border border-gray-300 p-1.25">
-                {branches.map((branch) => (
-                  <button
-                    key={branch.id}
-                    onClick={() =>
-                      setSelectedBranch(
-                        selectedBranch?.id === branch.id ? null : branch
-                      )
-                    } // Nếu đã chọn thì bỏ chọn, nếu chưa thì chọn
-                    className={`w-full h-[150px] my-10 ${
-                      selectedBranch?.id === branch.id
-                        ? "bg-blue-200 border-blue-500" // Style khi được chọn
-                        : "bg-gray-100 border-gray-300"
-                    } cursor-pointer text-left flex items-center`}
-                  >
-                    <div className="w-1/3 h-full overflow-hidden">
-                      <img
-                        src="/src/customer/assets/bg.png"
-                        alt="branch image"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1 p-4">
-                      <strong>{branch.name}</strong>
-                      <div className="text-sm text-gray-600">
-                        {branch.address}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
-            {viewType === "services" && (
-              <div className="mt-2.5 max-h-[500px] overflow-y-auto border border-gray-300 rounded-s-lg p-2 grid grid-cols-2 gap-3.5">
-                {services.map((service) => (
-                  <button
-                    key={service.id}
-                    onClick={() =>
-                      setSelectedService(
-                        selectedService?.id === service.id ? null : service
-                      )
-                    } // Nếu đã chọn thì bỏ chọn, nếu chưa thì chọn
-                    className={`w-full py-6.5 h-[400px] my-2.5 ${
-                      selectedService?.id === service.id
-                        ? "bg-blue-200 border-blue-500" // Style khi được chọn
-                        : "bg-gray-100 border-[#0a0a0a]"
-                    } cursor-pointer text-left flex`}
-                  >
-                    <div className="w-2/5 h-full overflow-hidden">
-                      <img
-                        src="src/customer/assets/Booking/employees.jpeg"
-                        alt={service.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1 p-4">
-                      <strong>{service.title}</strong>
-                      <div className="text-sm text-gray-600">
-                        {service.price}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {service.description}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
-            {viewType === "employees" && (
-              <div className="mt-2.5 max-h-[500px] overflow-y-auto border border-gray-300 rounded-s-lg p-2 grid grid-cols-2 gap-3.5">
-                {employees.map((employee) => (
-                  <button
-                    key={employee.id}
-                    onClick={() =>
-                      setSelectedEmployee(
-                        selectedEmployee?.id === employee.id ? null : employee
-                      )
-                    } // Nếu đã chọn thì bỏ chọn, nếu chưa thì chọn
-                    className={`w-full py-6.5 h-[400px] my-2.5 ${
-                      selectedEmployee?.id === employee.id
-                        ? "bg-blue-200 border-blue-500" // Style khi được chọn
-                        : "bg-gray-100 border-[#0a0a0a]"
-                    } cursor-pointer text-left flex`}
-                  >
-                    <div className="w-2/5 h-full overflow-hidden">
-                      <img
-                        src="src/customer/assets/Booking/employees.jpeg"
-                        alt={employee.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1 p-4">
-                      <strong>{employee.name}</strong>
-                      <div className="text-sm text-gray-600">
-                        {employee.phone}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {employee.work_position}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
+
+            <BranchList
+              viewType={viewType}
+              branches={branches}
+              selectedBranch={selectedBranch}
+              setSelectedBranch={setSelectedBranch}
+            />
+
+            <ServiceList
+              viewType={viewType}
+              services={services}
+              selectedService={selectedService}
+              setSelectedService={setSelectedService}
+            />
+
+            <EmployeeList
+              viewType={viewType}
+              employees={employees}
+              selectedEmployee={selectedEmployee}
+              setSelectedEmployee={setSelectedEmployee}
+            />
           </div>
         </div>
       </div>
