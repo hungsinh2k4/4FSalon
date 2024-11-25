@@ -14,11 +14,13 @@ import BranchList from "../components/Booking/BranchList";
 import TimePicker from "../components/Booking/TimePicker";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchBranches } from "../services/BookingService";
 import { Branch, Employee, Service } from "../utils/types";
 import { fetchEmployeebyBranchId } from "../services/employeeService";
 import { fetchServices } from "../services/serviceService";
 import { addBranch } from "../services/appointment";
+import { useAuth } from "../context/AuthContext";
 
 import EmployeeList from "../components/Booking/EmployeeList";
 const Booking: React.FC = () => {
@@ -30,7 +32,9 @@ const Booking: React.FC = () => {
   const [stores, setStores] = useState([]);
   const [services, setServices] = useState<Service[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
+    null
+  );
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [filteredList, setFilteredList] = useState([]);
@@ -39,7 +43,19 @@ const Booking: React.FC = () => {
   const [errorBranch, setErrorBranch] = useState<string | null>(null);
   const [errorService, setErrorService] = useState<string | null>(null);
   const [successInfo, setSuccessInfo] = useState<any | null>(null);
+  const { user, setUser } = useAuth();
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!user) {
+      console.log("User not found");
+      setMessage("Vui lòng đăng nhập");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000); // Chuyển hướng sau 3 giây
+    }
+  }, [user, navigate]);
   //Branch
   useEffect(() => {
     const loadBranches = async () => {
@@ -164,15 +180,15 @@ const Booking: React.FC = () => {
     try {
       // Gửi API
       const response = await addBranch({
-        title : selectedService?.title,
+        title: selectedService?.title,
         date: Date(),
         start_time: selectedTime,
         estimatedEndTime: selectedService?.estimatedTime,
-        status : "pending",
+        status: "pending",
         finalPrice: selectedService?.price,
         employeeId: selectedEmployee?.id,
-        serviceId : selectedService?.id,
-        branchId : selectedBranch?.id,
+        serviceId: selectedService?.id,
+        branchId: selectedBranch?.id,
       });
 
       // Nếu thành công, lưu thông tin và hiện thông báo
