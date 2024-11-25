@@ -27,6 +27,7 @@ const BranchList: React.FC = () => {
       try {
         const data = await fetchBranches();
         setBranches(data);
+        console.log(data);
       } catch (err) {
         setError('Failed to fetch branches.');
       } finally {

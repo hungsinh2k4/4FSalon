@@ -6,6 +6,7 @@ export interface User {
   point: Int16Array;
   avatar: string;
   isGoogleAccount: boolean;
+  gender: string;
   //   password: string;
   //   created_at: string;
   //   updated_at: string;
@@ -28,9 +29,10 @@ export interface Feedback {
 
 export interface Service {
   id: number;
-  name: string;
+  title: string;
   price: number;
   estimatedTime: string;
+  description : string;
   // Thêm các trường khác nếu cần
 }
 
@@ -44,10 +46,16 @@ export interface Schedule {
 
 export interface Appointment {
   id: number;
-  clientName: string;
-  serviceId: number;
+  title : string;
   date: string;
-  time: string;
+  start_time: string | null;
+  estimatedEndTime: string;
+  status: string;
+  finalPrice: number;
+  employeeId: number;
+  userId: number;
+  serviceId: number;
+  branchId: number;
   // Thêm các trường khác nếu cần
 }
 
@@ -73,8 +81,11 @@ export interface Employee {
   name: string;
   email: string;
   phone: string;
+  work_position: string;
   overall_rating: number;
   number_of_ratings: number;
+  status: boolean;
+  branch_id: number;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
@@ -93,4 +104,9 @@ export interface Branch {
   employees: Employee[];
   appointments: Appointment[];
   // Thêm các trường khác nếu cần
+}
+
+export interface Employee_date {
+  start_time: Date;
+  end_time: Date;
 }

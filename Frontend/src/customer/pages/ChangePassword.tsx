@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import authService from "../services/authService";
 const ChangePassword: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -15,7 +16,11 @@ const ChangePassword: React.FC = () => {
     }
     try {
       // Gửi yêu cầu thay đổi mật khẩu đến backend
-      // const response = await authService.changePassword(currentPassword, newPassword);
+      console.log("currentPassword", currentPassword);
+      console.log("newPassword", newPassword);
+      await authService.changePassword(currentPassword, newPassword);
+      // Thay đổi mật khẩu thành công
+      // Xóa dữ liệu cũ
       setSuccess("Thay đổi mật khẩu thành công");
       setError("");
     } catch (error: any) {
