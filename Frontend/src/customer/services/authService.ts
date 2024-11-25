@@ -1,7 +1,7 @@
 // src/manager/services/AuthService.ts
 import axiosInstance from "../api/axiosInstance";
 import { User } from "../utils/types";
-import { getUser } from "../api/user";
+import { getUser, updateUser } from "../api/user";
 
 interface LoginResponse {
   access_token: string;
@@ -81,6 +81,33 @@ class AuthService {
       localStorage.removeItem("token");
       this.setAxiosAuthToken(this.token);
       window.location.href = "/login";
+    }
+  }
+  public async updateProfile(userData: any): Promise<void> {
+    try {
+      await axiosInstance.patch(`/api/users/profile`, userData);
+      const user = await updateUser(userData);
+      localStorage.setItem("user", JSON.stringify(user));
+    } catch (error: any) {
+      console.error(
+        "Update user failed:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
+  public async changePassword(
+    currentPassword: string,
+    newPassword: string
+  ): Promise<void> {
+    try {
+      await axiosInstance.post(`/auth/change-password`, {
+        currentPassword,
+        newPassword,
+      });
+    } catch (error: any) {
+      console.error("Change password failed:", error);
+      throw error;
     }
   }
 }

@@ -1,37 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { User } from "../utils/types";
-import { updateUser } from "../api/user";
-import { text } from "@fortawesome/fontawesome-svg-core";
+import authService from "../services/authService";
+import { User } from "../utils/types"; // Đảm bảo bạn đã import đúng
+
 const Profile: React.FC = () => {
   const { user, setUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [avatarPreview, setAvatarPreview] = useState(user?.avatar || "");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [tempUser, setTempUser] = useState<User | null>(user);
 
-  if (!user) {
+  useEffect(() => {
+    if (user) {
+      setTempUser(user);
+    }
+  }, [user]);
+
+  if (!tempUser) {
     return <div>Loading...</div>;
   }
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      setAvatarPreview(URL.createObjectURL(file));
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (tempUser) {
+      setTempUser({
+        ...tempUser,
+        [e.target.name]: e.target.value,
+      });
     }
   };
 
-  const handleSaveChanges = () => {
-    // Xử lý lưu dữ liệu thay đổi lên server
-    if (selectedFile) {
+  const handleSaveChanges = async () => {
+    if (tempUser) {
+      try {
+        console.log("update user........");
+        console.log("user", tempUser);
+        await authService.updateProfile(tempUser);
+        setUser(tempUser);
+        setIsEditing(false);
+      } catch (error) {
+        console.error("Update user failed:", error);
+        alert("Có lỗi xảy ra khi lưu thông tin tài khoản");
+      }
     }
-    setIsEditing(false);
   };
 
   return (
     <div className="container mx-auto p-4">
-      {/* <h1 className="text-2xl font-bold mb-4">Thông tin tài khoản</h1> */}
       <div className="mt-6 flex space-x-4 mx-4 mb-4">
         <Link
           to="/"
@@ -55,7 +68,7 @@ const Profile: React.FC = () => {
         </Link>
       </div>
       <div className="bg-white p-6 border-neutral-950 rounded-3xl border shadow-md">
-        <h2 className="text-xl font-bold mb-4 border-black  pb-2">
+        <h2 className="text-xl font-bold mb-4 border-black pb-2">
           Thông tin tài khoản
         </h2>
         <div className="flex items-center mb-6">
@@ -65,7 +78,9 @@ const Profile: React.FC = () => {
             </label>
             <input
               type="text"
-              defaultValue={user.name}
+              name="name"
+              value={tempUser?.name || ""}
+              onChange={handleInputChange}
               className="border rounded-md w-full py-2 px-3 mb-4 outline-none focus:ring-2 focus:ring-blue-500"
               disabled={!isEditing}
             />
@@ -73,7 +88,9 @@ const Profile: React.FC = () => {
             <label className="block text-lg font-semibold">Email:</label>
             <input
               type="email"
-              defaultValue={user.email}
+              name="email"
+              value={tempUser?.email || ""}
+              onChange={handleInputChange}
               className="border rounded-md w-full py-2 px-3 mb-4 outline-none focus:ring-2 focus:ring-blue-500"
               disabled
             />
@@ -83,7 +100,9 @@ const Profile: React.FC = () => {
             </label>
             <input
               type="tel"
-              defaultValue={user.phone}
+              name="phone"
+              value={tempUser?.phone || ""}
+              onChange={handleInputChange}
               className="border rounded-md w-full py-2 px-3 mb-4 outline-none focus:ring-2 focus:ring-blue-500"
               disabled={!isEditing}
             />
@@ -94,6 +113,8 @@ const Profile: React.FC = () => {
                 type="radio"
                 name="gender"
                 value="male"
+                checked={tempUser?.gender === "male"}
+                onChange={handleInputChange}
                 disabled={!isEditing}
                 className="mr-1"
               />{" "}
@@ -102,6 +123,8 @@ const Profile: React.FC = () => {
                 type="radio"
                 name="gender"
                 value="female"
+                checked={tempUser?.gender === "female"}
+                onChange={handleInputChange}
                 disabled={!isEditing}
                 className="mx-2"
               />{" "}
@@ -110,33 +133,14 @@ const Profile: React.FC = () => {
                 type="radio"
                 name="gender"
                 value="other"
+                checked={tempUser?.gender === "other"}
+                onChange={handleInputChange}
                 disabled={!isEditing}
                 className="mx-2"
               />{" "}
               Bí mật
             </div>
           </div>
-
-          {/* <div className="w-1/2 flex flex-col items-center">
-            <div className="relative">
-              <img
-                src={avatarPreview || ""}
-                alt="Avatar"
-                className="w-32 h-32 rounded-full object-cover border border-gray-300 mb-4"
-              />
-              {isEditing && (
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                />
-              )}
-            </div>
-            <button className="px-3 py-1 bg-gray-200 rounded-md mt-2 text-sm">
-              Chọn tệp
-            </button>
-          </div> */}
         </div>
 
         <div className="flex gap-4">

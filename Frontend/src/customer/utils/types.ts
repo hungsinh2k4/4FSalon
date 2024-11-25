@@ -5,6 +5,7 @@ export interface User {
   point: Int16Array;
   avatar: string;
   isGoogleAccount: boolean;
+  gender: string;
   //   password: string;
   //   created_at: string;
   //   updated_at: string;
