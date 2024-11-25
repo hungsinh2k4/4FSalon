@@ -69,7 +69,7 @@ const Navbar: React.FC = () => {
                     Xem thông tin
                   </Link>
                   <Link
-                    to="/lichhen"
+                    to="/appointment"
                     className="block px-4 py-2 text-gray-900 hover:bg-gray-100"
                     onClick={handleLinkClick}
                   >
