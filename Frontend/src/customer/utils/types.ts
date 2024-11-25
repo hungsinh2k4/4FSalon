@@ -2,7 +2,7 @@ export interface User {
   name: string;
   email: string;
   phone: string;
-  point: Int16Array;
+  points: Int16Array;
   avatar: string;
   isGoogleAccount: boolean;
   gender: string;
@@ -16,6 +16,22 @@ export interface Feedback {
   id: number;
   message: string;
   date: string;
+  // Thêm các trường khác nếu cần
+}
+
+export interface Voucher {
+  id : number;
+  code: string;
+  description: string;
+  discount_type: string;
+  discount_value: number;
+  price_threshold: number;
+  required_point: number;
+  start_date: string;
+  end_date: string;
+  branch_id: number;
+  updated_at: string;
+  created_at: string;
   // Thêm các trường khác nếu cần
 }
 
@@ -52,7 +68,7 @@ export interface Appointment {
 }
 
 export interface Employee {
-  id: number;
+    id: number;
     name: string;
     email: string;
     phone: string;

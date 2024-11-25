@@ -15,14 +15,20 @@ import TimePicker from "../components/Booking/TimePicker";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchBranches } from "../services/BookingService";
-import { Branch, Employee, Service } from "../utils/types";
-import { fetchEmployeebyBranchId } from "../services/employeeService";
-import { fetchServices } from "../services/serviceService";
-import { addBranch } from "../services/appointment";
+import { fetchBranches } from "../services/Booking/BookingService";
+import { Branch, Employee, Service, Voucher, User} from "../utils/types";
+import { fetchEmployeebyBranchId } from "../services/Booking/employeeService";
+import { fetchServices } from "../services/Booking/serviceService";
+// import { addBranch } from "../services/Booking/appointment";
 import { useAuth } from "../context/AuthContext";
-
+import VoucherList from "../components/Booking/VoucherList";
+import { fetchcreateAppointment } from "../services/Booking/appointment";
 import EmployeeList from "../components/Booking/EmployeeList";
+import { fetchVoucherbyBranchId } from "../services/Booking/VoucherService";
+import { getEmployeeSchedule } from "../api/employees";
+import { getUser } from "../api/user";
+type Schedule = { start_time: string; estimated_end_time: string }[];
+
 const Booking: React.FC = () => {
   const [branches, setBranches] = useState<Branch[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,18 +41,38 @@ const Booking: React.FC = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null
   );
+  const [voucher, setVoucher] = useState<Voucher[]>([]);
+  const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [filteredList, setFilteredList] = useState([]);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null | null>(null);
   const [errorEmployee, setErrorEmployee] = useState<string | null>(null);
   const [errorBranch, setErrorBranch] = useState<string | null>(null);
   const [errorService, setErrorService] = useState<string | null>(null);
   const [successInfo, setSuccessInfo] = useState<any | null>(null);
   const { user, setUser } = useAuth();
+  const [userprofile, setUserProfile] = useState<User | null>(null);
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+  const [schedule, setSchedule] = useState<Schedule>([]);
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Hàm gọi API và cập nhật state
+    const fetchUser = async () => {
+      try {
+        const userData = await getUser();
+         console.log("User profile");
+        setUserProfile(userData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
   useEffect(() => {
     if (!user) {
       console.log("User not found");
@@ -77,6 +103,23 @@ const Booking: React.FC = () => {
     loadBranches();
   }, []);
 
+  //Voucher
+  useEffect(() => {
+    const loadVoucher = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchVoucherbyBranchId(selectedBranch?.id);
+        setVoucher(data);
+        console.log("Voucher");
+        console.log(data);
+      } catch (err) {
+        setError("Failed to fetch branches.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadVoucher();
+  }, [selectedBranch]);
   //Employee
   useEffect(() => {
     const loadEmployees = async () => {
@@ -96,6 +139,27 @@ const Booking: React.FC = () => {
   }, [selectedBranch]);
 
   //Service
+  useEffect(() => {
+    const loadSchedule = async () => {
+      if (!selectedEmployee?.id) return; // Nếu không có ID, không làm gì cả
+      setLoading(true);
+      try {
+        const data = await getEmployeeSchedule(
+          selectedEmployee?.id,
+          new Date(new Date(Date.UTC(2021, 11, 2, 0, 0, 0)))
+        );
+        setSchedule(data);
+        console.log("Schedule");
+        console.log(data);
+      } catch (err) {
+        setError("Failed to fetch schedule.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSchedule();
+  }, [selectedEmployee]);
 
   useEffect(() => {
     const loadServices = async () => {
@@ -179,7 +243,7 @@ const Booking: React.FC = () => {
     if (hasError) return;
     try {
       // Gửi API
-      const response = await addBranch({
+      const response = await fetchcreateAppointment({
         title: selectedService?.title,
         date: Date(),
         start_time: selectedTime,
@@ -241,11 +305,6 @@ const Booking: React.FC = () => {
                 Chọn địa chỉ chi nhánh
               </button>
             </div>
-
-            <button className="inline-block px-2 py-2 border rounded-lg mt-4 w-fit bg-gray-200  hover:bg-blue-500">
-              <FontAwesomeIcon icon={faCity} className="mr-2" />
-              Tìm chi nhánh gần nhất
-            </button>
           </div>
 
           {/* Chọn dịch vụ */}
@@ -264,7 +323,14 @@ const Booking: React.FC = () => {
                 Chọn dịch vụ với nhiều ưu đãi hấp dẫn
               </button>
             </div>
-            <button className="inline-block px-2 py-2 border rounded-lg mt-4 bg-gray-200 w-fit hover:bg-blue-500">
+            <button
+              className={`px-2 py-2 border rounded-lg mt-8 text-left ${
+                viewType === "voucher"
+                  ? "bg-blue-500 text-white font-bold"
+                  : "bg-gray-200 hover:bg-blue-500"
+              }`}
+              onClick={() => setViewType("voucher")}
+            >
               <FontAwesomeIcon icon={faTicket} className="mr-2" />
               Voucher
             </button>
@@ -293,10 +359,9 @@ const Booking: React.FC = () => {
               <select className="p-2 border rounded-lg flex-grow text-left">
                 <option value="tomorrow">Ngày mai</option>
                 <option value="today">Hôm nay</option>
-                <option value="next-week">Tuần sau</option>
               </select>
             </div>
-            <TimePicker onTimeSelect={handleTimeSelect} />
+            <TimePicker onTimeSelect={handleTimeSelect} schedule={schedule} />
           </div>
 
           <button
@@ -372,7 +437,15 @@ const Booking: React.FC = () => {
               selectedService={selectedService}
               setSelectedService={setSelectedService}
             />
-
+            <VoucherList
+              viewType={viewType}
+              vouchers={voucher}
+              selectedVoucher={selectedVoucher}
+              setSelectedVoucher={setSelectedVoucher} // Do nothing
+              user={userprofile}
+              selectedDate={new Date(Date.UTC(2024, 11, 1, 0, 0, 0))}
+              selectedService={selectedService}
+            />
             <EmployeeList
               viewType={viewType}
               employees={employees}

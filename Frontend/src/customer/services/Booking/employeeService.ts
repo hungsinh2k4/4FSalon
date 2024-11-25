@@ -1,6 +1,6 @@
 // src/manager/services/employeeService.ts
-import { getEmployees, getEmployeeById, getEmployeeByBranchId,createEmployee, updateEmployee, deleteEmployee,getEmployeeDate } from '../api/employees';
-import { Employee, Employee_date } from '../utils/types';
+import { getEmployees, getEmployeeById, getEmployeeByBranchId,createEmployee, updateEmployee, deleteEmployee,getEmployeeDate,getEmployeeSchedule } from '../../api/employees';
+import { Employee, Employee_date } from '../../utils/types';
 
 export const fetchEmployees = async (): Promise<Employee[]> => {
   return await getEmployees();
@@ -19,7 +19,9 @@ export const addEmployee = async (data: Partial<Employee>): Promise<Employee> =>
 export const editEmployee = async (id: number, data: Partial<Employee>): Promise<Employee> => {
   return await updateEmployee(id, data);
 };
-
+export const fetchEmployeeSchedule = async (id: number | undefined, date : Date | undefined): Promise<Date[]> => {
+  return await getEmployeeSchedule(id,date);
+};
 export const removeEmployee = async (id: number): Promise<void> => {
   return await deleteEmployee(id);
 };

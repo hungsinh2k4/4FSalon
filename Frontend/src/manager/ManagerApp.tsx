@@ -23,7 +23,6 @@ const ManagerApp: React.FC = () => {
 
         {/* Catch-all Route: NotFound */}
         <Route path="*" element={<NotFound />} />
-      
     </Routes>
   );
 };
