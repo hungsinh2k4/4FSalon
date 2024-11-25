@@ -275,7 +275,7 @@ const Appointment = () => {
 										<p className="text-sm font-medium text-white">{handleStatusDisplay(appointment.status)}</p>
 									</div>
 								</div>    
-								<p className="text-gray-600">Dịch vụ: {appointment.service.name}</p>
+								<p className="text-gray-600">Dịch vụ: {appointment.service.title}</p>
 								<p className="text-gray-600">Ngày hẹn: {beautifyDate(appointment.date)}</p>
 								<p className="text-gray-600">Bắt đầu: {beautifyTime(appointment.start_time)}</p>
 								<p className="text-gray-600">Địa chỉ: {appointment.branch.address}</p>
@@ -316,7 +316,7 @@ const Appointment = () => {
 										<div className="flex w-full">
 											<div className="flex flex-col w-3/5 h-100 gap-1 mt-2">
 												<p className="font-bold">Chi tiết lịch hẹn</p>
-												<p className="text-gray-600">Dịch vụ: {selectedAppointment?.service.name}</p>
+												<p className="text-gray-600">Dịch vụ: {selectedAppointment?.service.title}</p>
 												<p className="text-gray-600">Ngày hẹn: {beautifyDate(selectedAppointment?.date)}</p>
 												<p className="text-gray-600">Bắt đầu: {beautifyTime(selectedAppointment?.start_time)}</p>
 												<p className="text-gray-600">Kết thúc: {beautifyTime(selectedAppointment?.estimated_end_time)}</p>
