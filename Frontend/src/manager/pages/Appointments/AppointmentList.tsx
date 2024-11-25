@@ -68,7 +68,7 @@ const AppointmentList: React.FC = () => {
         // Add appointment
         const newAppointment = await addAppointment(data);
         setAppointments([...appointments, newAppointment]);
-      }
+      } 
       setIsModalOpen(false);
     } catch (err) {
       setError('Failed to save appointment.');
