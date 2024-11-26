@@ -1,4 +1,5 @@
 export interface User {
+  id: number;
   name: string;
   email: string;
   phone: string;
@@ -14,8 +15,15 @@ export interface User {
 
 export interface Feedback {
   id: number;
-  message: string;
-  date: string;
+  branch_rating: number;
+  branch_feedback: string;
+  employee_rating: number;
+  employee_feedback: string;
+  overall_rating: number;
+  suggestion: string;
+  appointment_id: number;
+  created_at: string;
+  updated_at: string;
   // Thêm các trường khác nếu cần
 }
 
@@ -66,29 +74,51 @@ export interface Appointment {
   // Thêm các trường khác nếu cần
 }
 
+export interface MyAppointment {
+  id: number;
+  title: string;
+  date: string;
+  start_time: string;
+  estimated_end_time: string;
+  final_price: number;
+  status: string;
+  user: User;
+  service: Service;
+  branch: Branch;
+  feedback: Feedback | null;
+  employee: Employee | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Employee {
     id: number;
-    name: string;
-    email: string;
-    phone: string;
-    work_position: string;
-    available_from: string;
-    available_to: string;
-    status: boolean;
-    overal_rating: number;
-    branch_id: number;
+  name: string;
+  email: string;
+  phone: string;
+  work_position: string;
+  overall_rating: number;
+  number_of_ratings: number;
+  status: boolean;
+  branch_id: number;
    
-    created_at: string;
-    updated_at: string;
-    deleted_at: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  picture_url: string | null;
 }
 
 export interface Branch {
   id: number;
   name: string;
   address: string;
-  phone: number;
+  phone: string;
   email: string;
+  status: boolean;
+  picture_url: string | null;
+  user: User;
+  employees: Employee[];
+  appointments: Appointment[];
   // Thêm các trường khác nếu cần
 }
 

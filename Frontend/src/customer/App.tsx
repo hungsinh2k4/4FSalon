@@ -11,6 +11,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Profile from "./pages/Profile"; // Thêm tuyến đường cho Profile
 import ChangePassword from "./pages/ChangePassword"; // Thêm tuyến đường cho ChangePassword
 import FindNearestShop from "./pages/findNearestShop";
+import Appointment from "./pages/appointment";
 
 const App: React.FC = () => {
   return (
@@ -27,6 +28,7 @@ const App: React.FC = () => {
             <Route path="/find-nearest-shop" element={<FindNearestShop />} />
             <Route path="/profile" element={<Profile />} />{" "}
             <Route path="/change-password" element={<ChangePassword />} />{" "}
+            <Route path="/appointment" element={<Appointment />} />{" "}
             {/* Thêm tuyến đường cho Profile */}
           </Routes>
         </main>
