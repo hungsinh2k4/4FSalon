@@ -25,7 +25,7 @@ const VoucherList: React.FC<VoucherListProps> = ({
     const startDate = new Date(voucher.start_date);
     const endDate = new Date(voucher.end_date);
     const isDateInRange = selectedDate >= startDate && selectedDate <= endDate; // Sử dụng selectedDate
-    const isPriceValid = selectedService?.price >= voucher.price_threshold;
+   const isPriceValid =(selectedService?.price ?? 0) >= voucher.price_threshold;
     const isPointsValid = (Number (user?.points) >= voucher.required_point);
 
     console.log("isDateInRange", isDateInRange);
@@ -41,7 +41,7 @@ const VoucherList: React.FC<VoucherListProps> = ({
   };
 
   if (viewType !== "voucher") return null;
-
+  if (!selectedService) {selectedVoucher = null;} // Nếu không có dịch vụ nào được chọn thì vô hiệu hóa voucher
   return (
     <div className="mt-2.5 max-h-[500px] overflow-y-auto border border-gray-300 rounded-s-lg p-2 grid grid-cols-2 gap-3.5">
       {vouchers.map((voucher) => {

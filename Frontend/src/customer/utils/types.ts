@@ -57,13 +57,12 @@ export interface Appointment {
   title : string;
   date: string;
   start_time: string | null;
-  estimatedEndTime: string;
-  status: string;
-  finalPrice: number;
-  employeeId: number;
-  userId: number;
-  serviceId: number;
-  branchId: number;
+  estimated_end_time: string;
+  final_price: number;
+  employee_id: number;
+  user_id: number;
+  service_id: number;
+  branch_id: number;
   // Thêm các trường khác nếu cần
 }
 
@@ -78,6 +77,7 @@ export interface Employee {
     status: boolean;
     overal_rating: number;
     branch_id: number;
+   
     created_at: string;
     updated_at: string;
     deleted_at: string | null;

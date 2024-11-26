@@ -22,7 +22,7 @@ import { fetchServices } from "../services/Booking/serviceService";
 // import { addBranch } from "../services/Booking/appointment";
 import { useAuth } from "../context/AuthContext";
 import VoucherList from "../components/Booking/VoucherList";
-import { fetchcreateAppointment } from "../services/Booking/appointment";
+import { addAppointment } from "../services/Booking/appointment";
 import EmployeeList from "../components/Booking/EmployeeList";
 import { fetchVoucherbyBranchId } from "../services/Booking/VoucherService";
 import { getEmployeeSchedule } from "../api/employees";
@@ -50,6 +50,7 @@ const Booking: React.FC = () => {
   const [errorEmployee, setErrorEmployee] = useState<string | null>(null);
   const [errorBranch, setErrorBranch] = useState<string | null>(null);
   const [errorService, setErrorService] = useState<string | null>(null);
+  const [errorTime, setErrorTime] = useState<string | null>(null);
   const [successInfo, setSuccessInfo] = useState<any | null>(null);
   const { user, setUser } = useAuth();
   const [userprofile, setUserProfile] = useState<User | null>(null);
@@ -109,6 +110,8 @@ const Booking: React.FC = () => {
       setLoading(true);
       try {
         const data = await fetchVoucherbyBranchId(selectedBranch?.id);
+        const newVoucher: Voucher = data
+        setVoucher([newVoucher]); // Replace the current state with an array containing the new voucher
         setVoucher(data);
         console.log("Voucher");
         console.log(data);
@@ -160,7 +163,38 @@ const Booking: React.FC = () => {
 
     loadSchedule();
   }, [selectedEmployee]);
-
+  useEffect(() => {
+  if (!selectedService) {
+    setSelectedVoucher(null); // Đặt voucher về null khi không có dịch vụ
+  }
+}, [selectedService]);
+  useEffect(() => {
+  const loadServices = async () => {
+    setLoading(true);
+    try {
+       console.log("Appoimnent");
+      const data = await addAppointment({
+        id: 1,
+        title: "Combo 5xx",
+        date: "2021-09-01T00:00:00.000Z",
+        start_time: "2021-09-01T08:00:00.000Z",
+        estimated_end_time: "2021-09-01T09:00:00.000Z",
+        final_price: 99000,
+        employee_id: 1,
+        user_id: 1,
+        service_id: 1,
+        branch_id: 1,
+      });
+      console.log(data);
+      console.log(data);
+    } catch (err) {
+      setError("Failed to fetch branches.");
+    } finally {
+      setLoading(false);
+    }
+  }
+  loadServices();
+},[]);
   useEffect(() => {
     const loadServices = async () => {
       setLoading(true);
@@ -239,23 +273,29 @@ const Booking: React.FC = () => {
     } else {
       setErrorService(null);
     }
+    if(!selectedTime){
+      setErrorTime("Vui lòng chọn thời gian");
+      hasError = true;
+    } else {
+      setErrorTime(null);
+    }
 
     if (hasError) return;
     try {
       // Gửi API
-      const response = await fetchcreateAppointment({
-        title: selectedService?.title,
-        date: Date(),
-        start_time: selectedTime,
-        estimatedEndTime: selectedService?.estimatedTime,
-        status: "pending",
-        finalPrice: selectedService?.price,
-        employeeId: selectedEmployee?.id,
-        serviceId: selectedService?.id,
-        branchId: selectedBranch?.id,
+      const response = await addAppointment({
+        id: 1,
+        title: "Combo 5xx",
+        date: "2021-09-01T00:00:00.000Z",
+        start_time: "2021-09-01T08:00:00.000Z",
+        estimated_end_time: "2021-09-01T09:00:00.000Z",
+        final_price: 99000,
+        employee_id: 1,
+        user_id: 1,
+        service_id: 1,
+        branch_id: 1,
       });
 
-      // Nếu thành công, lưu thông tin và hiện thông báo
       setSuccessInfo({
         service: "Cắt tóc",
         employee: "Ironman",
@@ -324,7 +364,7 @@ const Booking: React.FC = () => {
               </button>
             </div>
             <button
-              className={`px-2 py-2 border rounded-lg mt-8 text-left ${
+              className={`inline-flex items-center px-2 py-2 border rounded-lg mt-8 text-left ${
                 viewType === "voucher"
                   ? "bg-blue-500 text-white font-bold"
                   : "bg-gray-200 hover:bg-blue-500"
@@ -334,6 +374,14 @@ const Booking: React.FC = () => {
               <FontAwesomeIcon icon={faTicket} className="mr-2" />
               Voucher
             </button>
+
+            <p className="pt-3">
+              Tổng thanh toán:{" "}
+              {selectedService
+                ? (selectedService.price ?? 0) -
+                  (selectedVoucher?.discount_value ?? 0)
+                : 0}
+            </p>
           </div>
           {/* Chọn ngày, giờ & nhân viên */}
           <div>
