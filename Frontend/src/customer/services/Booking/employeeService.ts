@@ -28,3 +28,6 @@ export const removeEmployee = async (id: number): Promise<void> => {
 export const fetchEmployeeDate = async (id: number, date: Date): Promise<Employee_date> => {
   return await getEmployeeDate(id, date);
 }
+export const fetchCustomerProfileByUserId = async (id: number): Promise<Employee> => {
+  return await getEmployeeById(id);
+}

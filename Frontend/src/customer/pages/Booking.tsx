@@ -8,7 +8,9 @@ import {
   faTicket,
   faUserCheck,
 } from "@fortawesome/free-solid-svg-icons";
+type Schedule = { start_time: string; estimated_end_time: string }[];
 
+import { Branch, Employee, Service, Voucher, User, Appointment, Customer} from "../utils/types";
 import ServiceList from "../components/Booking/ServiceList";
 import BranchList from "../components/Booking/BranchList";
 import TimePicker from "../components/Booking/TimePicker";
@@ -16,7 +18,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchBranches } from "../services/Booking/BookingService";
-import { Branch, Employee, Service, Voucher, User} from "../utils/types";
 import { fetchEmployeebyBranchId } from "../services/Booking/employeeService";
 import { fetchServices } from "../services/Booking/serviceService";
 // import { addBranch } from "../services/Booking/appointment";
@@ -26,8 +27,8 @@ import { addAppointment } from "../services/Booking/appointment";
 import EmployeeList from "../components/Booking/EmployeeList";
 import { fetchVoucherbyBranchId } from "../services/Booking/VoucherService";
 import { getEmployeeSchedule } from "../api/employees";
-import { getUser } from "../api/user";
-type Schedule = { start_time: string; estimated_end_time: string }[];
+import { getUser, getCustomerProfileByUserId } from "../api/user";
+
 
 const Booking: React.FC = () => {
   const [branches, setBranches] = useState<Branch[]>([]);
@@ -38,9 +39,7 @@ const Booking: React.FC = () => {
   const [stores, setStores] = useState([]);
   const [services, setServices] = useState<Service[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
-    null
-  );
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [voucher, setVoucher] = useState<Voucher[]>([]);
   const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
@@ -54,24 +53,82 @@ const Booking: React.FC = () => {
   const [successInfo, setSuccessInfo] = useState<any | null>(null);
   const { user, setUser } = useAuth();
   const [userprofile, setUserProfile] = useState<User | null>(null);
+  const [customerprofile, setCustomerProfile] = useState<Customer | null>(null);
   const [message, setMessage] = useState("");
   const [schedule, setSchedule] = useState<Schedule>([]);
+  const [totalPayment, setTotalPayment] = useState(0);
+  const [selectedStartTimeDate, setSelectedStartTimeDate] = useState<Date | null>(null);
+  const [selectedEndTimeDate, setSelectedEndTimeDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState(() => {
 
+  type OptionType = "today" | "tomorrow"; 
+
+  const defaultOption: OptionType = "today"; 
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (defaultOption === "today") {
+    return today;
+  } else if (defaultOption === "tomorrow") {
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    return tomorrow;
+  }
+});
+
+const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (e.target.value === "today") {
+    setSelectedDate(today); 
+  } else if (e.target.value === "tomorrow") {
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    setSelectedDate(tomorrow);
+  }
+};
   const navigate = useNavigate();
   useEffect(() => {
-    // Hàm gọi API và cập nhật state
-    const fetchUser = async () => {
+    if (selectedDate && selectedTime) {
+      // Tách giờ và phút từ selectedTime
+      const [hours, minutes] = selectedTime.split(":").map(Number);
+
+      // Tạo đối tượng Date từ selectedDate và selectedTime
+      const startDateTime = new Date(selectedDate);
+      startDateTime.setHours(hours, minutes, 0, 0); // Cập nhật giờ, phút
+
+      console.log("Start date time:", startDateTime);
+      setSelectedStartTimeDate(startDateTime);
+
+      // Tính toán selectedEndTimeDate bằng cách cộng estimatedTime
+      console.log("Selected service:", selectedService);
+      if (selectedService) {
+        const endDateTime = new Date(startDateTime);
+        endDateTime.setMinutes(endDateTime.getMinutes() + Number(selectedService?.estimate_time).valueOf());
+        setSelectedEndTimeDate(endDateTime);
+      }
+    }
+    console.log("Selected end time:", selectedDate?.toISOString());
+  }, [selectedDate, selectedTime, selectedService]);
+
+  useEffect(() => {
+    const fetchUser = async () => { 
       try {
         const userData = await getUser();
          console.log("User profile");
         setUserProfile(userData);
         setLoading(false);
+        console.log(userData);
+        const customerData = await getCustomerProfileByUserId(userData.id);
+        console.log("Customer profile");
+        console.log(customerData);
+        setCustomerProfile(customerData);
       } catch (error) {
         console.error("Error fetching user data:", error);
         setLoading(false);
       }
     };
-
     fetchUser();
   }, []);
   useEffect(() => {
@@ -149,7 +206,7 @@ const Booking: React.FC = () => {
       try {
         const data = await getEmployeeSchedule(
           selectedEmployee?.id,
-          new Date(new Date(Date.UTC(2021, 11, 2, 0, 0, 0)))
+          selectedDate
         );
         setSchedule(data);
         console.log("Schedule");
@@ -165,36 +222,10 @@ const Booking: React.FC = () => {
   }, [selectedEmployee]);
   useEffect(() => {
   if (!selectedService) {
-    setSelectedVoucher(null); // Đặt voucher về null khi không có dịch vụ
+    setSelectedVoucher(null); 
   }
 }, [selectedService]);
-  useEffect(() => {
-  const loadServices = async () => {
-    setLoading(true);
-    try {
-       console.log("Appoimnent");
-      const data = await addAppointment({
-        id: 1,
-        title: "Combo 5xx",
-        date: "2021-09-01T00:00:00.000Z",
-        start_time: "2021-09-01T08:00:00.000Z",
-        estimated_end_time: "2021-09-01T09:00:00.000Z",
-        final_price: 99000,
-        employee_id: 1,
-        user_id: 1,
-        service_id: 1,
-        branch_id: 1,
-      });
-      console.log(data);
-      console.log(data);
-    } catch (err) {
-      setError("Failed to fetch branches.");
-    } finally {
-      setLoading(false);
-    }
-  }
-  loadServices();
-},[]);
+ 
   useEffect(() => {
     const loadServices = async () => {
       setLoading(true);
@@ -211,6 +242,13 @@ const Booking: React.FC = () => {
     };
     loadServices();
   }, []);
+
+    useEffect(() => {
+      const servicePrice = selectedService?.price ?? 0;
+      const voucherDiscount = selectedVoucher?.discount_value ?? 0;
+      setTotalPayment(servicePrice - voucherDiscount);
+    }, [selectedService, selectedVoucher]);
+    //total price
   useEffect(() => {
     // Lọc danh sách cửa hàng dựa vào searchTerm
     setBranches(
@@ -279,29 +317,34 @@ const Booking: React.FC = () => {
     } else {
       setErrorTime(null);
     }
+    let hours = "";
+    let minutes = "";
 
+    if (selectedTime) {
+      [hours, minutes] = selectedTime.split(":");
+    }
     if (hasError) return;
     try {
       // Gửi API
       const response = await addAppointment({
-        id: 1,
-        title: "Combo 5xx",
-        date: "2021-09-01T00:00:00.000Z",
-        start_time: "2021-09-01T08:00:00.000Z",
-        estimated_end_time: "2021-09-01T09:00:00.000Z",
-        final_price: 99000,
-        employee_id: 1,
-        user_id: 1,
-        service_id: 1,
-        branch_id: 1,
+        title: selectedService?.title,
+        date: String(selectedDate?.toISOString()),
+        start_time: String(selectedStartTimeDate?.toISOString()),
+        estimated_end_time: String(selectedEndTimeDate?.toISOString()),
+        final_price: totalPayment,
+        employee_id: selectedEmployee?.id,
+        user_id: userprofile?.id,
+        service_id: selectedService?.id,
+        branch_id: selectedBranch?.id,
+        status: "Pending",
       });
-
+      
       setSuccessInfo({
-        service: "Cắt tóc",
-        employee: "Ironman",
-        address: "19x Nguyễn Trãi, Thanh Xuân, Hà Nội",
-        time: "10/10/2024, 10:00AM - 13:00PM",
-        price: "350,000 VND",
+        service: " " + selectedService?.title,
+        employee: " " + selectedEmployee?.name,
+        address: " " + selectedBranch?.address,
+        time: " " + selectedDate?.toLocaleDateString() + ", " + String(selectedStartTimeDate?.getHours) + " - " + String(selectedEndTimeDate?.getHours),
+        price: " " + totalPayment + "đ",
         status: "Chờ xác nhận",
       });
     } catch (error) {
@@ -402,12 +445,24 @@ const Booking: React.FC = () => {
                 Chọn nhân viên
               </button>
             </div>
-            <div className="flex items-center mb-3">
-              <span className="mr-2">📅</span>
-              <select className="p-2 border rounded-lg flex-grow text-left">
+            <div>
+              <select
+                className="p-2 border rounded-lg flex-grow text-left"
+                onChange={handleChange}
+                defaultValue="today"
+              >
                 <option value="tomorrow">Ngày mai</option>
                 <option value="today">Hôm nay</option>
               </select>
+              <p>
+                Ngày được chọn:{" "}
+                {selectedDate?.toLocaleDateString("vi-VN", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
             </div>
             <TimePicker onTimeSelect={handleTimeSelect} schedule={schedule} />
           </div>
@@ -424,7 +479,7 @@ const Booking: React.FC = () => {
           {errorBranch && <p className="text-red-500 mt-2">{errorBranch}</p>}
           {errorService && <p className="text-red-500 mt-2">{errorService}</p>}
           {successInfo && (
-            <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+            <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg w-96">
                 <div className="flex items-center mb-4">
                   <span className="text-green-500 text-xl mr-2">✔</span>

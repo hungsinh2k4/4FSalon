@@ -47,7 +47,7 @@ export interface Service {
   id: number;
   title: string;
   price: number;
-  estimatedTime: string;
+  estimate_time: string;
   description : string;
   // Thêm các trường khác nếu cần
 }
@@ -62,18 +62,25 @@ export interface Schedule {
 
 export interface Appointment {
   id: number;
-  title : string;
+  title: string;
   date: string;
-  start_time: string | null;
+  start_time: string;
   estimated_end_time: string;
+  status: string;
   final_price: number;
-  employee_id: number;
-  user_id: number;
-  service_id: number;
-  branch_id: number;
+  user_id: Number;
+  service_id: Number;
+  branch_id: Number;
+  employee_id: Number;
   // Thêm các trường khác nếu cần
 }
-
+export interface Customer{
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  user_id: number;
+}
 export interface MyAppointment {
   id: number;
   title: string;
