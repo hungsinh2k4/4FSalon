@@ -1,5 +1,5 @@
-import { getServices, getServiceById, createService, updateService, deleteService } from '../api/services';
-import { Service } from '../utils/types';
+import { getServices, getServiceById, createService, updateService, deleteService } from '../../api/services';
+import { Service } from '../../utils/types';
 
 export const fetchServices = async (): Promise<Service[]> => {
   return await getServices();

@@ -18,6 +18,10 @@ export const getEmployeeByBranchId = async (id: number | undefined): Promise<Emp
   return response.data;
 };
 
+export const getEmployeeSchedule = async (id: number | undefined, date : Date | undefined): Promise<Date[]> => {
+const response = await axiosInstance.get(`api/employees/${id}/available/${date}`);
+return response.data;
+};
 export const createEmployee = async (data: Partial<Employee>): Promise<Employee> => {
   const response = await axiosInstance.post('api/employees', data);
   return response.data;

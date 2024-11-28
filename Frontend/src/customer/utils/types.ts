@@ -3,7 +3,7 @@ export interface User {
   name: string;
   email: string;
   phone: string;
-  point: Int16Array;
+  points: Int16Array;
   avatar: string;
   isGoogleAccount: boolean;
   gender: string;
@@ -27,11 +27,27 @@ export interface Feedback {
   // Thêm các trường khác nếu cần
 }
 
+export interface Voucher {
+  id : number;
+  code: string;
+  description: string;
+  discount_type: string;
+  discount_value: number;
+  price_threshold: number;
+  required_point: number;
+  start_date: string;
+  end_date: string;
+  branch_id: number;
+  updated_at: string;
+  created_at: string;
+  // Thêm các trường khác nếu cần
+}
+
 export interface Service {
   id: number;
   title: string;
   price: number;
-  estimatedTime: string;
+  estimate_time: string;
   description : string;
   // Thêm các trường khác nếu cần
 }
@@ -46,19 +62,25 @@ export interface Schedule {
 
 export interface Appointment {
   id: number;
-  title : string;
+  title: string;
   date: string;
-  start_time: string | null;
-  estimatedEndTime: string;
+  start_time: string;
+  estimated_end_time: string;
   status: string;
-  finalPrice: number;
-  employeeId: number;
-  userId: number;
-  serviceId: number;
-  branchId: number;
+  final_price: number;
+  user_id: Number;
+  service_id: Number;
+  branch_id: Number;
+  employee_id: Number;
   // Thêm các trường khác nếu cần
 }
-
+export interface Customer{
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  user_id: number;
+}
 export interface MyAppointment {
   id: number;
   title: string;
@@ -77,7 +99,7 @@ export interface MyAppointment {
 }
 
 export interface Employee {
-  id: number;
+    id: number;
   name: string;
   email: string;
   phone: string;
@@ -86,6 +108,7 @@ export interface Employee {
   number_of_ratings: number;
   status: boolean;
   branch_id: number;
+   
   created_at: string;
   updated_at: string;
   deleted_at: string | null;

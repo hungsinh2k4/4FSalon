@@ -1,11 +1,14 @@
 import { useState } from "react";
-
+type Schedule = { start_time: string; estimated_end_time: string }[];
 interface TimePickerProps {
   onTimeSelect: (time: string | null) => void; // Callback function để truyền giá trị giờ đã chọn ra ngoài
+  schedule: Schedule; // Danh sách lịch làm việc
 }
 
-export default function TimePicker({ onTimeSelect }: TimePickerProps) {
-  // Tạo danh sách giờ
+export default function TimePicker({
+  onTimeSelect,
+  schedule,
+}: TimePickerProps) {
   const generateTimes = () => {
     const times = [];
     let hour = 7;
@@ -24,10 +27,9 @@ export default function TimePicker({ onTimeSelect }: TimePickerProps) {
   };
 
   const times = generateTimes();
-  const [visibleRange, setVisibleRange] = useState([0, 24]); // Hiển thị 24 khung giờ
-  const [selectedTime, setSelectedTime] = useState<string | null>(null); // Lưu trữ giờ đã chọn
+  const [visibleRange, setVisibleRange] = useState([0, 24]);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
-  // Điều hướng
   const handlePrev = () => {
     setVisibleRange(([start, end]) => {
       if (start > 0) {
@@ -46,7 +48,6 @@ export default function TimePicker({ onTimeSelect }: TimePickerProps) {
     });
   };
 
-  // Xử lý khi người dùng chọn hoặc bỏ chọn giờ
   const handleTimeClick = (time: string) => {
     setSelectedTime((prev) => {
       const newSelectedTime = prev === time ? null : time;
@@ -55,9 +56,25 @@ export default function TimePicker({ onTimeSelect }: TimePickerProps) {
     });
   };
 
+  // Kiểm tra xem giờ có bị disable hay không
+  const isDisabled = (time: string): boolean => {
+    const [hour, minute] = time.split(":").map(Number);
+
+    const timeInMinutes = hour * 60 + minute;
+
+    return schedule.some(({ start_time, estimated_end_time }) => {
+      const startDate = new Date(start_time);
+      const endDate = new Date(estimated_end_time);
+
+      const startMinutes = startDate.getHours() * 60 + startDate.getMinutes();
+      const endMinutes = endDate.getHours() * 60 + endDate.getMinutes();
+
+      return timeInMinutes >= startMinutes && timeInMinutes < endMinutes;
+    });
+  };
+
   return (
     <div className="flex items-center justify-center space-x-2">
-      {/* Nút điều hướng trái */}
       <button
         onClick={handlePrev}
         className="w-8 h-8 flex items-center justify-center bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 disabled:opacity-50"
@@ -66,24 +83,24 @@ export default function TimePicker({ onTimeSelect }: TimePickerProps) {
         &lt;
       </button>
 
-      {/* Lưới hiển thị giờ */}
       <div className="grid grid-cols-8 gap-3 min-h-[200px] grid-auto-rows-[40px] place-items-start">
         {times.slice(visibleRange[0], visibleRange[1]).map((time, index) => (
           <button
             key={index}
-            onClick={() => handleTimeClick(time)} // Thêm sự kiện click
-            className={`p-3 rounded-md text-center text-sm font-medium hover:bg-gray-400 ${
-              selectedTime === time
+            onClick={() => handleTimeClick(time)}
+            disabled={isDisabled(time)} // Disable nếu giờ nằm trong khoảng không khả dụng
+            className={`p-3 rounded-md text-center text-sm font-medium ${selectedTime === time
                 ? "bg-blue-500 text-white font-bold"
-                : "bg-gray-300"
-            }`}
+                : isDisabled(time)
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gray-300 hover:bg-gray-400"
+              }`}
           >
             {time}
           </button>
         ))}
       </div>
 
-      {/* Nút điều hướng phải */}
       <button
         onClick={handleNext}
         className="w-8 h-8 flex items-center justify-center bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 disabled:opacity-50"

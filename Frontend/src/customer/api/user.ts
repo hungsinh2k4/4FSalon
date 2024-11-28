@@ -1,13 +1,12 @@
 // src/customer/api/accounts.ts
 import axiosInstance from "./axiosInstance";
-import { Feedback, MyAppointment, User } from "../utils/types";
+import { Feedback, MyAppointment, User,Customer } from "../utils/types";
 
 export const getUser = async (): Promise<User> => {
   const response = await axiosInstance.get<User>("api/users/profile");
   console.log(response.data);
   return response.data;
 };
-
 export const createUser = async (data: Partial<User>): Promise<User> => {
   const response = await axiosInstance.post("api/users", data);
   return response.data;
@@ -30,5 +29,9 @@ export const cancelAppointment = async (data: Partial<MyAppointment>): Promise<M
 
 export const postFeedback = async (data: Partial<Feedback>): Promise<Feedback> => {
   const response = await axiosInstance.post(`api/feedbacks`, data);
+  return response.data;
+}
+export const getCustomerProfileByUserId = async (id: number): Promise<Customer> => {
+  const response = await axiosInstance.get(`api/customers/${id}`);
   return response.data;
 }

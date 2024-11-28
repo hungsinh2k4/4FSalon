@@ -18,7 +18,7 @@ const badEmployeeOptions = ['Không nhiệt tình', 'Chậm chạp', 'Kỹ năng
 
 const pageSlice = 5;
 
-const Appointment = () => { 
+const Appointment = () => {
 	const [loading, setLoading] = useState(false);
 	const [appointmentList, setAppointmentList] = useState<MyAppointment[]>([]);
 	const [page, setPage] = useState<number>(1);
