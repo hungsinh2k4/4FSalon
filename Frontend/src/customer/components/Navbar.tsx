@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/Barber Hair Cutting Effect 3.png";
 import "./Navbar.css";
 import { useAuth } from "../context/AuthContext";
@@ -7,6 +7,13 @@ import { useAuth } from "../context/AuthContext";
 const Navbar: React.FC = () => {
   const { user, setUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const getLinkClass = (path: string) => {
+    return location.pathname === path
+      ? "nav-items text-blue-400 border-b-2 border-blue-200"
+      : "nav-items";
+  };
 
   const handleLogout = () => {
     // Xử lý đăng xuất
@@ -31,19 +38,22 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="hidden md:flex items-center">
-          <Link to="/" className="nav-items">
+          <Link to="/" className={getLinkClass("/")}>
             Trang Chủ
           </Link>
-          <Link to="/about-us" className="nav-items">
+          <Link to="/about-us" className={getLinkClass("/about-us")}>
             Về chúng tôi
           </Link>
           <a href="https://zalo.me/g/brxjir719" className="nav-items">
             Liên hệ
           </a>
-          <Link to="/find-nearest-shop" className="nav-items">
+          <Link
+            to="/find-nearest-shop"
+            className={getLinkClass("/find-nearest-shop")}
+          >
             Tìm chi nhánh
           </Link>
-          <Link to="/booking" className="nav-items">
+          <Link to="/booking" className={getLinkClass("/booking")}>
             Đặt lịch Hẹn
           </Link>
           {user ? (
@@ -98,7 +108,7 @@ const Navbar: React.FC = () => {
         {/* Button để mở/đóng menu trên màn hình nhỏ */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-black"
+          className="w-1/6 md:hidden text-black"
         >
           {isOpen ? "✖" : "☰"}
         </button>

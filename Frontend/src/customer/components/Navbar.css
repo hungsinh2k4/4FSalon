@@ -1,8 +1,7 @@
-.nav-items{
-    @apply text-black ml-6 hover:text-gray-600 hover:underline hover:underline-offset-2  transition-colors duration-200
-    
+.nav-items {
+  @apply text-black ml-6 hover:text-gray-600 hover:border-b-2 hover:underline-offset-2  transition-colors duration-200;
 }
 
 .mobile-nav-items {
-    @apply block text-black hover:text-gray-600 transition-colors duration-200
+  @apply block text-black hover:text-gray-600 transition-colors duration-200;
 }
