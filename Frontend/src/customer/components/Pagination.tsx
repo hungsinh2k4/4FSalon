@@ -94,7 +94,6 @@ const Pagination:React.FC<PaginationProps> = ({ prev, last, next, first, total, 
         if (activePage >= pages - 2) return pages;
         return activePage + pageDisplay - 1;
     } 
-    console.log(activePage);
 
     const renderPage = () => {
         return (

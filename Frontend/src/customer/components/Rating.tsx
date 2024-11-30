@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Star from "./Star";
 
 interface RatingProps {
     totalStars?: number;
     initialRating?: number;
+    changeable?: boolean;
     text?: string;
     onRatingChange?: (value: number) => void;
 }
 
-const Rating: React.FC<RatingProps> = ({ totalStars = 5, initialRating = 0, text, onRatingChange }) => {
+const Rating: React.FC<RatingProps> = ({ totalStars = 5, initialRating = 0, changeable: changable = true, text, onRatingChange }) => {
     const [rating, setRating] = useState<number>(initialRating);
     const [hoverRating, setHoverRating] = useState<number>(0);
 
     const handleRating = (value: number) => {
+        if (!changable) return;
+
         setRating(value);
         if (onRatingChange) {
             onRatingChange(value);
@@ -20,6 +23,7 @@ const Rating: React.FC<RatingProps> = ({ totalStars = 5, initialRating = 0, text
     }
 
     const handleHover = (value: number) => {
+        if (!changable) return;
         setHoverRating(value);
     }
 
