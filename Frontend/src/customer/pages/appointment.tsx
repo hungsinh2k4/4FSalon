@@ -74,7 +74,6 @@ const Appointment = () => {
   );
   const [notHaveFeedback, setNotHaveFeedback] = useState<boolean>(true);
   const [suggestion, setSuggestion] = useState("");
-  const [appointments, setAppointments] = useState<MyAppointment[]>([]);
 
   const [showAlert, setShowAlert] = useState(false);
 
@@ -366,7 +365,7 @@ const Appointment = () => {
           {loading && <Loading isVisible={loading} />}
           {error && showError("Có lỗi đã xảy ra! Vui lòng thử lại")}
           <div className="relative min-h-full">
-            {/* List */}
+            {/* ----------------------------------------------------List---------------------------------------------------- */}
             <div
               className={`${
                 !showDetails && !showFeedback ? "block" : "hidden"
@@ -397,7 +396,7 @@ const Appointment = () => {
                     <p className="text-gray-600">
                       Dịch vụ:{" "}
                       <span className="font-semibold">
-                        {appointment.service.title}
+                        {appointment.service ? appointment.service.title : "Không xác định"}
                       </span>
                     </p>
                     <p className="text-gray-600">
@@ -415,7 +414,7 @@ const Appointment = () => {
                     <p className="text-gray-600">
                       Địa chỉ:{" "}
                       <span className="font-semibold">
-                        {appointment.branch.address}
+                        {appointment.branch ? appointment.branch.address : "Không xác định"}
                       </span>
                     </p>
                     <p className="text-gray-600">
@@ -448,7 +447,7 @@ const Appointment = () => {
                 }}
               />
             </div>
-            {/* Detail */}
+            {/* ----------------------------------------------------Detail---------------------------------------------------- */}
             <div
               className={`${
                 showDetails ? "block" : "hidden"
@@ -506,7 +505,7 @@ const Appointment = () => {
                                 Dịch vụ:
                               </span>
                               <span className="text-gray-800 font-semibold">
-                                {selectedAppointment?.service.title}
+                                {selectedAppointment?.service ? selectedAppointment?.service?.title : "Không xác định"}
                               </span>
                             </div>
                             <div className="flex justify-between">
@@ -600,25 +599,25 @@ const Appointment = () => {
                           </h3>
                           <div className="flex items-center space-x-4">
                             <img
-                              src={`${selectedAppointment.branch.picture_url}`}
+                              src={`${selectedAppointment.branch?.picture_url}`}
                               alt="Branch Image"
                               className="w-20 h-20 rounded-lg object-cover border border-gray-300"
                             />
                             <div>
                               <p className="text-gray-800 font-semibold">
-                                {selectedAppointment.branch.name}
+                                {selectedAppointment.branch?.name}
                               </p>
                               <div className="text-gray-600 text-sm flex flex-row gap-2 items-center">
                                 <img src={map} className="w-4 h-4" />
-                                {selectedAppointment.branch.address}
+                                {selectedAppointment.branch?.address}
                               </div>
                               <div className="text-gray-600 text-sm flex flex-row gap-2 items-center">
                                 <img src={mail} className="w-4 h-4" />
-                                {selectedAppointment.branch.email}
+                                {selectedAppointment.branch?.email}
                               </div>
                               <div className="text-gray-600 text-sm flex flex-row gap-2 items-center">
                                 <img src={phone} className="w-4 h-4" />
-                                {selectedAppointment.branch.phone}
+                                {selectedAppointment.branch?.phone}
                               </div>
                             </div>
                           </div>
@@ -664,7 +663,7 @@ const Appointment = () => {
                 </>
               )}
             </div>
-            {/* Feedback */}
+            {/* ----------------------------------------------------Feedback---------------------------------------------------- */}
             <div
               className={`${
                 showFeedback ? "block" : "hidden"

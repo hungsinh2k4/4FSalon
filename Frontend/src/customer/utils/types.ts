@@ -90,10 +90,10 @@ export interface MyAppointment {
   final_price: number;
   status: string;
   user: User;
-  service: Service;
-  branch: Branch;
+  service?: Service;
+  branch?: Branch;
   feedback: Feedback | null;
-  employee: Employee | null;
+  employee?: Employee | null;
   created_at: string;
   updated_at: string;
 }

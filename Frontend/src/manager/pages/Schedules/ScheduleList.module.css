@@ -1,9 +1,5 @@
 /* src/manager/pages/Accounts/AccountList.module.css */
-.accountList {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-}
+
 
 .actions {
   display: flex;
@@ -178,4 +174,15 @@ input:checked + .slider:before {
 
 .sliderRound:before {
   border-radius: 50%;
+}
+
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 8vw;
+  width: 100vw;
+  height: 100vh;
 }

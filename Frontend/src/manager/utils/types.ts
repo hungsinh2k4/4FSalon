@@ -54,6 +54,7 @@ export interface User {
   export interface Absence {
     id: number;
     employee_id: number;
+    reason:string;
     date: string;
     employee: Employee;
     // Thêm các trường khác nếu cần
