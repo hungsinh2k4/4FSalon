@@ -83,6 +83,29 @@ class AuthService {
       window.location.href = "/login";
     }
   }
+
+  public async register(
+    name: string,
+    email: string,
+    password: string,
+    phone: string
+  ): Promise<{ user: User }> {
+    try {
+      const response = await axiosInstance.post<{ user: User }>(
+        "/auth/register",
+        {
+          name,
+          email,
+          password,
+          phone,
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || "Đăng ký thất bại");
+    }
+  }
+
   public async updateProfile(userData: any): Promise<void> {
     try {
       await axiosInstance.patch(`/api/users/profile`, userData);
