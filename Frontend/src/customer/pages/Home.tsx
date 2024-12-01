@@ -105,13 +105,19 @@ const Home: React.FC = () => {
               <h3 className="text-2xl font-semibold mb-2 text-white">
                 Cơ hội nhận ưu đãi dịch vụ thông qua điểm thành viên
               </h3>
-              <p className="mb-4 text-white">
+              <p className="mb-8 text-white">
                 Tham gia ngay để tích điểm và hưởng nhiều ưu đãi độc quyền.
               </p>
-              <Link to="/booking" className="text-white mb-4">
-                <button className="text-left bg-transparent border border-white px-1 text-white py-2 rounded hover:bg-white hover:text-gray-900 transition-colors">
+              {/* <Link to="/booking" className="text-white mb-4">
+                <button className="w-1/6 text-left bg-transparent border border-white px-1 text-white py-2 rounded hover:bg-white hover:text-gray-900 transition-colors">
                   Đặt lịch ngay
                 </button>
+              </Link> */}
+              <Link
+                to="/booking"
+                className="text-gray-900 mb-4 border border-white p-4 bg-white hover:bg-gray-900 hover:text-white transition-colors"
+              >
+                Đặt lịch ngay
               </Link>
             </div>
           </div>
