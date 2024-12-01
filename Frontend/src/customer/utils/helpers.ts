@@ -1,4 +1,5 @@
 export const beautifyDate = (dateString: string): string => {
+    if (!dateString) return "";
     const date = new Date(dateString);
     const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
@@ -9,6 +10,7 @@ export const beautifyDate = (dateString: string): string => {
 };
 
 export const beautifyTime = (timeString: string): string => {
+    if (!timeString) return "";
     const date = new Date(timeString);
     const options: Intl.DateTimeFormatOptions = {
         hour: 'numeric',
