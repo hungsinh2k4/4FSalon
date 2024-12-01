@@ -31,8 +31,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
-          <h2>{title}</h2>
-          <button onClick={onClose} className={styles.closeButton}>
+          <p className={styles.title}>{title}</p>
+          <button onClick={onClose} className={styles.actionDelete}>
             &times;
           </button>
         </div>

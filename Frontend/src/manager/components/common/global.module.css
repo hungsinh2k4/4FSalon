@@ -211,4 +211,84 @@
   }
   .searchField{
     margin-left: auto;
+    
   }
+  .searchInput{
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #2baf66;
+    transition: all 0.2s ease;
+  }
+
+  .historyContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+
+  }
+  
+  .historyItem {
+    background-color: #44ad73;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideIn 0.3s ease-out;
+    position: relative;
+    overflow: hidden;
+    width: fit-content;
+  }
+  .historyItemError {
+    background-color: #fd6b6bd5;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideIn 0.3s ease-out;
+    position: relative;
+    overflow: hidden;
+    width: fit-content;
+  }
+  .progressBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.7);
+    animation: progressFadeOut 5s linear forwards;
+  }
+  
+  @keyframes progressFadeOut {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0%;
+    }
+  }
+  
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  

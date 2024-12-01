@@ -9,7 +9,7 @@ import { Branch } from '../../utils/types';
 
 interface BranchesTableProps {
   branches: Branch[];
-  onDelete: (id: number) => void;
+  onDelete: (branch: Branch) => void;
   onEdit: (branch: Branch) => void;
 }
 
@@ -43,18 +43,18 @@ const BranchesTable: React.FC<BranchesTableProps> = ({ branches, onDelete, onEdi
       <colgroup>
         <col style={{ width: '5%' }} />
         <col style={{ width: '10%' }} />
+        <col style={{ width: '30%' }} />
         <col style={{ width: '10%' }} />
-        <col style={{ width: '5%' }} />
-        <col style={{ width: '10%' }} />
-        <col style={{ width: '10%' }} />
+        <col style={{ width: '15%' }} />
+        <col style={{ width: '7%' }} />
       </colgroup>
       <thead>
         <tr>
           <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
           <th onClick={() => handleSort('name')}>Tên chi nhánh <FontAwesomeIcon icon={getSortIcon('name')} /></th>
           <th onClick={() => handleSort('address')}>Địa chỉ <FontAwesomeIcon icon={getSortIcon('address')} /></th>
-          <th onClick={() => handleSort('seats')}>Số ghế <FontAwesomeIcon icon={getSortIcon('seats')} /></th>
-          <th onClick={() => handleSort('facilities')}>Cơ sở vật chất <FontAwesomeIcon icon={getSortIcon('facilites')} /></th>
+          <th onClick={() => handleSort('phone')}>SDT<FontAwesomeIcon icon={getSortIcon('phone')} /></th>
+          <th onClick={() => handleSort('email')}>Email <FontAwesomeIcon icon={getSortIcon('email')} /></th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -64,11 +64,11 @@ const BranchesTable: React.FC<BranchesTableProps> = ({ branches, onDelete, onEdi
             <td>{branch.id}</td>
             <td>{branch.name}</td>
             <td>{branch.address}</td>
-            <td>{branch.seats}</td>
-            <td>{branch.facilities}</td>
+            <td>{branch.phone}</td>
+            <td>{branch.email}</td>
             <td className={styles.actionList}>
               <FaPen className={styles.actionEdit} onClick={() => onEdit(branch)} />
-              <FaXmark className={styles.actionDelete} onClick={() => onDelete(branch.id)} />
+              <FaXmark className={styles.actionDelete} onClick={() => onDelete(branch)} />
             </td>
           </tr>
         ))}

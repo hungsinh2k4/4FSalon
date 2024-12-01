@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface EmployeesTableProps {
   employees: Employee[];
-  onDelete: (id: number) => void;
+  onDelete: (employee: Employee) => void;
   onEdit: (employee: Employee) => void;
 }
 
@@ -70,7 +70,7 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({ employees, onDelete, on
             <td>{employee.work_position}</td>
             <td className={styles.actionList}>
               <FaPen className={styles.actionEdit} onClick={() => onEdit(employee)}/> 
-              <FaXmark className={styles.actionDelete} onClick={() => onDelete(employee.id)}/>
+              <FaXmark className={styles.actionDelete} onClick={() => onDelete(employee)}/>
             </td>
           </tr>
         ))}

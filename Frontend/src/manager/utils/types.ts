@@ -91,8 +91,7 @@ export interface User {
     id: number;
     name: string;
     address: string;
-    seats: number;
-    facilities: string;
-    // Thêm các trường khác nếu cần
+    phone: string;
+    email: string;
   }
   
