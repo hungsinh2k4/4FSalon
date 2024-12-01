@@ -2,8 +2,7 @@
 import React, { useState } from 'react';
 import Input from '../common/Input';
 import Button from '../common/Button';
-import styles from './ServiceForm.module.css';
-
+import styles from './formcss.module.css';
 interface ServiceFormProps {
   initialData?: {
     id: number;
@@ -31,7 +30,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ initialData, onSubmit, type }
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.serviceForm}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <Input
         label="Tên dịch vụ"
         type="text"
@@ -60,7 +59,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({ initialData, onSubmit, type }
         onChange={(e) => setEstimateTime(Number(e.target.value))}
         required
       />
-      <Button type="submit">{type}</Button>
+      <Button type="submit" className={styles.submitButton}>{type}</Button>
     </form>
   );
 };

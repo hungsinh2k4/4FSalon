@@ -10,7 +10,7 @@ import { Service } from '../../utils/types';
 
 interface ServicesTableProps {
   services: Service[];
-  onDelete: (id: number) => void;
+  onDelete: (service: Service) => void;
   onEdit: (service: Service) => void;
 }
 
@@ -65,7 +65,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
               <td>{service.estimate_time} phút</td>
               <td className={styles.actionList}>
                 <FaPen className={styles.actionEdit} onClick={() => onEdit(service)}/> 
-                <FaXmark className={styles.actionDelete} onClick={() => onDelete(service.id)}/>
+                <FaXmark className={styles.actionDelete} onClick={() => onDelete(service)}/>
               </td>
             </tr>
           ))}

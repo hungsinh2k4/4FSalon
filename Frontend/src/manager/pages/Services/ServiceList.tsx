@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import ServicesTable from '../../components/tables/ServicesTable';
 import styles from '../../components/common/global.module.css';
 import Modal from '../../components/common/Modal';
+import ModalWaiting from '../../components/common/ModalWaiting';
+
 import ServiceForm from '../../components/forms/ServiceForm';
 import { fetchServices, removeService, addService, editService } from '../../services/serviceService';
 import { Service } from '../../utils/types';
@@ -15,30 +17,35 @@ const ServiceList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
+  const [isModalWaitingOpen, setIsModalWaitingOpen] = useState<boolean>(false);
+
   const [currentService, setCurrentService] = useState<Service | null>(null); 
   const [page, setPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [rowPerPage, setRowPerPage] = useState<number>(10);
 
   const [filterTerm, setFilterTerm] = useState('');
-  const [sortedField, setSortedField] = useState<{ key: keyof Service; direction: 'asc' | 'desc' }>({ key: 'id', direction: 'asc' });
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
-  const handleSort = (key: keyof Service) => {
-    let direction: 'asc' | 'desc' = 'asc';
-    if (sortedField.key === key && sortedField.direction === 'asc') {
-      direction = 'desc';
-    }
-    setSortedField({ key, direction });
-    const sorted = [...services].sort((a, b) => {
-      const valueA = a[key];
-      const valueB = b[key];
-      if (valueA === null || valueB === null) return 0;
-      if (valueA < valueB) return direction === 'asc' ? -1 : 1;
-      if (valueA > valueB) return direction === 'asc' ? 1 : -1;
-      return 0;
-    });
-    setServices(sorted);
+  
+  const [historyItems, setHistoryItems] = useState<Array<{
+    id: number,
+    message: string,
+    type: string,
+  }>>([]);
+  
+  const addHistoryItem = (message: string, type: string) => {
+    const newItem = {
+      id: Date.now(),
+      message,
+      type
+    };
+    setHistoryItems(prev => [...prev, newItem]);
+    setTimeout(() => {
+      setHistoryItems(prev => prev.filter(item => item.id !== newItem.id));
+    }, 5000);
   };
+
+  
   const filteredServices = services.filter(service =>
     service.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
     service.price.toString().includes(filterTerm)
@@ -66,17 +73,12 @@ const ServiceList: React.FC = () => {
     loadServices();
   }, []);
 
-  const handleDelete = async (id: number) => {
-    if (window.confirm('Bạn có chắc chắn muốn xóa dịch vụ này?')) {
-      try {
-        await removeService(id);
-        setServices(services.filter((service) => service.id !== id));
-      } catch (err) {
-        setError('Failed to delete service.');
-      }
-    }
+  
+  const handleDelete = (service: Service) => {
+    setCurrentService(service);
+    setIsModalDeleteOpen(true);
   };
-
+  
   const handleAdd = () => {
     setCurrentService(null);
     setIsModalOpen(true);
@@ -86,23 +88,38 @@ const ServiceList: React.FC = () => {
     setCurrentService(service);
     setIsModalOpen(true);
   };
-
+  const handleDeleteConfirm = async (id: number) => {
+    try {
+      await removeService(id);
+      setServices(services.filter((service) => service.id !== id));
+      addHistoryItem(`Đã xóa ${currentService?.title}`, 'deleted');
+    } catch (err) {
+      setError('Failed to delete service.');
+    }
+    setIsModalDeleteOpen(false);
+  };
   const handleFormSubmit = async (data: any) => {
     try {
+      setIsModalWaitingOpen(true);
       if (currentService) {
         // Edit service
         const editdService = await editService(currentService.id, data);
         setServices(
           services.map((service) => (service.id === editdService.id ? editdService : service))
         );
+        addHistoryItem(`Đã cập nhật ${data.title}`, 'edited');
       } else {
         // Add service
         const newService = await addService(data);
         setServices([...services, newService]);
+        addHistoryItem(`Đã thêm ${data.title}`, 'added');
       }
       setIsModalOpen(false);
+      setIsModalWaitingOpen(false);
     } catch (err) {
       setError('Failed to save service.');
+      addHistoryItem(`Đã có lỗi khi thao tác.`,'error');
+      setIsModalWaitingOpen(false);
     }
   };
   const handleSetPage = (page: number) => {
@@ -167,8 +184,8 @@ const ServiceList: React.FC = () => {
         <button onClick={() => handleNextPage()} disabled={page >= Math.ceil(filteredServices.length / rowPerPage)}> Next </button>
         <div className={styles.searchField}>
           <div>
-            <label>Tìm kiếm theo tên:</label>
             <input
+              className={styles.searchInput}
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -195,17 +212,59 @@ const ServiceList: React.FC = () => {
   }
   const renderEditModal = () => {
     return (
-      <>
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          title={currentService ? 'Chỉnh sửa nhân viên' : 'Thêm nhân viên'}
-        >
-          <ServiceForm initialData={currentService || undefined} onSubmit={handleFormSubmit} type={currentService ? 'Xác nhận Sửa' : 'Xác nhận Thêm'} />
-        </Modal>
-      </>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={currentService ? 'Chỉnh sửa dịch vụ' : 'Thêm dịch vụ'}
+      >
+        <ServiceForm initialData={currentService || undefined} onSubmit={handleFormSubmit} type={currentService ? 'Xác nhận Sửa' : 'Xác nhận Thêm'} />
+      </Modal>
     );
   }
+  const renderDeleteModal = () => {
+    return (
+      <Modal
+        isOpen={isModalDeleteOpen}
+        onClose={() => setIsModalDeleteOpen(false)}
+        title="Xác nhận xóa dịch vụ"
+      >
+        <div className={styles.modalActions}>
+          <button onClick={() => currentService && handleDeleteConfirm(currentService.id)}>Xóa</button>
+        </div>
+      </Modal>
+    );
+  }
+  const renderWaitingModal = () => {
+    return(
+      <ModalWaiting isOpen={isModalWaitingOpen}/>
+    )
+  }
+  const renderHistory = () => {
+    return (
+      <div className={styles.historyContainer}>
+        {historyItems.map((item) => {
+          if (item.type === 'error') {
+            return (
+              <div key={item.id} className={styles.historyItemError}>
+                <span>{item.message}</span>
+                <div 
+                  className={styles.progressBarError} 
+                />
+              </div>
+            );
+          }
+          return (
+            <div key={item.id} className={styles.historyItem}>
+              <span>{item.message}</span>
+              <div 
+                className={styles.progressBar} 
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
   if (loading) {
     return (
       <div className={styles.page}>
@@ -221,17 +280,19 @@ const ServiceList: React.FC = () => {
               + Thêm dịch vụ
             </div>
         </div>
-        <p>Đang tải...</p>
+        <ModalWaiting isOpen={loading}/>  
       </div>
     );
   }
-  
   return (
     <div className={styles.page}>
       {renderHeader()}
       {renderPageSelect()}
       {renderEditModal()}
+      {renderWaitingModal()}
+      {renderDeleteModal()}
       {renderTable()}
+      {renderHistory()}
     </div>
   );
 };

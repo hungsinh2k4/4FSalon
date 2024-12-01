@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Input from '../common/Input';
 import Button from '../common/Button';
-import styles from './EmployeeForm.module.css';
+import styles from './formcss.module.css';
 
 interface EmployeeFormProps {
   initialData?: {
@@ -17,9 +17,10 @@ interface EmployeeFormProps {
     status: boolean
   };
   onSubmit: (data: any) => void;
+  type: string;
 }
 
-const EmployeeForm: React.FC<EmployeeFormProps> = ({ initialData, onSubmit }) => {
+const EmployeeForm: React.FC<EmployeeFormProps> = ({ initialData, onSubmit, type }) => {
   const [id, setId] = useState(initialData?.id || 10);
   const [name, setName] = useState(initialData?.name || '');
   const [phone, setPhone] = useState(initialData?.phone || '');
@@ -77,8 +78,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ initialData, onSubmit }) =>
         required
       />
 
-      <Button type="submit">Lưu</Button>
-    </form>
+      <Button type="submit" className={styles.submitButton}>{type}</Button>
+</form>
   );
 };
 

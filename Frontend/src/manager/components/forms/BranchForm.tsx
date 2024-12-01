@@ -2,29 +2,33 @@
 import React, { useState } from 'react';
 import Input from '../common/Input';
 import Button from '../common/Button';
-import styles from './BranchForm.module.css';
+import styles from './formcss.module.css';
 
 interface BranchFormProps {
   initialData?: {
+    id: number;
     name: string;
     address: string;
-    seats: number;
-    facilities: string;
-    // Thêm các trường cần thiết
+    phone: string;
+    email: string;
+    status: boolean;
   };
   onSubmit: (data: any) => void;
+  type: string;
 }
 
-const BranchForm: React.FC<BranchFormProps> = ({ initialData, onSubmit }) => {
+const BranchForm: React.FC<BranchFormProps> = ({ initialData, onSubmit, type }) => {
+  const [id, setId] = useState(initialData?.id || 10);
   const [name, setName] = useState(initialData?.name || '');
   const [address, setAddress] = useState(initialData?.address || '');
-  const [seats, setSeats] = useState(initialData?.seats || 0);
-  const [facilities, setFacilities] = useState(initialData?.facilities || '');
+  const [phone, setPhone] = useState(initialData?.phone || '');
+  const [email, setEmail] = useState(initialData?.email || '');
+  const [status, setStatus] = useState(initialData?.status || true);
   // Thêm các state cho các trường khác
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data = { name, address, seats, facilities /* Thêm các trường khác */ };
+    const data = {id,  name, address, phone, email, status   };
     onSubmit(data);
   };
 
@@ -45,21 +49,20 @@ const BranchForm: React.FC<BranchFormProps> = ({ initialData, onSubmit }) => {
         required
       />
       <Input
-        label="Số ghế"
-        type="number"
-        value={seats}
-        onChange={(e) => setSeats(Number(e.target.value))}
+        label="Số điện thoại"
+        type="text"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
         required
       />
       <Input
-        label="Cơ sở vật chất"
+        label="Email"
         type="text"
-        value={facilities}
-        onChange={(e) => setFacilities(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         required
       />
-      {/* Thêm các Input khác */}
-      <Button type="submit">Lưu</Button>
+      <Button type="submit">{type}</Button>
     </form>
   );
 };
