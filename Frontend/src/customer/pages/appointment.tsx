@@ -396,7 +396,9 @@ const Appointment = () => {
                     <p className="text-gray-600">
                       Dịch vụ:{" "}
                       <span className="font-semibold">
-                        {appointment.service ? appointment.service.title : "Không xác định"}
+                        {appointment.service
+                          ? appointment.service.title
+                          : "Không xác định"}
                       </span>
                     </p>
                     <p className="text-gray-600">
@@ -414,7 +416,9 @@ const Appointment = () => {
                     <p className="text-gray-600">
                       Địa chỉ:{" "}
                       <span className="font-semibold">
-                        {appointment.branch ? appointment.branch.address : "Không xác định"}
+                        {appointment.branch
+                          ? appointment.branch.address
+                          : "Không xác định"}
                       </span>
                     </p>
                     <p className="text-gray-600">
@@ -505,7 +509,9 @@ const Appointment = () => {
                                 Dịch vụ:
                               </span>
                               <span className="text-gray-800 font-semibold">
-                                {selectedAppointment?.service ? selectedAppointment?.service?.title : "Không xác định"}
+                                {selectedAppointment?.service
+                                  ? selectedAppointment?.service?.title
+                                  : "Không xác định"}
                               </span>
                             </div>
                             <div className="flex justify-between">

@@ -133,6 +133,15 @@ class AuthService {
       throw error;
     }
   }
+
+  public async forgotPassword(email: string): Promise<void> {
+    try {
+      await axiosInstance.post(`/auth/forgot-password`, { email });
+    } catch (error: any) {
+      console.error("Forgot password failed:", error);
+      throw error;
+    }
+  }
 }
 
 const authService = AuthService.getInstance();
