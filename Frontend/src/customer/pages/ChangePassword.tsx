@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import authService from "../services/authService";
+import { useLocation } from "react-router-dom";
+
 const ChangePassword: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const location = useLocation();
+
+  const getLinkClass = (path: string) => {
+    return location.pathname === path
+      ? "nav-items text-blue-400 border-b-2 border-blue-200"
+      : "text-gray-600 hover:text-blue-400 hover:border-b-2 hover:border-blue-200";
+  };
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,13 +41,18 @@ const ChangePassword: React.FC = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="mt-6 flex space-x-4 mx-4 mb-4">
-        <Link to="/" className="text-blue-600 hover:underline">
-          Home /
+        <Link to="/" className={getLinkClass("/")}>
+          Home
         </Link>
-        <Link to="/profile" className="text-blue-600 hover:underline">
-          Profile /
+        <p>/</p>
+        <Link to="/profile" className={getLinkClass("/profile")}>
+          Profile
         </Link>
-        <Link to="/change-password" className="text-blue-600 hover:underline">
+        <p>/</p>
+        <Link
+          to="/change-password"
+          className={getLinkClass("/change-password")}
+        >
           Change Password
         </Link>
       </div>

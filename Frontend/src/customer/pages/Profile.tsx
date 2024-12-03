@@ -3,11 +3,19 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import authService from "../services/authService";
 import { User } from "../utils/types"; // Đảm bảo bạn đã import đúng
+import { useLocation } from "react-router-dom";
 
 const Profile: React.FC = () => {
   const { user, setUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [tempUser, setTempUser] = useState<User | null>(user);
+  const location = useLocation();
+
+  const getLinkClass = (path: string) => {
+    return location.pathname === path
+      ? "nav-items text-blue-400 border-b-2 border-blue-200"
+      : "text-gray-600 hover:text-blue-400 hover:border-b-2 hover:border-blue-200";
+  };
 
   useEffect(() => {
     if (user) {
@@ -48,21 +56,23 @@ const Profile: React.FC = () => {
       <div className="mt-6 flex space-x-4 mx-4 mb-4">
         <Link
           to="/"
-          className="text-gray-600 hover:text-blue-400 hover:underline"
+          className={getLinkClass("/")}
+          // className="text-gray-600 hover:text-blue-400 hover:underline"
         >
           Home
         </Link>
         <p>/</p>
         <Link
           to="/profile"
-          className="text-gray-600 hover:text-blue-400 hover:underline"
+          className={getLinkClass("/profile")}
+          // className="text-gray-600 hover:text-blue-400 hover:underline"
         >
           Profile
         </Link>
         <p>/</p>
         <Link
           to="/change-password"
-          className="text-gray-600 hover:text-blue-400 hover:underline"
+          className={getLinkClass("/change-password")}
         >
           Change Password
         </Link>
