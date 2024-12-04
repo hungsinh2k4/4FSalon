@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
     setIsOpen(false);
   };
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <nav className="bg-white p-4 sticky top-0 left-0 shadow-md z-10">

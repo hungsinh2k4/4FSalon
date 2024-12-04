@@ -16,7 +16,7 @@ import "aos/dist/aos.css";
 const Home: React.FC = () => {
   const stylistContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    AOS.init({ duration: 1000 });
+    AOS.init({ once: true });
     window.scrollTo(0, 0);
   }, []);
 
