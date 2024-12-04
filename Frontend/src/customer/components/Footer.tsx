@@ -6,6 +6,7 @@ import "aos/dist/aos.css";
 const Footer: React.FC = () => {
   useEffect(() => {
     AOS.init({ once: true });
+    window.scrollTo(0, 0);
   }, []);
 
   return (
