@@ -2,6 +2,7 @@
 import axiosInstance from "../api/axiosInstance";
 import { User } from "../utils/types";
 import { getUser, updateUser } from "../api/user";
+import { useAuth } from "../context/AuthContext";
 
 interface LoginResponse {
   access_token: string;
@@ -106,7 +107,7 @@ class AuthService {
     }
   }
 
-  public async updateProfile(userData: any): Promise<void> {
+  public async updateProfile(userData: any): Promise<any> {
     try {
       await axiosInstance.patch(`/api/users/profile`, userData);
       const user = await updateUser(userData);
