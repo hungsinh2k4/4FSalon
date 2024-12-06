@@ -3,6 +3,8 @@ import axiosInstance from "../api/axiosInstance";
 import { User } from "../utils/types";
 import { getUser, updateUser } from "../api/user";
 import { set } from "rsuite/esm/internals/utils/date";
+import { useAuth } from "../context/AuthContext";
+
 
 interface LoginResponse {
   access_token: string;
