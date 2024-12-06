@@ -98,6 +98,11 @@ export interface MyAppointment {
   updated_at: string;
 }
 
+export interface Schedule {
+  start_time: string;
+  estimated_end_time: string;
+}
+
 export interface Employee {
     id: number;
   name: string;

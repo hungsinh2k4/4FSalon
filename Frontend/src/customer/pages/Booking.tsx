@@ -8,9 +8,17 @@ import {
   faTicket,
   faUserCheck,
 } from "@fortawesome/free-solid-svg-icons";
-type Schedule = { start_time: string; estimated_end_time: string }[];
 
-import { Branch, Employee, Service, Voucher, User, Appointment, Customer} from "../utils/types";
+import {
+  Branch,
+  Employee,
+  Service,
+  Voucher,
+  User,
+  Appointment,
+  Customer,
+  MyAppointment,
+} from "../utils/types";
 import ServiceList from "../components/Booking/ServiceList";
 import BranchList from "../components/Booking/BranchList";
 import TimePicker from "../components/Booking/TimePicker";
@@ -20,15 +28,20 @@ import { useNavigate } from "react-router-dom";
 import { fetchBranches } from "../services/Booking/BookingService";
 import { fetchEmployeebyBranchId } from "../services/Booking/employeeService";
 import { fetchServices } from "../services/Booking/serviceService";
-// import { addBranch } from "../services/Booking/appointment";
 import { useAuth } from "../context/AuthContext";
 import VoucherList from "../components/Booking/VoucherList";
 import { addAppointment } from "../services/Booking/appointment";
 import EmployeeList from "../components/Booking/EmployeeList";
 import { fetchVoucherbyBranchId } from "../services/Booking/VoucherService";
 import { getEmployeeSchedule } from "../api/employees";
-import { getUser, getCustomerProfileByUserId } from "../api/user";
-
+import {
+  getUser,
+  getCustomerProfileByUserId,
+  getAppointmentList,
+} from "../api/user";
+import { Schedule } from "../utils/types";
+import { useSearchParams } from "react-router-dom";
+import { beautifyTime } from "../utils/helpers";
 
 const Booking: React.FC = () => {
   const [branches, setBranches] = useState<Branch[]>([]);
@@ -36,10 +49,11 @@ const Booking: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [viewType, setViewType] = useState("branches");
-  const [stores, setStores] = useState([]);
   const [services, setServices] = useState<Service[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
+    null
+  );
   const [voucher, setVoucher] = useState<Voucher[]>([]);
   const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
@@ -55,40 +69,82 @@ const Booking: React.FC = () => {
   const [userprofile, setUserProfile] = useState<User | null>(null);
   const [customerprofile, setCustomerProfile] = useState<Customer | null>(null);
   const [message, setMessage] = useState("");
-  const [schedule, setSchedule] = useState<Schedule>([]);
+  const [schedule, setSchedule] = useState<Schedule[]>([]);
   const [totalPayment, setTotalPayment] = useState(0);
-  const [selectedStartTimeDate, setSelectedStartTimeDate] = useState<Date | null>(null);
-  const [selectedEndTimeDate, setSelectedEndTimeDate] = useState<Date | null>(null);
-  const [selectedDate, setSelectedDate] = useState(() => {
+  const [selectedStartTimeDate, setSelectedStartTimeDate] =
+    useState<Date | null>(null);
+  const [selectedEndTimeDate, setSelectedEndTimeDate] = useState<Date | null>(
+    null
+  );
 
-  type OptionType = "today" | "tomorrow"; 
-
-  const defaultOption: OptionType = "today"; 
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  if (defaultOption === "today") {
-    return today;
-  } else if (defaultOption === "tomorrow") {
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    return tomorrow;
-  }
-});
-
-const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  if (e.target.value === "today") {
-    setSelectedDate(today); 
-  } else if (e.target.value === "tomorrow") {
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-    setSelectedDate(tomorrow);
-  }
-};
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (selectedBranch) {
+      setErrorBranch("");
+    }
+  });
+
+  const [searchParams] = useSearchParams();
+  const appointmentId = searchParams.get("appointment_id");
+
+  useEffect(() => {
+    const loadCurrentAppointment = async () => {
+      const data = await getAppointmentList("id=" + appointmentId);
+      if (data[0]?.status === "cancelled" || data[0]?.status === "completed") {
+        navigate(`/appointment?id=${appointmentId}`);
+      }
+      if (data[0]?.branch) {
+        setSelectedBranch(data[0].branch);
+      }
+      if (data[0]?.service) {
+        setSelectedService(data[0].service);
+      }
+      if (data[0]?.employee) {
+        setSelectedEmployee(data[0].employee);
+      }
+      if (data[0]?.date) {
+        setSelectedDate(new Date(data[0].date));
+      }
+      if (data[0]?.start_time) {
+        setSelectedTime(data[0].start_time);
+      }
+    };
+
+    if (appointmentId) {
+      loadCurrentAppointment();
+    }
+  }, [appointmentId]);
+
+  const [selectedDate, setSelectedDate] = useState(() => {
+    type OptionType = "today" | "tomorrow";
+
+    const defaultOption: OptionType = "today";
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (defaultOption === "today") {
+      return today;
+    } else if (defaultOption === "tomorrow") {
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      return tomorrow;
+    }
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (e.target.value === "today") {
+      setSelectedDate(today);
+    } else if (e.target.value === "tomorrow") {
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      setSelectedDate(tomorrow);
+    }
+  };
+
   useEffect(() => {
     if (selectedDate && selectedTime) {
       // Tách giờ và phút từ selectedTime
@@ -98,31 +154,38 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       const startDateTime = new Date(selectedDate);
       startDateTime.setHours(hours, minutes, 0, 0); // Cập nhật giờ, phút
 
-      console.log("Start date time:", startDateTime);
       setSelectedStartTimeDate(startDateTime);
 
       // Tính toán selectedEndTimeDate bằng cách cộng estimatedTime
-      console.log("Selected service:", selectedService);
       if (selectedService) {
         const endDateTime = new Date(startDateTime);
-        endDateTime.setMinutes(endDateTime.getMinutes() + Number(selectedService?.estimate_time).valueOf());
+        endDateTime.setMinutes(
+          endDateTime.getMinutes() +
+            Number(selectedService?.estimate_time).valueOf()
+        );
         setSelectedEndTimeDate(endDateTime);
       }
     }
-    console.log("Selected end time:", selectedDate?.toISOString());
   }, [selectedDate, selectedTime, selectedService]);
 
+
+  const resetState = () => {
+    setSelectedEmployee(null);
+    setSelectedService(null);
+    setSelectedVoucher(null);
+    setSelectedTime(null);
+    setSelectedDate(new Date());
+    setSelectedStartTimeDate(null);
+    setSelectedEndTimeDate(null);
+  };
+
   useEffect(() => {
-    const fetchUser = async () => { 
+    const fetchUser = async () => {
       try {
         const userData = await getUser();
-         console.log("User profile");
         setUserProfile(userData);
         setLoading(false);
-        console.log(userData);
         const customerData = await getCustomerProfileByUserId(userData.id);
-        console.log("Customer profile");
-        console.log(customerData);
         setCustomerProfile(customerData);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -131,15 +194,7 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     };
     fetchUser();
   }, []);
-  useEffect(() => {
-    if (!user) {
-      console.log("User not found");
-      setMessage("Vui lòng đăng nhập");
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000); // Chuyển hướng sau 3 giây
-    }
-  }, [user, navigate]);
+
   //Branch
   useEffect(() => {
     const loadBranches = async () => {
@@ -147,11 +202,8 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       try {
         const data = await fetchBranches();
         setBranches(data);
-        console.log("Branch");
-        console.log(data);
         const d = new Date();
         const date = d.toISOString();
-        console.log("Date now" + date);
       } catch (err) {
         setError("Failed to fetch branches.");
       } finally {
@@ -167,11 +219,7 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setLoading(true);
       try {
         const data = await fetchVoucherbyBranchId(selectedBranch?.id);
-        const newVoucher: Voucher = data
-        setVoucher([newVoucher]); // Replace the current state with an array containing the new voucher
-        setVoucher(data);
-        console.log("Voucher");
-        console.log(data);
+        setVoucher(Array.isArray(data) ? data : []);
       } catch (err) {
         setError("Failed to fetch branches.");
       } finally {
@@ -186,9 +234,11 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setLoading(true);
       try {
         const data = await fetchEmployeebyBranchId(selectedBranch?.id);
-        setEmployees(data);
-        console.log("Employee");
-        console.log(data);
+        if (Array.isArray(data)) {
+          setEmployees(data);
+        } else {
+          setError("Failed to fetch employees.");
+        }
       } catch (err) {
         setError("Failed to fetch branches.");
       } finally {
@@ -198,19 +248,18 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     loadEmployees();
   }, [selectedBranch]);
 
-  //Service
+  //Schedule
   useEffect(() => {
     const loadSchedule = async () => {
-      if (!selectedEmployee?.id) return; // Nếu không có ID, không làm gì cả
+      if (!selectedEmployee?.id) return; // If no ID, do nothing
       setLoading(true);
       try {
         const data = await getEmployeeSchedule(
           selectedEmployee?.id,
           selectedDate
         );
+
         setSchedule(data);
-        console.log("Schedule");
-        console.log(data);
       } catch (err) {
         setError("Failed to fetch schedule.");
       } finally {
@@ -219,21 +268,20 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     };
 
     loadSchedule();
-  }, [selectedEmployee]);
+  }, [selectedEmployee, selectedDate]);
+
   useEffect(() => {
-  if (!selectedService) {
-    setSelectedVoucher(null); 
-  }
-}, [selectedService]);
- 
+    if (!selectedService) {
+      setSelectedVoucher(null);
+    }
+  }, [selectedService]);
+
   useEffect(() => {
     const loadServices = async () => {
       setLoading(true);
       try {
         const data = await fetchServices();
         setServices(data);
-        console.log("Service");
-        console.log(data);
       } catch (err) {
         setError("Failed to fetch branches.");
       } finally {
@@ -243,12 +291,12 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     loadServices();
   }, []);
 
-    useEffect(() => {
-      const servicePrice = selectedService?.price ?? 0;
-      const voucherDiscount = selectedVoucher?.discount_value ?? 0;
-      setTotalPayment(servicePrice - voucherDiscount);
-    }, [selectedService, selectedVoucher]);
-    //total price
+  useEffect(() => {
+    const servicePrice = selectedService?.price ?? 0;
+    const voucherDiscount = selectedVoucher?.discount_value ?? 0;
+    setTotalPayment(servicePrice - voucherDiscount);
+  }, [selectedService, selectedVoucher]);
+  //total price
   useEffect(() => {
     // Lọc danh sách cửa hàng dựa vào searchTerm
     setBranches(
@@ -311,18 +359,13 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     } else {
       setErrorService(null);
     }
-    if(!selectedTime){
+    if (!selectedTime) {
       setErrorTime("Vui lòng chọn thời gian");
       hasError = true;
     } else {
       setErrorTime(null);
     }
-    let hours = "";
-    let minutes = "";
 
-    if (selectedTime) {
-      [hours, minutes] = selectedTime.split(":");
-    }
     if (hasError) return;
     try {
       // Gửi API
@@ -338,12 +381,18 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         branch_id: selectedBranch?.id,
         status: "Pending",
       });
-      
+
       setSuccessInfo({
         service: " " + selectedService?.title,
         employee: " " + selectedEmployee?.name,
         address: " " + selectedBranch?.address,
-        time: " " + selectedDate?.toLocaleDateString() + ", " + String(selectedStartTimeDate?.getHours) + " - " + String(selectedEndTimeDate?.getHours),
+        time:
+          " " +
+          selectedDate?.toLocaleDateString() +
+          ", " +
+          String(selectedStartTimeDate?.getHours) +
+          " - " +
+          String(selectedEndTimeDate?.getHours),
         price: " " + totalPayment + "đ",
         status: "Chờ xác nhận",
       });
@@ -355,7 +404,6 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   // Hàm xử lý khi thời gian được chọn
   const handleTimeSelect = (time: string | null) => {
     setSelectedTime(time);
-    console.log("Selected time:", time);
   };
 
   return (
@@ -382,12 +430,17 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                     ? "bg-blue-500 text-white font-bold"
                     : "bg-gray-200 hover:bg-blue-500"
                 }`}
-                onClick={() => setViewType("branches")}
+                onClick={() => {
+                  setViewType("branches"), setErrorBranch("");
+                }}
               >
                 <FontAwesomeIcon icon={faLocationDot} className="mr-2" />
-                Chọn địa chỉ chi nhánh
+                <span>
+                  {selectedBranch ? selectedBranch.address : "Chọn chi nhánh"}
+                </span>
               </button>
             </div>
+            {errorBranch && <p className="text-red-500 mt-2">{errorBranch}</p>}
           </div>
 
           {/* Chọn dịch vụ */}
@@ -400,19 +453,44 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                     ? "bg-blue-500 text-white font-bold"
                     : "bg-gray-200 hover:bg-blue-500"
                 }`}
-                onClick={() => setViewType("services")}
+                onClick={() => {
+                  if (!selectedBranch) {
+                    setErrorBranch("Vui lòng chọn chi nhánh trước");
+                    return;
+                  }
+                  
+                  setViewType("services");
+                  setErrorService("");
+                }}
               >
                 <FontAwesomeIcon icon={faScissors} className="mr-2" />
-                Chọn dịch vụ với nhiều ưu đãi hấp dẫn
+                {selectedService
+                  ? selectedService.title
+                  : "Chọn dịch vụ với nhiều ưu đãi hấp dẫn"}
               </button>
             </div>
+            {errorService && (
+              <p className="text-red-500 mt-2">{errorService}</p>
+            )}
             <button
               className={`inline-flex items-center px-2 py-2 border rounded-lg mt-8 text-left ${
                 viewType === "voucher"
                   ? "bg-blue-500 text-white font-bold"
                   : "bg-gray-200 hover:bg-blue-500"
               }`}
-              onClick={() => setViewType("voucher")}
+              onClick={() => {
+
+                if (!selectedBranch || !selectedService) {
+                  if (!selectedBranch) {
+                    setErrorBranch("Vui lòng chọn chi nhánh trước");
+                  }
+                  if (!selectedService) {
+                    setErrorService("Vui lòng chọn dịch vụ trước");
+                  }
+                  return;
+                }
+
+                setViewType("voucher")}}
             >
               <FontAwesomeIcon icon={faTicket} className="mr-2" />
               Voucher
@@ -431,20 +509,36 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
             <h2 className="text-3xl font-bold mb-1">
               2. Chọn ngày giờ & nhân viên
             </h2>
-            <div className="flex items-center pb-4">
+            <div className="flex items-center mb-1">
               <button
                 className={`inline-block px-2 py-2 border rounded-lg mt-4 w-fit ${
                   viewType === "employees"
                     ? "bg-blue-500 text-white font-bold"
                     : "bg-gray-200 hover:bg-blue-500"
                 }`}
-                onClick={() => setViewType("employees")}
-                disabled={!selectedBranch}
+                onClick={() => {
+                  if (!selectedBranch || !selectedService) {
+                    if (!selectedBranch) {
+                      setErrorBranch("Vui lòng chọn chi nhánh trước");
+                    }
+                    if (!selectedService) {
+                      setErrorService("Vui lòng chọn dịch vụ trước");
+                    }
+                    return;
+                  }
+
+                  setViewType("employees");
+                  setErrorEmployee("");
+                }}
+                // disabled={!selectedBranch || !selectedService}
               >
                 <FontAwesomeIcon icon={faUserCheck} className="mr-2" />
                 Chọn nhân viên
               </button>
             </div>
+            {errorEmployee && (
+              <p className="text-red-500 mb-2">{errorEmployee}</p>
+            )}
             <div>
               <select
                 className="p-2 border rounded-lg flex-grow text-left"
@@ -464,7 +558,13 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                 })}
               </p>
             </div>
-            <TimePicker onTimeSelect={handleTimeSelect} schedule={schedule} />
+            <TimePicker
+              onTimeSelect={handleTimeSelect}
+              schedule={schedule}
+              isDisplaying={selectedEmployee == null ? false : true}
+              setErrorTime={setErrorTime}
+            />
+            {errorTime && <p className="text-red-500 mt-2">{errorTime}</p>}
           </div>
 
           <button
@@ -473,11 +573,11 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
           >
             Xác nhận lịch hẹn
           </button>
-          {errorEmployee && (
+          {/* {errorEmployee && (
             <p className="text-red-500 mt-2">{errorEmployee}</p>
-          )}
-          {errorBranch && <p className="text-red-500 mt-2">{errorBranch}</p>}
-          {errorService && <p className="text-red-500 mt-2">{errorService}</p>}
+          )} */}
+          {/* {errorBranch && <p className="text-red-500 mt-2">{errorBranch}</p>} */}
+          {/* {errorService && <p className="text-red-500 mt-2">{errorService}</p>} */}
           {successInfo && (
             <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -532,6 +632,7 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
               branches={branches}
               selectedBranch={selectedBranch}
               setSelectedBranch={setSelectedBranch}
+              resetState={resetState}
             />
 
             <ServiceList

@@ -27,6 +27,12 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: 'hsl(194, 50%, 90%)',
+        secondary: 'hsl(194, 50%, 10%)',
+        tertiary: 'hsl(254, 80%, 20%)',
+        accent: 'hsl(134, 80%, 20%)',
+      },
     },
   },
   

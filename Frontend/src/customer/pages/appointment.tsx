@@ -23,6 +23,9 @@ import Modal from "../components/Modal";
 import map from "../assets/Appointment/map-marker-svgrepo-com.svg";
 import mail from "../assets/Appointment/email-mail-svgrepo-com.svg";
 import phone from "../assets/Appointment/phone-svgrepo-com.svg";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { set } from "rsuite/esm/internals/utils/date";
 
 const goodBranchOptions = [
   "Sạch sẽ",
@@ -79,6 +82,8 @@ const Appointment = () => {
 
   const { user } = useAuth();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     setLoading(true);
     setError(false);
@@ -87,6 +92,7 @@ const Appointment = () => {
         const data = await getAppointmentList(
           `user_id=${user?.id}&have_feedback=true&order=desc`
         );
+
         setAppointmentList(data);
       } catch (err) {
         setError(true);
@@ -111,6 +117,73 @@ const Appointment = () => {
       </div>
     );
   };
+
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const isShowingFeedback = searchParams.get("feedback");
+
+  console.log(id, isShowingFeedback);
+
+  useEffect(() => {
+    if (id == null && isShowingFeedback == null) {
+      setShowFeedback(false);
+      setShowDetails(false);
+    }
+  }, [id, isShowingFeedback]);
+
+  useEffect(() => {
+    if(id && isShowingFeedback == null) {
+      setShowFeedback(false);
+      setShowDetails(true);
+    }
+  })
+
+  useEffect(() => {
+    
+  });
+
+  useEffect(() => {
+    if (id && selectedAppointment === null) {
+      setShowFeedback(false);
+      setShowDetails(true);
+      console.log(showDetails);
+
+      const loadAppointmentList = async () => {
+        await getAppointmentList(`id= ${id}&have_feedback=true`).then(
+          (data) => {
+            setSelectedAppointment(data[0]);
+            setNotHaveFeedback(data[0].feedback ? false : true);
+            setFeedback(data[0].feedback);
+
+            if (isShowingFeedback) {
+              const feedbackReloadHandle = async () => {
+                if (data[0].feedback) {
+                  handleBranchRating(data[0].feedback.branch_rating ?? 0);
+                  handleEmployeeRating(data[0].feedback.employee_rating ?? 0);
+                  if (data[0].feedback.branch_feedback) {
+                    setSelectedBranchChips(
+                      data[0].feedback.branch_feedback.split(", ")
+                    );
+                  }
+
+                  if (data[0].feedback.employee_feedback) {
+                    setSelectedEmployeeChips(
+                      data[0].feedback.employee_feedback.split(", ")
+                    );
+                  }
+                  setNotHaveFeedback(data[0].feedback ? false : true);
+                }
+              };
+              feedbackReloadHandle();
+              setShowFeedback(true);
+              setShowDetails(false);
+            }
+          }
+        );
+      };
+      loadAppointmentList();
+    }
+  }, [id, isShowingFeedback, selectedAppointment, feedback]);
 
   const handleBranchChipChange = (label: string) => {
     setSelectedBranchChips((prevSelectedChips) =>
@@ -179,6 +252,7 @@ const Appointment = () => {
     setShowDetails(true);
     clearBranchChips();
     clearEmployeeChips();
+    navigate("/appointment?id=" + appointment.id);
   };
 
   const handleCancelAppointment = async () => {
@@ -206,17 +280,29 @@ const Appointment = () => {
     }
   };
 
+  const handleEditAppointment = async () => {
+    if (
+      selectedAppointment &&
+      selectedAppointment.status !== "cancelled" &&
+      selectedAppointment.status !== "completed"
+    ) {
+      navigate("/booking?appointment_id=" + selectedAppointment.id);
+    }
+  };
+
   const handleAppointmentListHeader = () => {
     setSelectedAppointment(null);
     setShowDetails(false);
     setShowFeedback(false);
     setNotHaveFeedback(true);
+    navigate("/appointment");
   };
 
   const handleDetailHeader = () => {
     if (selectedAppointment) {
       setShowDetails(true);
       setShowFeedback(false);
+      navigate("/appointment?id=" + selectedAppointment.id);
     }
   };
 
@@ -252,6 +338,7 @@ const Appointment = () => {
         setNotHaveFeedback(true);
       }
       setShowFeedback(true);
+      navigate("/appointment?id=" + selectedAppointment.id + "&feedback=true");
     }
   };
 
@@ -396,7 +483,9 @@ const Appointment = () => {
                     <p className="text-gray-600">
                       Dịch vụ:{" "}
                       <span className="font-semibold">
-                        {appointment.service ? appointment.service.title : "Không xác định"}
+                        {appointment.service
+                          ? appointment.service.title
+                          : "Không xác định"}
                       </span>
                     </p>
                     <p className="text-gray-600">
@@ -414,7 +503,9 @@ const Appointment = () => {
                     <p className="text-gray-600">
                       Địa chỉ:{" "}
                       <span className="font-semibold">
-                        {appointment.branch ? appointment.branch.address : "Không xác định"}
+                        {appointment.branch
+                          ? appointment.branch.address
+                          : "Không xác định"}
                       </span>
                     </p>
                     <p className="text-gray-600">
@@ -425,7 +516,7 @@ const Appointment = () => {
                     </p>
                     <div className="flex justify-end">
                       <button
-                        className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 rounded px-4 py-2 text-sm font-medium w-fit h-fit"
+                        className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 rounded px-4 py-2 text-sm font-medium w-fit h-fit"
                         onClick={() => handleDetailButton(appointment)}
                       >
                         Chi tiết
@@ -505,7 +596,9 @@ const Appointment = () => {
                                 Dịch vụ:
                               </span>
                               <span className="text-gray-800 font-semibold">
-                                {selectedAppointment?.service ? selectedAppointment?.service?.title : "Không xác định"}
+                                {selectedAppointment?.service
+                                  ? selectedAppointment?.service?.title
+                                  : "Không xác định"}
                               </span>
                             </div>
                             <div className="flex justify-between">
@@ -642,6 +735,20 @@ const Appointment = () => {
                           >
                             Hủy lịch
                           </button>
+
+                          <button
+                            className={`text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 rounded px-4 py-2 text-sm font-medium w-fit h-fit
+											${
+                        selectedAppointment.status === "cancelled" ||
+                        selectedAppointment.status === "completed"
+                          ? "hidden"
+                          : "block"
+                      }`}
+                            onClick={handleEditAppointment}
+                          >
+                            Đổi lịch
+                          </button>
+
                           <button
                             className={`text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 rounded px-4 py-2 text-sm font-medium w-fit h-fit
 											${selectedAppointment.status !== "completed" ? "hidden" : "block"}`}
@@ -804,6 +911,9 @@ const Appointment = () => {
                               onClick={() => {
                                 setShowFeedback(false);
                                 setShowDetails(true);
+                                navigate(
+                                  "/appointment?id=" + selectedAppointment?.id
+                                );
                               }}
                             >
                               Hủy
@@ -826,6 +936,9 @@ const Appointment = () => {
                               onClick={() => {
                                 setShowFeedback(false);
                                 setShowDetails(true);
+                                navigate(
+                                  "/appointment?id=" + selectedAppointment?.id
+                                );
                               }}
                             >
                               Quay lại

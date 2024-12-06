@@ -4,7 +4,7 @@ import { Feedback, MyAppointment, User,Customer } from "../utils/types";
 
 export const getUser = async (): Promise<User> => {
   const response = await axiosInstance.get<User>("api/users/profile");
-  console.log(response.data);
+  // console.log(response.data);
   return response.data;
 };
 export const createUser = async (data: Partial<User>): Promise<User> => {

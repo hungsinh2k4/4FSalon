@@ -1,6 +1,6 @@
 // src/manager/api/employees.ts
 import axiosInstance from './axiosInstance';
-import { Employee, Employee_date } from '../utils/types';
+import { Employee, Employee_date, Schedule } from '../utils/types';
 
 export const getEmployees = async (): Promise<Employee[]> => {
   const response = await axiosInstance.get('api/employees');
@@ -18,7 +18,7 @@ export const getEmployeeByBranchId = async (id: number | undefined): Promise<Emp
   return response.data;
 };
 
-export const getEmployeeSchedule = async (id: number | undefined, date : Date | undefined): Promise<Date[]> => {
+export const getEmployeeSchedule = async (id: number | undefined, date : Date | undefined): Promise<Schedule[]> => {
 const response = await axiosInstance.get(`api/employees/${id}/available/${date}`);
 return response.data;
 };
