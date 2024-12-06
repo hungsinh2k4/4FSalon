@@ -66,6 +66,7 @@ const Register: React.FC = () => {
         phoneNumber
       );
       console.log("Register success:", response);
+      navigate("/login");
     } catch (error: any) {
       console.error("Register failed:", error);
     }

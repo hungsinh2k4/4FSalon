@@ -12,6 +12,7 @@ import Profile from "./pages/Profile"; // Thêm tuyến đường cho Profile
 import ChangePassword from "./pages/ChangePassword"; // Thêm tuyến đường cho ChangePassword
 import FindNearestShop from "./pages/findNearestShop";
 import Appointment from "./pages/appointment";
+import NotFound from "./components/NotFound";
 
 const App: React.FC = () => {
   return (
@@ -29,6 +30,7 @@ const App: React.FC = () => {
             <Route path="/profile" element={<Profile />} />{" "}
             <Route path="/change-password" element={<ChangePassword />} />{" "}
             <Route path="/appointment" element={<Appointment />} />{" "}
+            <Route path="*" element={<NotFound />} />
             {/* Thêm tuyến đường cho Profile */}
           </Routes>
         </main>
