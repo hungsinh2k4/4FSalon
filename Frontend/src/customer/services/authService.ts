@@ -2,7 +2,7 @@
 import axiosInstance from "../api/axiosInstance";
 import { User } from "../utils/types";
 import { getUser, updateUser } from "../api/user";
-import { useAuth } from "../context/AuthContext";
+import { set } from "rsuite/esm/internals/utils/date";
 
 interface LoginResponse {
   access_token: string;
@@ -107,28 +107,49 @@ class AuthService {
     }
   }
 
-  public async updateProfile(userData: any): Promise<any> {
+  public async updateProfile(
+    name: string,
+    phone: string,
+    gender: string
+  ): Promise<{ user: User }> {
     try {
-      await axiosInstance.patch(`/api/users/profile`, userData);
-      const user = await updateUser(userData);
-      localStorage.setItem("user", JSON.stringify(user));
-    } catch (error: any) {
-      console.error(
-        "Update user failed:",
-        error.response ? error.response.data : error.message
+      const response = await axiosInstance.patch<{ user: User }>(
+        "/api/users/profile",
+        {
+          name,
+          phone,
+          gender,
+        }
       );
-      throw error;
+      return response.data;
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || "Cập nhật thất bại");
     }
   }
+
   public async changePassword(
-    currentPassword: string,
+    oldPassword: string,
     newPassword: string
-  ): Promise<void> {
+  ): Promise<string> {
     try {
-      await axiosInstance.post(`/auth/change-password`, {
-        currentPassword,
-        newPassword,
-      });
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token not found");
+      }
+      await axiosInstance.post(
+        `/auth/change-password`,
+        {
+          oldPassword,
+          newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return "Mật khẩu đã được thay đổi thành công.";
     } catch (error: any) {
       console.error("Change password failed:", error);
       throw error;
