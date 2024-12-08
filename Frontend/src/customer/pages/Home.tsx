@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HairCut from "../assets/HomeImg/HairCut.png";
 import Service2 from "../assets/HomeImg/Service2.png";
@@ -10,9 +10,15 @@ import Stylist3 from "../assets/HomeImg/Stylist3.png";
 import Stylist4 from "../assets/HomeImg/Stylist4.png";
 import Logo from "../assets/logo.png";
 import "./Home.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Home: React.FC = () => {
   const stylistContainerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    AOS.init({ once: true });
+    window.scrollTo(0, 0);
+  }, []);
 
   const scrollLeft = () => {
     if (stylistContainerRef.current) {
@@ -33,7 +39,10 @@ const Home: React.FC = () => {
     >
       {/* Main Content */}
 
-      <div className="flex flex-col items-center justify-center text-center py-64">
+      <div
+        className="flex flex-col items-center justify-center text-center py-64"
+        data-aos="fade-up"
+      >
         <h1 className="text-6xl font-bold text-white mb-2 ">4F SALON</h1>
         <div className="w-24 h-px bg-gray-300 my-4"></div>
         <p className="text-2xl font-semi-bold text-white">
@@ -42,44 +51,56 @@ const Home: React.FC = () => {
       </div>
 
       {/* Dịch Vụ */}
-      <section className="py-12 bg-white min-w-screen">
+      <section className="py-12 bg-white min-w-screen" data-aos="fade-up">
         <h2 className="text-4xl font-bold text-center mb-8">Dịch vụ</h2>
         <div className="container w-3/4 mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-            <div className="overflow-hidden rounded-lg flex items-center justify-center">
+          <div
+            className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center"
+            // data-aos="fade-up"
+          >
+            <div
+              className="overflow-hidden rounded-lg flex items-center justify-center"
+              data-aos="fade-up"
+            >
               <img
                 src={HairCut}
                 alt="Cắt tóc"
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h3 className="text-xl font-semibold mt-4">Cắt tóc</h3>
               <p className="text-gray-500 mt-2">Tìm hiểu thêm &gt;</p>
             </div>
           </div>
           <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-            <div className="overflow-hidden rounded-lg flex items-center justify-center">
+            <div
+              className="overflow-hidden rounded-lg flex items-center justify-center"
+              data-aos="fade-up"
+            >
               <img
                 src={Service2}
                 alt="Uốn tóc"
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h3 className="text-xl font-semibold mt-4">Uốn tóc</h3>
               <p className="text-gray-500 mt-2">Tìm hiểu thêm &gt;</p>
             </div>
           </div>
           <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-            <div className="overflow-hidden rounded-lg flex items-center justify-center">
+            <div
+              className="overflow-hidden rounded-lg flex items-center justify-center"
+              data-aos="fade-up"
+            >
               <img
                 src={Service3}
                 alt="Nhuộm tóc"
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h3 className="text-xl font-semibold mt-4">Nhuộm tóc</h3>
               <p className="text-gray-500 mt-2">Tìm hiểu thêm &gt;</p>
             </div>
@@ -89,11 +110,11 @@ const Home: React.FC = () => {
 
       {/* Khuyến mãi */}
       <div className="py-14">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" data-aos="fade-up">
           <h2 className="text-3xl font-semibold mb-4 text-white">Khuyến mãi</h2>
           <div className="bg-gray-800 rounded-lg p-7 flex flex-col md:flex-row items-center">
             {/* Ảnh */}
-            <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4">
+            <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4" data-aos="fade-up">
               <img
                 src={Khuyenmai}
                 alt="Khuyến mãi"
@@ -101,7 +122,7 @@ const Home: React.FC = () => {
               />
             </div>
             {/* Nội dung */}
-            <div className="md:w-2/3 text-left">
+            <div className="md:w-2/3 text-left" data-aos="fade-up">
               <h3 className="text-2xl font-semibold mb-2 text-white">
                 Cơ hội nhận ưu đãi dịch vụ thông qua điểm thành viên
               </h3>
@@ -116,6 +137,7 @@ const Home: React.FC = () => {
               <Link
                 to="/booking"
                 className="text-gray-900 mb-4 border border-white p-4 bg-white hover:bg-gray-900 hover:text-white transition-colors"
+                data-aos="fade-up"
               >
                 Đặt lịch ngay
               </Link>
@@ -126,11 +148,11 @@ const Home: React.FC = () => {
 
       {/* Gặp gỡ các stylist */}
 
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-white" data-aos="fade-up">
         <h2 className="text-4xl font-bold text-center mb-8">
           Gặp gỡ các stylist
         </h2>
-        <div className="relative w-[85%] mx-auto">
+        <div className="relative w-[85%] mx-auto" data-aos="fade-up">
           <button
             onClick={scrollLeft}
             className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center"
@@ -232,11 +254,15 @@ const Home: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3">
+      <div
+        className="container mx-auto grid grid-cols-1 md:grid-cols-3"
+        data-aos="fade-up"
+      >
         {/* Cột trái */}
         <div
           className="bg-cover bg-right p-6 text-white flex flex-col justify-center"
           style={{ backgroundImage: "url('/src/assets/Home Img/bottom.png')" }}
+          data-aos="fade-right"
         >
           <h2 className="text-4xl font-bold">
             <span className="text-blue-500">20% </span>OFF
@@ -245,7 +271,7 @@ const Home: React.FC = () => {
             <br />
             ĐẦU TIÊN
           </h2>
-          <p className="mt-8 font-bold">
+          <p className="mt-8 font-bold text-white">
             CALL US:
             <br />
             XXX XXX XXXX
@@ -256,13 +282,13 @@ const Home: React.FC = () => {
         <div className="bg-gray-300 p-8 flex flex-col items-center text-center">
           <h2 className="text-3xl font-bold mb-4">OUR STORY</h2>
           <img src={Logo} alt="Barber Logo" className="w-24 h-24 mb-4" />
-          <p className="mb-6">
+          <p className="mb-6" data-aos="fade-up">
             4F Salon – Nơi biến mái tóc thành ngôn ngữ của cá tính. Chúng tôi
             không chỉ cắt tóc, mà tạo nên phong cách. Đến với 4F Salon, bạn sẽ
             thấy sự khác biệt trong từng đường kéo, từng mái tóc. Hãy để chúng
             tôi giúp bạn tỏa sáng theo cách riêng của bạn.
           </p>
-          <Link to="/booking" className="text-blue-500">
+          <Link to="/booking" className="text-blue-500" data-aos="fade-up">
             <button className="bg-black text-white px-4 py-2 rounded hover:bg-white hover:text-gray-900 transition-colors">
               Đặt lịch ngay
             </button>
@@ -278,7 +304,7 @@ const Home: React.FC = () => {
             <h2 className="text-3xl font-bold mb-6 text-center">
               LỊCH LÀM VIỆC
             </h2>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 text-sm" data-aos="fade-up">
               {[
                 "Thứ hai",
                 "Thứ ba",

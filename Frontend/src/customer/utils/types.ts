@@ -3,10 +3,12 @@ export interface User {
   name: string;
   email: string;
   phone: string;
-  points: Int16Array;
+  points: number;
   avatar: string;
   isGoogleAccount: boolean;
   gender: string;
+  booking_count: number;
+  cancel_count: number;
   //   password: string;
   //   created_at: string;
   //   updated_at: string;
@@ -28,7 +30,7 @@ export interface Feedback {
 }
 
 export interface Voucher {
-  id : number;
+  id: number;
   code: string;
   description: string;
   discount_type: string;
@@ -48,7 +50,7 @@ export interface Service {
   title: string;
   price: number;
   estimate_time: string;
-  description : string;
+  description: string;
   // Thêm các trường khác nếu cần
 }
 
@@ -74,7 +76,7 @@ export interface Appointment {
   employee_id: Number;
   // Thêm các trường khác nếu cần
 }
-export interface Customer{
+export interface Customer {
   id: number;
   name: string;
   email: string;
@@ -104,7 +106,7 @@ export interface Schedule {
 }
 
 export interface Employee {
-    id: number;
+  id: number;
   name: string;
   email: string;
   phone: string;
@@ -113,7 +115,7 @@ export interface Employee {
   number_of_ratings: number;
   status: boolean;
   branch_id: number;
-   
+
   created_at: string;
   updated_at: string;
   deleted_at: string | null;

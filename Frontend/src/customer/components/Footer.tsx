@@ -1,11 +1,25 @@
-import React from "react";
+
+
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 
 const Footer: React.FC = () => {
+  useEffect(() => {
+    AOS.init({ once: true });
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <footer className="bg-white dark:bg-gray-900">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+
+        <div
+          className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3"
+          data-aos="fade-up"
+        >
           <div>
             <ul className="text-gray-500 dark:text-gray-400 font-medium">
               <li className="mb-4">
