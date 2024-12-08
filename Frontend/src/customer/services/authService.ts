@@ -158,12 +158,33 @@ class AuthService {
     }
   }
 
-  public async forgotPassword(email: string): Promise<void> {
+  public async forgotPassword(email: string): Promise<string> {
     try {
       await axiosInstance.post(`/auth/forgot-password`, { email });
+      return "Một email đã được gửi đến hòm thư của" + email;
     } catch (error: any) {
       console.error("Forgot password failed:", error);
       throw error;
+    }
+  }
+
+  public async resetPassword(
+    token: string,
+    newPassword: string
+  ): Promise<string> {
+    try {
+      console.log("token", token);
+      await axiosInstance.patch(`/auth/reset-password`, {
+        token,
+        newPassword,
+      });
+      return "Mật khẩu đã được đặt lại thành công.";
+    } catch (error: any) {
+      console.log("token", token);
+      console.error("Reset password failed:", error);
+      throw new Error(
+        error.response?.data?.message || "Không thể đặt lại mật khẩu."
+      );
     }
   }
 }
