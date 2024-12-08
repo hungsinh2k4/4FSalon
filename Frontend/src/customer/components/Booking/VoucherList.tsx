@@ -28,15 +28,7 @@ const VoucherList: React.FC<VoucherListProps> = ({
    const isPriceValid =(selectedService?.price ?? 0) >= voucher.price_threshold;
     const isPointsValid = (Number (user?.points) >= voucher.required_point);
 
-    console.log("isDateInRange", isDateInRange);
-    console.log("isPriceValid", isPriceValid);
-    console.log("isPointsValid", isPointsValid);
-    console.log("selectedService?.price", selectedService?.price);
-    console.log("voucher.price_threshold", voucher.price_threshold);
-    console.log("user?.point", user?.points);
-    console.log("voucher.required_point", voucher.required_point);
-    console.log("selectedDate", selectedDate);
-    console.log("startDate", startDate);
+    
     return isDateInRange && isPriceValid && isPointsValid;
   };
 
@@ -69,7 +61,7 @@ const VoucherList: React.FC<VoucherListProps> = ({
               />
             </div>
             <div className="flex-1 p-4">
-              <strong>{voucher.discount_type}</strong>
+              <strong>{voucher.code}</strong>
               <div className="text-sm text-gray-600">
                 {voucher.price_threshold}
               </div>

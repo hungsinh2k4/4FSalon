@@ -6,6 +6,7 @@ interface BranchListProps {
   branches: Branch[];
   selectedBranch: Branch | null;
   setSelectedBranch: (branch: Branch | null) => void;
+  resetState: () => void;
 }
 
 const BranchList: React.FC<BranchListProps> = ({
@@ -13,6 +14,7 @@ const BranchList: React.FC<BranchListProps> = ({
   branches,
   selectedBranch,
   setSelectedBranch,
+  resetState,
 }) => {
   if (viewType !== "branches") return null;
 
@@ -21,9 +23,10 @@ const BranchList: React.FC<BranchListProps> = ({
       {branches.map((branch) => (
         <button
           key={branch.id}
-          onClick={() =>
-            setSelectedBranch(selectedBranch?.id === branch.id ? null : branch)
-          }
+          onClick={() => {
+            setSelectedBranch(selectedBranch?.id === branch.id ? null : branch);
+            resetState();
+          }}
           className={`w-full rounded-lg h-[150px] my-10 ${
             selectedBranch?.id === branch.id
               ? "bg-blue-200 border-blue-500"

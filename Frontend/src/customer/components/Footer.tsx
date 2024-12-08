@@ -1,7 +1,10 @@
+
+
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
+
 
 const Footer: React.FC = () => {
   useEffect(() => {
@@ -12,6 +15,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-white dark:bg-gray-900">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+
         <div
           className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3"
           data-aos="fade-up"
