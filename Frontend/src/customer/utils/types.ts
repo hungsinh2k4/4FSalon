@@ -4,7 +4,7 @@ export interface User {
   email: string;
   phone: string;
   points: number;
-  avatar: string;
+  avatar_url: string;
   isGoogleAccount: boolean;
   gender: string;
   booking_count: number;

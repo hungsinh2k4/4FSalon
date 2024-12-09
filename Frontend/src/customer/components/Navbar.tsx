@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <img
-                  src={user.avatar || "kannastare.png"}
+                  src={user.avatar_url}
                   alt="Avatar"
                   className="w-8 h-8 rounded-full"
                 />
