@@ -5,7 +5,6 @@ import { getUser, updateUser } from "../api/user";
 import { set } from "rsuite/esm/internals/utils/date";
 import { useAuth } from "../context/AuthContext";
 
-
 interface LoginResponse {
   access_token: string;
   user: User;
@@ -158,12 +157,33 @@ class AuthService {
     }
   }
 
-  public async forgotPassword(email: string): Promise<void> {
+  public async forgotPassword(email: string): Promise<string> {
     try {
       await axiosInstance.post(`/auth/forgot-password`, { email });
+      return "Hướng dẫn khôi phục mật khẩu đã được gửi đến email của bạn.";
     } catch (error: any) {
       console.error("Forgot password failed:", error);
       throw error;
+    }
+  }
+
+  public async resetPassword(
+    token: string,
+    newPassword: string
+  ): Promise<string> {
+    try {
+      console.log("token", token);
+      await axiosInstance.patch(`/auth/reset-password`, {
+        token,
+        newPassword,
+      });
+      return "Mật khẩu đã được đặt lại thành công.";
+    } catch (error: any) {
+      console.log("token", token);
+      console.error("Reset password failed:", error);
+      throw new Error(
+        error.response?.data?.message || "Không thể đặt lại mật khẩu."
+      );
     }
   }
 }

@@ -65,7 +65,7 @@ const Booking: React.FC = () => {
   const [errorService, setErrorService] = useState<string | null>(null);
   const [errorTime, setErrorTime] = useState<string | null>(null);
   const [successInfo, setSuccessInfo] = useState<any | null>(null);
-  const { user, setUser } = useAuth();
+  useAuth();
   const [userprofile, setUserProfile] = useState<User | null>(null);
   const [customerprofile, setCustomerProfile] = useState<Customer | null>(null);
   const [message, setMessage] = useState("");
@@ -167,7 +167,6 @@ const Booking: React.FC = () => {
       }
     }
   }, [selectedDate, selectedTime, selectedService]);
-
 
   const resetState = () => {
     setSelectedEmployee(null);
@@ -458,7 +457,7 @@ const Booking: React.FC = () => {
                     setErrorBranch("Vui lòng chọn chi nhánh trước");
                     return;
                   }
-                  
+
                   setViewType("services");
                   setErrorService("");
                 }}
@@ -479,7 +478,6 @@ const Booking: React.FC = () => {
                   : "bg-gray-200 hover:bg-blue-500"
               }`}
               onClick={() => {
-
                 if (!selectedBranch || !selectedService) {
                   if (!selectedBranch) {
                     setErrorBranch("Vui lòng chọn chi nhánh trước");
@@ -490,7 +488,8 @@ const Booking: React.FC = () => {
                   return;
                 }
 
-                setViewType("voucher")}}
+                setViewType("voucher");
+              }}
             >
               <FontAwesomeIcon icon={faTicket} className="mr-2" />
               Voucher
