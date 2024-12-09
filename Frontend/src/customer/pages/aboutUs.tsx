@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import samplePic1 from "../assets/AboutUsImg/aboutUsPic.jpg";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { ToastContainer, toast } from "react-toastify";
 
 const Vechungtoi: React.FC = () => {
   useEffect(() => {
@@ -9,6 +10,7 @@ const Vechungtoi: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const notify = () => toast("Wow so easy !");
   return (
     <div
       className="bg-cover pb-8 bg-bottom min-h-screen "
@@ -100,6 +102,9 @@ const Vechungtoi: React.FC = () => {
           Cảm ơn bạn đã tin tưởng và lựa chọn 4F Salon. Chúng tôi rất mong được
           chào đón bạn và mang đến cho bạn những trải nghiệm tuyệt vời nhất.
         </div>
+        <button>
+          <button onClick={notify}>Notify !</button>
+        </button>
       </section>
     </div>
   );

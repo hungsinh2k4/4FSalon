@@ -13,11 +13,13 @@ import ChangePassword from "./pages/ChangePassword"; // Thêm tuyến đường 
 import FindNearestShop from "./pages/findNearestShop";
 import Appointment from "./pages/appointment";
 import NotFound from "./components/NotFound";
+import { ToastContainer, toast } from "react-toastify";
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <div className="flex flex-col min-h-screen">
+        <ToastContainer />
         <Navbar />
         <main className="flex-grow">
           <Routes>

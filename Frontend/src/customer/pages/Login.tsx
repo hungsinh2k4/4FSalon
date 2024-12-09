@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 import { API_BASE_URL } from "../utils/constants";
+import { toast } from "react-toastify";
 
 const Login: React.FC = () => {
   const [loginIdentifier, setLoginIdentifier] = useState("");
@@ -26,6 +27,8 @@ const Login: React.FC = () => {
       const response = await authService.login(loginIdentifier, password);
       const { user: loggedInUser } = response;
       setUser(loggedInUser);
+      toast.success("Đăng nhập thành công");
+      navigate("/");
     } catch (error: any) {
       setError(error.message); // Cập nhật lỗi để hiển thị nếu đăng nhập thất bại
       console.error("Login failed:", error);
