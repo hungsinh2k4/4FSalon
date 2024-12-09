@@ -3,3 +3,19 @@
 @tailwind components;
 @tailwind utilities;
 
+.Toastify__toast-container {
+  width: auto !important; /* Đảm bảo container không giới hạn chiều rộng */
+}
+
+.Toastify__toast {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap; /* Hoặc 'normal' nếu muốn cho phép xuống dòng */
+  padding: 10px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}

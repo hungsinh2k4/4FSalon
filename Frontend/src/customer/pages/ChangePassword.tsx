@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Hook để điều hướng
 import authService from "../services/authService"; // Dịch vụ thay đổi mật khẩu
-
+import { toast } from "react-toastify"; // Thư viện hiển thị thông báo
 const ChangePassword: React.FC = () => {
   const navigate = useNavigate(); // Hook điều hướng
   const [oldPassword, setOldPassword] = useState("");
@@ -34,6 +34,7 @@ const ChangePassword: React.FC = () => {
 
     // Kiểm tra mật khẩu mới và xác nhận mật khẩu mới có khớp hay không
     if (newPassword !== confirmNewPassword) {
+      toast.error("Mật khẩu mới và xác nhận mật khẩu mới không khớp.");
       setError("Mật khẩu mới và xác nhận mật khẩu mới không khớp.");
       return;
     }
@@ -46,6 +47,7 @@ const ChangePassword: React.FC = () => {
         newPassword
       );
       console.log(response);
+      toast.success("Mật khẩu đã được thay đổi thành công");
       setSuccessMessage("Mật khẩu đã được thay đổi thành công.");
       setOldPassword("");
       setNewPassword("");
