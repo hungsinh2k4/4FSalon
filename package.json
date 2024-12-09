@@ -1,9 +1,0 @@
-{
-  "name": "my-hair-salon",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "start": "cd Frontend && npm run dev"
-  }
-}
