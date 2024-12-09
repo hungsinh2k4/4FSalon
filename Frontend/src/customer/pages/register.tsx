@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import { API_BASE_URL } from "../utils/constants";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register: React.FC = () => {
   const [email, setEmail] = React.useState("");
@@ -65,9 +66,11 @@ const Register: React.FC = () => {
         password,
         phoneNumber
       );
+      toast.success("Đăng ký thành công");
       console.log("Register success:", response);
       navigate("/login");
     } catch (error: any) {
+      toast.error("Đăng ký thất bại");
       console.error("Register failed:", error);
     }
   };

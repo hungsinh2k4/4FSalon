@@ -191,6 +191,7 @@ import { User } from "../utils/types";
 import { useAuth } from "../context/AuthContext";
 import authService from "../services/authService";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { toast } from "react-toastify";
 
 // import Breadcrumb from "../components/Breadcrumb";
 
@@ -236,11 +237,12 @@ const Profile: React.FC = () => {
           tempUser.gender
         );
         setUser(tempUser);
+        toast.success("Cập nhật thông tin thành công");
         console.log("update user........", tempUser);
         setIsEditing(false);
       } catch (error) {
+        toast.error("Cập nhật thông tin thất bại");
         console.error("Update user failed:", error);
-        alert("Failed to update profile. Please try again.");
       } finally {
         setLoading(false);
       }
