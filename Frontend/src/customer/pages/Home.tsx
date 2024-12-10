@@ -1,8 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import HairCut from "../assets/HomeImg/HairCut.png";
-import Service2 from "../assets/HomeImg/Service2.png";
-import Service3 from "../assets/HomeImg/Service3.png";
 import Khuyenmai from "../assets/HomeImg/Khuyenmai.png";
 import Logo from "../assets/logo.png";
 import "./Home.css";
@@ -73,7 +70,7 @@ const Home: React.FC = () => {
               data-aos="fade-up"
             >
               <img
-                src={HairCut}
+                src="https://assets.zyrosite.com/mePnvZ15VEHy7n8p/450613263_891765619633403_6662505036750197758_n-A1aJBEKQaji93D1x.jpg"
                 alt="Cắt tóc"
                 className="w-full h-full object-cover"
               />
@@ -89,7 +86,7 @@ const Home: React.FC = () => {
               data-aos="fade-up"
             >
               <img
-                src={Service2}
+                src="https://assets.zyrosite.com/mePnvZ15VEHy7n8p/449384592_884027163740582_3894658124597652362_n-ALpo73JBMotXxKyQ.jpg"
                 alt="Uốn tóc"
                 className="w-full h-full object-cover"
               />
@@ -105,7 +102,7 @@ const Home: React.FC = () => {
               data-aos="fade-up"
             >
               <img
-                src={Service3}
+                src="https://assets.zyrosite.com/mePnvZ15VEHy7n8p/448353959_874397401370225_9111820804653780252_n-Yg29qnlL6JuvKpKZ.jpg"
                 alt="Nhuộm tóc"
                 className="w-full h-full object-cover"
               />
