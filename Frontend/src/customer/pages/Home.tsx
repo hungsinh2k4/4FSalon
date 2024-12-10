@@ -6,6 +6,7 @@ import "./Home.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { getEmployees } from "../api/employees";
+import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 
 const Home: React.FC = () => {
   const stylistContainerRef = useRef<HTMLDivElement>(null);
@@ -46,13 +47,30 @@ const Home: React.FC = () => {
     >
       {/* Main Content */}
 
-      <div
+      {/* <div
         className="flex flex-col items-center justify-center text-center py-64"
         data-aos="fade-up"
       >
         <h1 className="text-6xl font-bold text-white mb-2 ">4F SALON</h1>
         <div className="w-24 h-px bg-gray-300 my-4"></div>
         <p className="text-2xl font-semi-bold text-white">
+          The best place for your best haircut
+        </p>
+      </div> */}
+      <div
+        className="relative flex flex-col items-center justify-center text-center py-64 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/mePnvZ15VEHy7n8p/lkq_8164-YrDNq1ROv3u0q257.jpg')",
+        }}
+        data-aos="fade-up"
+      >
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <h1 className="relative text-6xl font-bold text-white mb-2">
+          4F SALON
+        </h1>
+        <div className="relative w-24 h-px bg-gray-300 my-4"></div>
+        <p className="relative text-2xl font-semi-bold text-white">
           The best place for your best haircut
         </p>
       </div>
@@ -159,12 +177,15 @@ const Home: React.FC = () => {
         <h2 className="text-4xl font-bold text-center mb-8">
           Gặp gỡ các stylist
         </h2>
-        <div className="relative w-[90%] mx-auto" data-aos="fade-up">
+        <div
+          className="relative max-w-screen-lg w-full mx-auto overflow-hidden"
+          data-aos="fade-up"
+        >
           <button
             onClick={scrollLeft}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center"
           >
-            &lt;
+            <GoChevronLeft />
           </button>
           <div
             ref={stylistContainerRef}
@@ -179,8 +200,8 @@ const Home: React.FC = () => {
                   <div className="overflow-hidden h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
                     <img
                       src={
-                        stylist.image
-                          ? stylist.image
+                        stylist.big_avatar_url
+                          ? stylist.big_avatar_url
                           : "https://assets.zyrosite.com/mePnvZ15VEHy7n8p/canh-m5KbLrq72aU69ovZ.jpg"
                       }
                       alt={stylist.name}
@@ -199,9 +220,9 @@ const Home: React.FC = () => {
           </div>
           <button
             onClick={scrollRight}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center"
           >
-            &gt;
+            <GoChevronRight />
           </button>
         </div>
       </section>
@@ -214,7 +235,7 @@ const Home: React.FC = () => {
         {/* Cột trái */}
         <div
           className="bg-cover bg-right p-6 text-white flex flex-col justify-center"
-          style={{ backgroundImage: "url('/src/assets/Home Img/bottom.png')" }}
+          style={{ backgroundImage: "url('../assets/HomeImg/bottom.png')" }}
           data-aos="fade-right"
         >
           <h2 className="text-4xl font-bold">
@@ -251,7 +272,7 @@ const Home: React.FC = () => {
         {/* Cột phải */}
         <div
           className="bg-cover bg-center p-8 text-white w-full h-full"
-          style={{ backgroundImage: "url('/src/assets/Home Img/Bg2.png')" }}
+          style={{ backgroundImage: "url('../assets/HomeImg/Bg2.png')" }}
         >
           <div className="bg-gray-900 bg-opacity-80 text-white p-8">
             <h2 className="text-3xl font-bold mb-6 text-center">
