@@ -44,7 +44,12 @@ const Navbar: React.FC = () => {
           <Link to="/about-us" className={getLinkClass("/about-us")}>
             Về chúng tôi
           </Link>
-          <a href="https://zalo.me/g/brxjir719" className="nav-items">
+          <a
+            href="https://zalo.me/g/brxjir719"
+            className="nav-items"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Liên hệ
           </a>
           <Link

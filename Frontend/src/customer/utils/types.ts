@@ -116,6 +116,7 @@ export interface Employee {
   status: boolean;
   branch_id: number;
 
+  big_avatar_url: string;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
