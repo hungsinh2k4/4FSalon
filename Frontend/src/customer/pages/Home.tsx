@@ -1,23 +1,33 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HairCut from "../assets/HomeImg/HairCut.png";
 import Service2 from "../assets/HomeImg/Service2.png";
 import Service3 from "../assets/HomeImg/Service3.png";
 import Khuyenmai from "../assets/HomeImg/Khuyenmai.png";
-import Stylist1 from "../assets/HomeImg/Stylist1.png";
-import Stylist2 from "../assets/HomeImg/Stylist2.png";
-import Stylist3 from "../assets/HomeImg/Stylist3.png";
-import Stylist4 from "../assets/HomeImg/Stylist4.png";
 import Logo from "../assets/logo.png";
 import "./Home.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { getEmployees } from "../api/employees";
 
 const Home: React.FC = () => {
   const stylistContainerRef = useRef<HTMLDivElement>(null);
+  const [stylists, setStylists] = useState<any[]>([]);
+
   useEffect(() => {
     AOS.init({ once: true });
     window.scrollTo(0, 0);
+
+    const fetchStylists = async () => {
+      try {
+        const response = await getEmployees();
+        setStylists(response);
+      } catch (error) {
+        console.error("Error fetching stylists:", error);
+      }
+    };
+
+    fetchStylists();
   }, []);
 
   const scrollLeft = () => {
@@ -152,7 +162,7 @@ const Home: React.FC = () => {
         <h2 className="text-4xl font-bold text-center mb-8">
           Gặp gỡ các stylist
         </h2>
-        <div className="relative w-[85%] mx-auto" data-aos="fade-up">
+        <div className="relative w-[90%] mx-auto" data-aos="fade-up">
           <button
             onClick={scrollLeft}
             className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center"
@@ -164,84 +174,30 @@ const Home: React.FC = () => {
             className="overflow-x-scroll flex space-x-8 scrollbar-hide"
           >
             <div className="flex space-x-8">
-              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
-                  <img
-                    src={Stylist1}
-                    alt="Stylist 1"
-                    className="w-full h-full object-cover"
-                  />
+              {stylists.map((stylist) => (
+                <div
+                  key={stylist.id}
+                  className="bg-gray-100 rounded-lg shadow-lg flex flex-col items-center"
+                >
+                  <div className="overflow-hidden h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
+                    <img
+                      src={
+                        stylist.image
+                          ? stylist.image
+                          : "https://assets.zyrosite.com/mePnvZ15VEHy7n8p/canh-m5KbLrq72aU69ovZ.jpg"
+                      }
+                      alt={stylist.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-xl font-semibold mt-4">
+                      {stylist.name}
+                    </h3>
+                    <p className="text-gray-500 mt-2">{stylist.specialty}</p>
+                  </div>
                 </div>
-                <div className="p-4 text-center">
-                  <h3 className="text-xl font-semibold mt-4">Stylist 1</h3>
-                  <p className="text-gray-500 mt-2">Chuyên gia cắt tóc</p>
-                </div>
-              </div>
-              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
-                  <img
-                    src={Stylist2}
-                    alt="Stylist 2"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4 text-center">
-                  <h3 className="text-xl font-semibold mt-4">Stylist 2</h3>
-                  <p className="text-gray-500 mt-2">Chuyên gia uốn tóc</p>
-                </div>
-              </div>
-              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
-                  <img
-                    src={Stylist3}
-                    alt="Stylist 3"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4 text-center">
-                  <h3 className="text-xl font-semibold mt-4">Stylist 3</h3>
-                  <p className="text-gray-500 mt-2">Chuyên gia nhuộm tóc</p>
-                </div>
-              </div>
-              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
-                  <img
-                    src={Stylist4}
-                    alt="Stylist 4"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4 text-center">
-                  <h3 className="text-xl font-semibold mt-4">Stylist 4</h3>
-                  <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
-                </div>
-              </div>
-              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
-                  <img
-                    src={Stylist4}
-                    alt="Stylist 5"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4 text-center">
-                  <h3 className="text-xl font-semibold mt-4">Stylist 5</h3>
-                  <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
-                </div>
-              </div>
-              <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                <div className="overflow-hidden rounded-full h-32 w-32 sm:h-48 sm:w-48 md:h-64 md:w-64 lg:h-80 lg:w-80 flex items-center justify-center">
-                  <img
-                    src={Stylist4}
-                    alt="Stylist 6"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4 text-center">
-                  <h3 className="text-xl font-semibold mt-4">Stylist 6</h3>
-                  <p className="text-gray-500 mt-2">Chuyên gia tạo kiểu</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           <button

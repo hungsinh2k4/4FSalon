@@ -272,7 +272,7 @@ const Profile: React.FC = () => {
           {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Name
+              Tên
             </label>
             <input
               type="text"
@@ -289,7 +289,7 @@ const Profile: React.FC = () => {
           {/* Phone */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Phone Number
+              Số Điện Thoại
             </label>
             <input
               type="text"
@@ -306,7 +306,7 @@ const Profile: React.FC = () => {
           {/* Gender */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Gender
+              Giới Tính
             </label>
             <div className="flex items-center mt-2 space-x-4">
               {["male", "female", "other"].map((gender) => (
@@ -343,7 +343,7 @@ const Profile: React.FC = () => {
           {/* Booking Count (Read-only) */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Bookings
+              Số Lần Đặt
             </label>
             <input
               type="number"
@@ -357,7 +357,7 @@ const Profile: React.FC = () => {
           {/* Cancel Count (Read-only) */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Cancellations
+              Số Lần Hủy
             </label>
             <input
               type="number"
@@ -405,14 +405,14 @@ const Profile: React.FC = () => {
                 onClick={() => setIsEditing(true)}
                 className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md"
               >
-                Edit Profile
+                Chỉnh Sửa
               </button>
             )}
             <button
               onClick={handleChangePassword}
               className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-md"
             >
-              Change Password
+              Thay đổi mật khẩu
             </button>
           </div>
         </div>
