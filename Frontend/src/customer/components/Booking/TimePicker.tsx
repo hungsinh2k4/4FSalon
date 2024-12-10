@@ -6,6 +6,7 @@ interface TimePickerProps {
   onTimeSelect: (time: string | null) => void; // Callback function để truyền giá trị giờ đã chọn ra ngoài
   schedule: Schedule[]; // Danh sách lịch làm việc
   isDisplaying: Boolean;
+  selectedDate?: Date;
   setErrorTime: Dispatch<SetStateAction<string | null>>;
 }
 
@@ -13,6 +14,7 @@ export default function TimePicker({
   onTimeSelect,
   schedule,
   isDisplaying,
+  selectedDate,
   setErrorTime
 }: TimePickerProps) {
   
@@ -103,7 +105,7 @@ export default function TimePicker({
             }
       }
 
-      return schedule.flat().some(({ start_time, estimated_end_time }) => {
+      return Array.from(schedule).flat().some(({ start_time, estimated_end_time }) => {
         // const startDate = new Date(start_time);
         // const endDate = new Date(estimated_end_time);
         let tempTime = beautifyTime(start_time);

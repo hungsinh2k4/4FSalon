@@ -1,5 +1,8 @@
 import React from "react";
 import { Service } from "../../utils/types";
+import { beautifyPrice } from "../../utils/helpers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
 
 interface ServiceListProps {
   viewType: string;
@@ -17,35 +20,44 @@ const ServiceList: React.FC<ServiceListProps> = ({
   if (viewType !== "services") return null;
 
   return (
-    <div className="mt-2.5 max-h-[500px] overflow-y-auto border border-gray-300 rounded-s-lg p-2 grid grid-cols-2 gap-3.5">
-      {services.map((service) => (
-        <button
-          key={service.id}
-          onClick={() =>
-            setSelectedService(
-              selectedService?.id === service.id ? null : service
-            )
-          } // Nếu đã chọn thì bỏ chọn, nếu chưa thì chọn
-          className={`w-full py-9 h-[400px] my-2.5 ${
-            selectedService?.id === service.id
-              ? "bg-blue-200 border-blue-500" // Style khi được chọn
-              : "bg-gray-100 border-[#0a0a0a]"
-          } cursor-pointer text-left flex`}
-        >
-          <div className="w-2/5 h-full overflow-hidden">
-            <img
-              src="src/customer/assets/Booking/employees.jpeg"
-              alt={service.title}
-              className="w-full h-full object-cover"
-            />
+    <div className="container mx-auto max-h-[500px] p-4 overflow-y-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {services.map((service) => (
+          <div
+            key={service.id}
+            onClick={() =>
+              setSelectedService(
+                selectedService?.id === service.id ? null : service
+              )
+            }
+            className={`w-full max-h-[300px] my-2.5 pb-5 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${
+              selectedService?.id === service.id
+                ? "bg-blue-200 border-blue-500"
+                : "bg-white border-gray-300"
+            } cursor-pointer text-left flex flex-col`}
+          >
+            <div className="w-full h-28 overflow-hidden rounded-t-lg">
+              <img
+                src="src/customer/assets/Booking/employees.jpeg"
+                alt="Image"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex-1 p-4 overflow-hidden">
+              <div className="flex flex-col justify-between h-full">
+                <div className="flex flex-col lg:flex-row justify-between items-top w-full">
+                  <h2 className="text-base font-semibold mb-2">{service.title}</h2>
+                  <div>
+                    <FontAwesomeIcon icon={faClock} className="text-gray-600 mr-2" />
+                    <span className="text-gray-600 mb-4">{service.estimate_time}p</span>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600">{service.description}</p>
+              </div>
+            </div>
           </div>
-          <div className="flex-1 p-4">
-            <strong>{service.title}</strong>
-            <div className="text-sm text-gray-600">{service.price}</div>
-            <div className="text-sm text-gray-600">{service.description}</div>
-          </div>
-        </button>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
