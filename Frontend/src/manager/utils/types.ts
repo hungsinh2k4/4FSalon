@@ -95,4 +95,27 @@ export interface User {
     phone: string;
     email: string;
   }
-  
+
+  export interface Statistic {
+    appointment: AppointmentStat[];
+    customer?: CustomerStat[];
+    new_customer?: NewCustomerStat[];
+  }
+
+  export interface AppointmentStat {
+    number_of_appointments: number;
+    total_revenue: number;
+    appointment_date: string;
+    employee_id?: number;
+    employee_name?: string;
+    branch_id?: number;
+    branch_name?: string;
+  }
+
+  export interface CustomerStat {
+    number_of_customers?: number;
+  }
+
+  export interface NewCustomerStat {
+    number_of_new_customers?: number;
+  }

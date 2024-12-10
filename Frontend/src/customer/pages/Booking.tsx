@@ -65,7 +65,6 @@ const Booking: React.FC = () => {
   const [errorService, setErrorService] = useState<string | null>(null);
   const [errorTime, setErrorTime] = useState<string | null>(null);
   const [successInfo, setSuccessInfo] = useState<any | null>(null);
-  useAuth();
   const [userprofile, setUserProfile] = useState<User | null>(null);
   const [customerprofile, setCustomerProfile] = useState<Customer | null>(null);
   const [message, setMessage] = useState("");
@@ -424,10 +423,10 @@ const Booking: React.FC = () => {
             <h2 className="text-3xl font-bold mb-1">1. Chọn chi nhánh</h2>
             <div className="flex items-center">
               <button
-                className={`px-2 py-2 border rounded-lg mt-8 w-full text-left ${
+                className={`px-2 py-2 border rounded mt-8 w-fit text-left ${
                   viewType === "branches"
                     ? "bg-blue-500 text-white font-bold"
-                    : "bg-gray-200 hover:bg-blue-500"
+                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
                 }`}
                 onClick={() => {
                   setViewType("branches"), setErrorBranch("");
@@ -447,10 +446,10 @@ const Booking: React.FC = () => {
             <h2 className="text-3xl font-bold mb-1">2. Chọn dịch vụ</h2>
             <div className="flex items-center">
               <button
-                className={`px-2 py-2 border rounded-lg mt-8 w-full text-left ${
+                className={`px-2 py-2 border rounded mt-8 w-full text-left ${
                   viewType === "services"
                     ? "bg-blue-500 text-white font-bold"
-                    : "bg-gray-200 hover:bg-blue-500"
+                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
                 }`}
                 onClick={() => {
                   if (!selectedBranch) {
@@ -472,10 +471,10 @@ const Booking: React.FC = () => {
               <p className="text-red-500 mt-2">{errorService}</p>
             )}
             <button
-              className={`inline-flex items-center px-2 py-2 border rounded-lg mt-8 text-left ${
+              className={`inline-flex items-center px-2 py-2 border rounded mt-8 text-left w-full ${
                 viewType === "voucher"
                   ? "bg-blue-500 text-white font-bold"
-                  : "bg-gray-200 hover:bg-blue-500"
+                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
               }`}
               onClick={() => {
                 if (!selectedBranch || !selectedService) {
@@ -510,10 +509,10 @@ const Booking: React.FC = () => {
             </h2>
             <div className="flex items-center mb-1">
               <button
-                className={`inline-block px-2 py-2 border rounded-lg mt-4 w-fit ${
+                className={`inline-block px-2 py-2 border rounded mt-4 w-full text-left ${
                   viewType === "employees"
                     ? "bg-blue-500 text-white font-bold"
-                    : "bg-gray-200 hover:bg-blue-500"
+                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
                 }`}
                 onClick={() => {
                   if (!selectedBranch || !selectedService) {
@@ -560,6 +559,7 @@ const Booking: React.FC = () => {
             <TimePicker
               onTimeSelect={handleTimeSelect}
               schedule={schedule}
+              selectedDate={selectedDate}
               isDisplaying={selectedEmployee == null ? false : true}
               setErrorTime={setErrorTime}
             />

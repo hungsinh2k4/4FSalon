@@ -4,5 +4,9 @@ export const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString(undefined, options);
   };
   
+export const formatMoney = (amount: number) => {
+  if (!amount) return 'Trống';
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+}
   // Các helper functions khác nếu cần
   

@@ -11,6 +11,8 @@ import ScheduleList from '../pages/Schedules/ScheduleList';
 import EmployeeList from '../pages/Employees/EmployeeList';
 import BranchList from '../pages/Branches/BranchList';
 import NotFound from '../pages/NotFound';
+import StatisticReport from '../pages/Statistic/StatisticReport';
+import ReportPage from '../pages/Statistic/Report';
 
 const ManagerRoutes: React.FC = () => {
   return (
@@ -24,6 +26,7 @@ const ManagerRoutes: React.FC = () => {
         <Route path="schedules" element={<ScheduleList />} />
         <Route path="employees" element={<EmployeeList />} />
         <Route path="branches" element={<BranchList />} />
+        <Route path="statistics" element={<StatisticReport />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ManagerLayout>

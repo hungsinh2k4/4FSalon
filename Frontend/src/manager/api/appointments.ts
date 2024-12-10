@@ -12,6 +12,12 @@ export const getAppointmentById = async (id: number): Promise<Appointment> => {
   return response.data;
 };
 
+export const getAppointmentsWithParams = async (params: any): Promise<Appointment[]> => {
+  const urlParams = new URLSearchParams(params).toString();
+  const response = await axiosInstance.get(`api/appointments/search?${urlParams}`);
+  return response.data;
+}
+
 export const createAppointment = async (data: Partial<Appointment>): Promise<Appointment> => {
   const response = await axiosInstance.post('api/appointments', data);
   return response.data;

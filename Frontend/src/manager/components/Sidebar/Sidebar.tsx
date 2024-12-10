@@ -16,7 +16,8 @@ import {
   FaCalendarCheck, //appointment
   FaUsers, //employee
   FaBuilding, //branch
-  FaDoorOpen, //logout
+  FaDoorOpen,
+  FaChartColumn, //logout
 } from 'react-icons/fa6';
 import logo from '../../assets/images/logo.png';
 // Định nghĩa giao diện cho các props
@@ -30,6 +31,7 @@ const navItems1 = [
   { to: "/manager/feedbacks", linkText: "Phản Hồi", icon: <FaComments className={styles.icon} /> },
   { to: "/manager/employees", linkText: "Nhân Viên", icon: <FaUsers className={styles.icon} /> },
   { to: "/manager/services", linkText: "Dịch Vụ", icon: <FaBagShopping className={styles.icon} /> },
+  { to: "/manager/statistics", linkText: "Thống kê", icon: <FaChartColumn className={styles.icon} /> },
 ];
 const Sidebar: React.FC = () => {
   const log = () => {
