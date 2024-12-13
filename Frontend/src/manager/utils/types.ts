@@ -105,17 +105,21 @@ export interface User {
   export interface AppointmentStat {
     number_of_appointments: number;
     total_revenue: number;
+    average_revenue: number;
     appointment_date: string;
     employee_id?: number;
     employee_name?: string;
     branch_id?: number;
     branch_name?: string;
+    service_id?: number;
+    service_title?: string;
   }
 
   export interface CustomerStat {
-    number_of_customers?: number;
+    number_of_customers: number;
   }
 
   export interface NewCustomerStat {
-    number_of_new_customers?: number;
+    number_of_customers_user: number;
+    created_at?: string;
   }

@@ -1,28 +1,35 @@
 // src/manager/pages/Dashboard/DashboardHome.tsx
 import React, { useEffect, useState } from 'react';
 import AppointmentsTable from '../../components/tables/AppointmentsTable';
-import { Appointment, AppointmentStat, CustomerStat, NewCustomerStat, Statistic } from '../../utils/types';
-import { fetchAppointments, fetchAppointmentsWithParams } from '../../services/appointmentService';
+import { Appointment, AppointmentStat, NewCustomerStat } from '../../utils/types';
+import { fetchAppointmentsWithParams } from '../../services/appointmentService';
 import { fetchStatistic } from '../../services/statisticService';
 import { useNavigate } from 'react-router-dom';
+import { formatMoney } from '../../utils/helpers';
 
-interface StatsQuery {
-  start_date: Date;
-  end_date: Date;
-  branch_id: number;
-  status: string;
-  not_status: string;
-  group_by: string;
+interface ComparedToYesterday {
+  comparedToYesterday: number;
+}
+
+interface TotalGuests extends ComparedToYesterday {
+  totalGuests: number;
+}
+
+interface TotalRevenue extends ComparedToYesterday {
+  totalRevenue: number;
+}
+
+interface NewCustomers extends ComparedToYesterday {
+  newCustomers: number;
 }
 
 
 const DashboardHome: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const navigate = useNavigate();
-  const [statistic, setStatistic] = useState<Statistic>();
-  const [appointmentStats, setAppointmentStats] = useState<AppointmentStat[]>([]);
-  const [customerStats, setCustomerStats] = useState<CustomerStat[]>([]);
-  const [newCustomerStats, setNewCustomerStats] = useState<NewCustomerStat[]>([]);
+  const [totalRevenue, setTotalRevenue] = useState<TotalRevenue>({ totalRevenue: 0, comparedToYesterday: 0 });
+  const [totalGuests, setTotalGuests] = useState<TotalGuests>({ totalGuests: 0, comparedToYesterday: 0 });
+  const [newCustomers, setNewCustomers] = useState<NewCustomers>({ newCustomers: 0, comparedToYesterday: 0 });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,28 +39,43 @@ const DashboardHome: React.FC = () => {
       try {
         // Load appointments
         const response = await fetchAppointmentsWithParams({ 
-          date: new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
+          date: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
           have_feedback: false,
-          take: 10,
+          take: 20,
           order: 'desc',
         });
         setAppointments(response);
         console.log(response);
 
         // Load statistics
+        const yesterday = new Date(new Date(Date.now() - 1000 * 24 * 60 * 60).setHours(0, 0, 0, 0));
+        const today = new Date();
         const response2 = await fetchStatistic(
           {
-            start_date: new Date(Date.now() - 1000 * 24 * 60 * 60).toISOString(),
-            end_date: new Date().toISOString(),
+            start_date: yesterday.toISOString(),
+            end_date: today.toISOString(),
             status: 'completed',
             group_by: 'day',
+            new_customer: true,
+            new_customer_group_by: 'day',
           }
         );
-        setStatistic(response2);
         console.log(response2);
-        setAppointmentStats(response2.appointment);
-        setCustomerStats(response2.customer || []);
-        setNewCustomerStats(response2.new_customer || []);
+        const filledData = fillMissingDates(response2.appointment, yesterday, today);
+        const filledDataNewCustomers = fillMissingDatesNewCustomers(response2.new_customer || [], yesterday, today);
+        setTotalRevenue({ 
+          totalRevenue: filledData[1].total_revenue, 
+          comparedToYesterday: filledData[0].total_revenue !== 0 ? Math.round((filledData[1].total_revenue - filledData[0].total_revenue) / filledData[0].total_revenue * 100) : 0 
+        });
+        setTotalGuests({ 
+          totalGuests: filledData[1].number_of_appointments,
+          comparedToYesterday: filledData[0].number_of_appointments !== 0 ? Math.round((filledData[1].number_of_appointments - filledData[0].number_of_appointments) / filledData[0].number_of_appointments * 100) : 0
+        });
+        setNewCustomers({ 
+          newCustomers: filledDataNewCustomers[1].number_of_customers_user,
+          comparedToYesterday: filledDataNewCustomers[0].number_of_customers_user !== 0 ? Math.round((filledDataNewCustomers[1].number_of_customers_user - filledDataNewCustomers[0].number_of_customers_user) / filledDataNewCustomers[0].number_of_customers_user * 100) : 0
+        });
+
       } catch (err) {
         setError('Failed to fetch data.');
       } finally {
@@ -62,6 +84,63 @@ const DashboardHome: React.FC = () => {
     };
     loadData();
   }, []);
+
+  const fillMissingDates = (data: AppointmentStat[], startDate: Date, endDate: Date) => {
+    const filledData: AppointmentStat[] = [];
+      let currentDate = new Date(startDate);
+      const finalDate = new Date(endDate);
+    
+      while (currentDate <= finalDate) {
+        const existing = data.find((d) => d.appointment_date && new Date(d.appointment_date).getDate() === currentDate.getDate());
+        filledData.push({
+          appointment_date: currentDate.toISOString(),
+          total_revenue: existing ? existing.total_revenue : 0,
+          average_revenue: existing ? existing.average_revenue : 0,
+          number_of_appointments: existing ? existing.number_of_appointments : 0,
+          employee_id: existing ? existing.employee_id : 0,
+          employee_name: existing ? existing.employee_name : "",
+          branch_id: existing ? existing.branch_id : 0,
+          branch_name: existing ? existing.branch_name : "",
+          service_id: existing ? existing.service_id : 0,
+          service_title: existing ? existing.service_title : "",
+        });
+    
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+      return filledData;
+  };
+
+  const fillMissingDatesNewCustomers = (data: NewCustomerStat[], startDate: Date, endDate: Date) => {
+    const filledData: NewCustomerStat[] = [];
+      let currentDate = new Date(startDate);
+      const finalDate = new Date(endDate);
+    
+      while (currentDate <= finalDate) {
+        const existing = data.find((d) => d.created_at && new Date(d.created_at).getDate() === currentDate.getDate());
+        filledData.push({
+          created_at: currentDate.toISOString(),
+          number_of_customers_user: existing ? existing.number_of_customers_user : 0,
+        });
+
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    return filledData;
+  };
+
+  const comparedToYesterday = (input: ComparedToYesterday) => {
+    if (input.comparedToYesterday > 0) {
+      return (
+        <span className="text-green-500 font-medium">
+          +{input.comparedToYesterday}%
+        </span>
+      )
+    }
+    return (
+      <span className="text-red-500 font-medium">
+        {input.comparedToYesterday}%
+      </span>
+    )
+  }
 
   const handleViewStatistics = () => {
     navigate(`/manager/statistics`);
@@ -80,37 +159,27 @@ const DashboardHome: React.FC = () => {
           {/* Metrics Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Total Income Today */}
-              <div className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white"
-                onClick={handleViewStatistics}
-              >
+              <div className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
                   <h2 className="text-lg font-medium text-gray-800 mb-2"> Doanh thu hôm nay</h2>
-                  <p className="text-2xl font-bold text-green-600">{appointmentStats[0] && appointmentStats[0].total_revenue || '0'}</p>
-                  <p className="text-gray-500 text-sm mt-2">So với hôm qua: <span className="text-green-500 font-medium">
-                    {appointmentStats[0] && appointmentStats[1] && 
-                    
-                    typeof appointmentStats[0].total_revenue === 'number' && 
-                    typeof appointmentStats[1].total_revenue === 'number' && 
-                    ((appointmentStats[0].total_revenue - appointmentStats[1].total_revenue) / appointmentStats[1].total_revenue) * 100}%
-                  </span></p>
+                  <p className="text-2xl font-bold text-green-600">{formatMoney(totalRevenue.totalRevenue)}</p>
+                  <p className="text-gray-500 text-sm mt-2">So với hôm qua: {comparedToYesterday(totalRevenue)}</p>
               </div>
               {/* Total Guests */}
               <div className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
                   <h2 className="text-lg font-medium text-gray-800 mb-2">Số lịch hẹn hôm nay</h2>
-                  <p className="text-2xl font-bold text-blue-600">{appointmentStats[0] && appointmentStats[0].number_of_appointments || '0'}</p>
-                  <p className="text-gray-500 text-sm mt-2">So với hôm qua: <span className="font-medium">
-                    {appointmentStats[1] && appointmentStats[1].number_of_appointments || '0'} 
-                  </span></p>
+                  <p className="text-2xl font-bold text-blue-600">{totalGuests.totalGuests}</p>
+                  <p className="text-gray-500 text-sm mt-2">So với hôm qua: {comparedToYesterday(totalGuests)}</p>
               </div>
               {/* New Customers */}
               <div className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
                   <h2 className="text-lg font-medium text-gray-800 mb-2">Khách hàng mới</h2>
-                  <p className="text-2xl font-bold text-purple-600">8</p>
-                  <p className="text-gray-500 text-sm mt-2">So với hôm qua: <span className="text-green-500 font-medium">+3</span></p>
+                  <p className="text-2xl font-bold text-purple-600">{newCustomers.newCustomers}</p>
+                  <p className="text-gray-500 text-sm mt-2">So với hôm qua: {comparedToYesterday(newCustomers)}</p>
               </div>
               {/* Near Appointments Count */}
               <div className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
                   <h2 className="text-lg font-medium text-gray-800 mb-2">Lịch hẹn gần</h2>
-                  <p className="text-2xl font-bold text-yellow-600">5</p>
+                  <p className="text-2xl font-bold text-yellow-600">{appointments.length}</p>
                   <p className="text-gray-500 text-sm mt-2">Trong giờ tiếp theo.</p>
               </div>
               <button className="mt-2 bg-blue-500 text-white px-4 py-2 rounded w-fit" onClick={handleViewStatistics}>Xem thống kê</button>
@@ -132,4 +201,3 @@ const DashboardHome: React.FC = () => {
 };
 
 export default DashboardHome;
-  
