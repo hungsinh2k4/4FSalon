@@ -8,7 +8,6 @@ import "aos/dist/aos.css";
 import { getEmployees } from "../api/employees";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 
-
 const Home: React.FC = () => {
   const stylistContainerRef = useRef<HTMLDivElement>(null);
   const [stylists, setStylists] = useState<any[]>([]);
