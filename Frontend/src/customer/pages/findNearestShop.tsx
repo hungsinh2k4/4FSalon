@@ -1,157 +1,135 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 interface Branch {
   id: number;
   address: string;
+  latitude: number;
+  longitude: number;
+  image: string;
 }
 
 const FindNearestShop: React.FC = () => {
   const [branches, setBranches] = useState<Branch[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [city, setCity] = useState<string>(""); // State cho Tỉnh/Thành phố
-  const [district, setDistrict] = useState<string>(""); // State cho Quận/Huyện
-  const [userLocation, setUserLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  const [city, setCity] = useState<string>("");
+  const [district, setDistrict] = useState<string>("");
+  const [filteredBranches, setFilteredBranches] = useState<Branch[]>([]);
+  const [mapCenter, setMapCenter] = useState({
+    lat: 21.028511,
+    lng: 105.804817,
+  }); // Mặc định Hà Nội
 
-  // Gọi API để lấy danh sách chi nhánh
+  const localMap =
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8610911880523!2d105.78010407448126!3d21.038243387454255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab354920c233%3A0x5d0313a3bfdc4f37!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2jhu4csIMSQ4bqhaSBo4buNYyBRdeG7kWMgZ2lhIEjDoCBO4buZaQ!5e0!3m2!1svi!2s!4v1734362828753!5m2!1svi!2s";
+
+  // Fetch danh sách chi nhánh
   useEffect(() => {
     const fetchBranches = async () => {
       try {
-        setLoading(true);
-        const response = await axios.get<Branch[]>(
+        const response = await axios.get(
           "https://fourfsalonserver.onrender.com/api/branches"
         );
         setBranches(response.data);
+        setFilteredBranches(response.data);
       } catch (error) {
-        console.error("Lỗi khi gọi API:", error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching branches:", error);
       }
     };
 
     fetchBranches();
   }, []);
 
+  // Lọc chi nhánh theo thành phố và quận/huyện
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log("User location:", position.coords.longitude);
-          console.log("Latitude:", position.coords.latitude);
-          setUserLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("Error getting user location:", error);
-        }
+    const filtered = branches.filter((branch) => {
+      return (
+        (!city || branch.address.includes(city)) &&
+        (!district || branch.address.includes(district))
       );
-    }
-  }, []);
-
-  // const mapSrc = userLocation
-  //   ? `https://www.google.com/maps/embed/v1/view?key=YOUR_API_KEY&center=${userLocation.lat},${userLocation.lng}&zoom=14`
-  //   : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.9537353153169!3d-37.8162797797517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d1b6c5b0b1b!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1611816753437!5m2!1sen!2sau";
-
-  // https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d59560.39379574732!2d105.78015856645648!3d21.09164105584376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e6!4m3!3m2!1d21.1461623!2d105.8620641!4m5!1s0x313454caaf2b115f%3A0xc05b77c8a5f461ae!2zxJDhuqFpIGjhu41jIFF14buRYyBnaWEgSMOgIE7hu5lpLCBE4buLY2ggVuG7jW5nIEjhuq11LCBD4bqndSBHaeG6pXksIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!3m2!1d21.0376807!2d105.78230459999999!5e0!3m2!1svi!2s!4v1733225343334!5m2!1svi!2s
-  const mapSrc =
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.1062394589917!2d105.77569377448096!3d21.02843468779125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454b2f431c099%3A0xe44043bacd461128!2zQuG6v24gWGUgTeG7uSDEkMOsbmg!5e0!3m2!1svi!2s!4v1733225564490!5m2!1svi!2s";
-
-  // Lọc danh sách chi nhánh theo Tỉnh/Thành phố và Quận/Huyện
-  const filteredBranches = branches.filter((branch) => {
-    if (city && !branch.address.includes(city)) return false;
-    if (district && !branch.address.includes(district)) return false;
-    return true;
-  });
+    });
+    setFilteredBranches(filtered);
+  }, [city, district, branches]);
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/src/customer/assets/bg.png')" }} // Đường dẫn đến ảnh nền
-    >
-      <div className="max-w-7xl w-full mx-auto p-6 bg-white shadow-lg rounded-md">
-        <h2 className="text-2xl font-bold text-center mb-6 text-blue-700">
-          TÌM SALON GẦN NHẤT
-        </h2>
-
-        <div className="flex flex-col sm:flex-row gap-6">
-          {/* Cột bên trái */}
-          <div className="flex-1 bg-gray-50 p-4 rounded-md shadow-md">
-            {/* Dropdown chọn Tỉnh/Thành phố và Quận/Huyện */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <select
-                className="p-2 border rounded w-full sm:w-1/2"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              >
-                <option value="">Tỉnh/Thành phố</option>
-                <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
-                <option value="Hà Nội">Hà Nội</option>
-              </select>
-              <select
-                className="p-2 border rounded w-full sm:w-1/2"
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
-              >
-                <option value="">Quận/Huyện</option>
-                <option value="Quận 1">Quận 1</option>
-                <option value="Quận 2">Quận 2</option>
-              </select>
-            </div>
-
-            {/* Danh sách chi nhánh với scroll */}
-            {loading ? (
-              <p className="text-center text-gray-500">
-                Đang tải danh sách chi nhánh...
-              </p>
-            ) : filteredBranches.length > 0 ? (
-              <div
-                className="space-y-4 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
-                style={{ paddingRight: "0.5rem" }}
-              >
-                {filteredBranches.map((branch) => (
-                  <div
-                    key={branch.id}
-                    className="flex items-center p-4 border rounded bg-blue-50 shadow"
-                  >
-                    <div className="w-16 h-16 bg-blue-300 rounded flex-shrink-0"></div>
-                    <div className="ml-4 flex-1">
-                      <p className="text-gray-800 font-semibold">
-                        {branch.address}
-                      </p>
-                      <div className="flex space-x-2 mt-2">
-                        {/* <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded">
-                          Chỉ đường
-                        </button> */}
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded">
-                          Đặt lịch cắt
-                        </button>
-                      </div>
+    <div className=" bg-gray-100 flex items-center justify-center">
+      <div className="w-3/4 bg-white p-4 rounded shadow-md">
+        <div className="flex flex-col md:flex-row gap-4 h-full">
+          {/* Cột bên trái: Tìm Salon Gần Nhất */}
+          <div className="w-full md:w-1/2 p-4 flex flex-col">
+            <h1 className="text-xl font-semibold mb-4 bg-blue-900 text-center text-white p-2 rounded">
+              TÌM SALON GẦN ANH
+            </h1>
+            <div className="overflow-y-auto flex-1 border rounded p-4 border-gray-200 border-solid">
+              {filteredBranches.map((branch) => (
+                <div
+                  key={branch.id}
+                  className="flex items-center mb-4 p-4 border rounded hover:bg-gray-50 cursor-pointer"
+                  onClick={() =>
+                    setMapCenter({
+                      lat: branch.latitude,
+                      lng: branch.longitude,
+                    })
+                  }
+                >
+                  <img
+                    src={
+                      branch.image
+                        ? branch.image
+                        : "https://media.licdn.com/dms/image/v2/D560BAQG8v1rzcEkGlQ/company-logo_200_200/company-logo_200_200/0/1689257900736/branch_metrics_logo?e=2147483647&v=beta&t=jsEr5o4XivwCgispjT_SyXMCED2QqtVl5Pa_qA8Zvxo"
+                    }
+                    alt="Salon"
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                  <div className="ml-4 flex-1">
+                    <p className="font-semibold">{branch.address}</p>
+                    <div className="flex mt-2 space-x-2">
+                      <button className="bg-green-500 text-white px-3 py-2 rounded text-xs">
+                        Chỉ đường
+                      </button>
+                      <button className="bg-blue-500 text-white px-3 py-1 rounded text-xs">
+                        📅 Đặt lịch
+                      </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-center text-gray-500">
-                Không tìm thấy chi nhánh nào.
-              </p>
-            )}
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Cột bên phải (Bản đồ) */}
-          <div className="flex-1 bg-gray-50 p-4 rounded-md shadow-md mt-6 sm:mt-0">
-            <div className="relative h-screen  border rounded bg-gray-200 flex justify-center items-center">
+          {/* Cột bên phải: Filter + Map */}
+          <div className="w-full md:w-1/2 flex flex-col gap-1">
+            <div className="p-4 rounded">
+              <div className="flex space-x-4">
+                {/* Dropdown Chọn Thành phố */}
+                <select
+                  className="p-2 rounded text-gray-700 flex-1"
+                  onChange={(e) => setCity(e.target.value)}
+                >
+                  <option value="">Tỉnh/Thành phố</option>
+                  <option value="Hà Nội">Hà Nội</option>
+                  <option value="TP Hồ Chí Minh">TP Hồ Chí Minh</option>
+                  <option value="Đà Nẵng">Đà Nẵng</option>
+                </select>
+                {/* Dropdown Quận/Huyện */}
+                <select
+                  className="p-2 rounded text-gray-700 flex-1"
+                  onChange={(e) => setDistrict(e.target.value)}
+                >
+                  <option value="">Quận huyện</option>
+                  <option value="Ba Đình">Ba Đình</option>
+                  <option value="Hoàn Kiếm">Hoàn Kiếm</option>
+                  <option value="Cầu Giấy">Cầu Giấy</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex-1 bg-gray-50 rounded shadow-md overflow-hidden">
               <iframe
-                src={mapSrc}
+                title="Google Map"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
-                allowFullScreen={false}
-                loading="lazy"
+                src={localMap}
+                allowFullScreen
               ></iframe>
             </div>
           </div>
