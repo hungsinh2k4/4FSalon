@@ -62,11 +62,31 @@ export interface User {
   
   export interface Appointment {
     id: number;
-    clientName: string;
-    service_id: number;
+    title: string;
     date: string;
-    time: string;
+    start_time: string;
+    estimated_end_time: string;
+    final_price: number;
+    status: string;
+    customer: Customer;
+    service?: Service;
+    branch: Branch;
+    feedback?: Feedback | null;
+    employee: Employee | null;
+    created_at: string;
+    updated_at: string;
     // Thêm các trường khác nếu cần
+  }
+
+  export interface Customer {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    booking_count: number;
+    canceled_count: number;
+    created_at: string;
+    updated_at: string;
   }
   
   export interface Employee {

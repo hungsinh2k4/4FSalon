@@ -50,9 +50,9 @@ const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdi
       <thead> 
         <tr>
           <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
-          <th onClick={() => handleSort('email')}>Emai <FontAwesomeIcon icon={getSortIcon('email')} />l</th>
+          <th onClick={() => handleSort('email')}>Email <FontAwesomeIcon icon={getSortIcon('email')} /></th>
           <th onClick={() => handleSort('role')}>Role <FontAwesomeIcon icon={getSortIcon('role')} /></th>
-          <th onClick={() => handleSort('created_at')}> <FontAwesomeIcon icon={getSortIcon('create_at')} />Ngày tạo</th>
+          <th onClick={() => handleSort('created_at')}>Ngày tạo <FontAwesomeIcon icon={getSortIcon('create_at')} /></th>
           <th onClick={() => handleSort('id')}>Hành động</th>
         </tr>
       </thead>
