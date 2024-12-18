@@ -79,6 +79,7 @@ const Booking: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (selectedBranch) {
       setErrorBranch("");
     }
