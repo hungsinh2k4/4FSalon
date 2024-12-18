@@ -73,6 +73,7 @@ export interface Appointment {
   user_id: Number;
   service_id: Number;
   branch_id: Number;
+  voucher_id: Number;
   employee_id: Number;
   // Thêm các trường khác nếu cần
 }
@@ -94,6 +95,7 @@ export interface MyAppointment {
   user: User;
   service?: Service;
   branch?: Branch;
+  voucher?: Voucher;
   feedback: Feedback | null;
   employee?: Employee | null;
   created_at: string;

@@ -1,6 +1,5 @@
 import React from "react";
-import { Service } from "../../utils/types";
-import { beautifyPrice } from "../../utils/helpers";
+import { Service, Voucher } from "../../utils/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,6 +8,8 @@ interface ServiceListProps {
   services: Service[];
   selectedService: Service | null;
   setSelectedService: React.Dispatch<React.SetStateAction<Service | null>>;
+  setSelectedVoucher: React.Dispatch<React.SetStateAction<Voucher | null>>;
+  searchTerm: String
 }
 
 const ServiceList: React.FC<ServiceListProps> = ({
@@ -16,25 +17,35 @@ const ServiceList: React.FC<ServiceListProps> = ({
   services,
   selectedService,
   setSelectedService,
+  setSelectedVoucher,
+  searchTerm
 }) => {
   if (viewType !== "services") return null;
 
   return (
     <div className="container mx-auto max-h-[500px] p-4 overflow-y-auto">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {services.map((service) => (
+        {services.filter(
+          (service) =>
+            service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(service.estimate_time).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            service.price.toString().toLowerCase().includes(searchTerm.toLowerCase())
+
+
+        ).map((service) => (
           <div
             key={service.id}
-            onClick={() =>
+            onClick={() => {
+              setSelectedVoucher(null)
               setSelectedService(
                 selectedService?.id === service.id ? null : service
               )
             }
-            className={`w-full max-h-[300px] my-2.5 pb-5 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${
-              selectedService?.id === service.id
-                ? "bg-blue-200 border-blue-500"
-                : "bg-white border-gray-300"
-            } cursor-pointer text-left flex flex-col`}
+            }
+            className={`w-full max-h-[300px] my-2.5 pb-5 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${selectedService?.id === service.id
+              ? "bg-blue-200 border-blue-500"
+              : "bg-white border-gray-300"
+              } cursor-pointer text-left flex flex-col`}
           >
             <div className="w-full h-28 overflow-hidden rounded-t-lg">
               <img

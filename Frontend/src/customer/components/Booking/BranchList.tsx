@@ -7,6 +7,7 @@ interface BranchListProps {
   selectedBranch: Branch | null;
   setSelectedBranch: (branch: Branch | null) => void;
   resetState: () => void;
+  searchTerm: String
 }
 
 const BranchList: React.FC<BranchListProps> = ({
@@ -15,23 +16,27 @@ const BranchList: React.FC<BranchListProps> = ({
   selectedBranch,
   setSelectedBranch,
   resetState,
+  searchTerm
 }) => {
   if (viewType !== "branches") return null;
 
   return (
     <div className="p-5 max-h-[500px] overflow-y-auto border border-gray-300">
-      {branches.map((branch) => (
+      {branches.filter(
+        (branch) =>
+          branch.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          branch.address.toLowerCase().includes(searchTerm.toLowerCase())
+      ).map((branch) => (
         <button
           key={branch.id}
           onClick={() => {
             setSelectedBranch(selectedBranch?.id === branch.id ? null : branch);
             resetState();
           }}
-          className={`w-full rounded-lg h-[150px] my-10 ${
-            selectedBranch?.id === branch.id
+          className={`w-full rounded-lg h-[150px] my-10 ${selectedBranch?.id === branch.id
               ? "bg-blue-200 border-blue-500"
               : "bg-gray-100 border-gray-300"
-          } cursor-pointer text-left flex items-center`}
+            } cursor-pointer text-left flex items-center`}
         >
           <div className="w-1/3 h-full overflow-hidden rounded-lg">
             <img

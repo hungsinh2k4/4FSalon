@@ -5,6 +5,7 @@ interface EmployeeListProps {
   employees: Employee[];
   selectedEmployee: Employee | null;
   setSelectedEmployee: React.Dispatch<React.SetStateAction<Employee | null>>;
+  searchTerm: String;
 }
 
 const EmployeeList: React.FC<EmployeeListProps> = ({
@@ -12,12 +13,18 @@ const EmployeeList: React.FC<EmployeeListProps> = ({
   employees,
   selectedEmployee,
   setSelectedEmployee,
+  searchTerm
 }) => {
   if (viewType !== "employees") return null;
 
   return (
     <div className="mt-2.5 max-h-[500px] overflow-y-auto border border-gray-300 rounded-s-lg p-2 grid grid-cols-2 gap-3.5">
-      {employees.map((employee) => (
+      {employees.filter(
+        (employee) =>
+          employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          employee.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          employee.work_position.toLowerCase().includes(searchTerm.toLowerCase())
+      ).map((employee) => (
         <button
           key={employee.id}
           onClick={() =>
@@ -25,11 +32,10 @@ const EmployeeList: React.FC<EmployeeListProps> = ({
               selectedEmployee?.id === employee.id ? null : employee
             )
           }
-          className={`w-full py-6.5 h-[400px] my-2.5 ${
-            selectedEmployee?.id === employee.id
+          className={`w-full py-6.5 h-[400px] my-2.5 ${selectedEmployee?.id === employee.id
               ? "bg-blue-700 border-blue-950" // Style khi được chọn
               : "bg-gray-100 border-[#0a0a0a]"
-          } cursor-pointer text-left flex`}
+            } cursor-pointer text-left flex`}
         >
           <div className="w-2/5 h-full overflow-hidden">
             <img

@@ -1,7 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCity,
   faLocationDot,
   faScissors,
   faSearch,
@@ -15,9 +14,6 @@ import {
   Service,
   Voucher,
   User,
-  Appointment,
-  Customer,
-  MyAppointment,
 } from "../utils/types";
 import ServiceList from "../components/Booking/ServiceList";
 import BranchList from "../components/Booking/BranchList";
@@ -28,20 +24,19 @@ import { useNavigate } from "react-router-dom";
 import { fetchBranches } from "../services/Booking/BookingService";
 import { fetchEmployeebyBranchId } from "../services/Booking/employeeService";
 import { fetchServices } from "../services/Booking/serviceService";
-import { useAuth } from "../context/AuthContext";
 import VoucherList from "../components/Booking/VoucherList";
-import { addAppointment } from "../services/Booking/appointment";
+import { addAppointment, changeAppointment } from "../services/Booking/appointment";
 import EmployeeList from "../components/Booking/EmployeeList";
 import { fetchVoucherbyBranchId } from "../services/Booking/VoucherService";
 import { getEmployeeSchedule } from "../api/employees";
 import {
   getUser,
-  getCustomerProfileByUserId,
   getAppointmentList,
 } from "../api/user";
 import { Schedule } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
-import { beautifyTime } from "../utils/helpers";
+import { beautifyPrice } from "../utils/helpers";
+
 
 const Booking: React.FC = () => {
   const [branches, setBranches] = useState<Branch[]>([]);
@@ -58,7 +53,6 @@ const Booking: React.FC = () => {
   const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [filteredList, setFilteredList] = useState([]);
   const [selectedTime, setSelectedTime] = useState<string | null | null>(null);
   const [errorEmployee, setErrorEmployee] = useState<string | null>(null);
   const [errorBranch, setErrorBranch] = useState<string | null>(null);
@@ -66,8 +60,7 @@ const Booking: React.FC = () => {
   const [errorTime, setErrorTime] = useState<string | null>(null);
   const [successInfo, setSuccessInfo] = useState<any | null>(null);
   const [userprofile, setUserProfile] = useState<User | null>(null);
-  const [customerprofile, setCustomerProfile] = useState<Customer | null>(null);
-  const [message, setMessage] = useState("");
+
   const [schedule, setSchedule] = useState<Schedule[]>([]);
   const [totalPayment, setTotalPayment] = useState(0);
   const [selectedStartTimeDate, setSelectedStartTimeDate] =
@@ -96,6 +89,9 @@ const Booking: React.FC = () => {
       if (data[0]?.branch) {
         setSelectedBranch(data[0].branch);
       }
+      if (data[0]?.voucher) {
+        setSelectedVoucher(data[0].voucher);
+      }
       if (data[0]?.service) {
         setSelectedService(data[0].service);
       }
@@ -108,6 +104,7 @@ const Booking: React.FC = () => {
       if (data[0]?.start_time) {
         setSelectedTime(data[0].start_time);
       }
+
     };
 
     if (appointmentId) {
@@ -133,13 +130,13 @@ const Booking: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setHours(8, 0, 0, 0);
     if (e.target.value === "today") {
       setSelectedDate(today);
     } else if (e.target.value === "tomorrow") {
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
-      tomorrow.setHours(0, 0, 0, 0);
+      tomorrow.setHours(8, 0, 0, 0);
       setSelectedDate(tomorrow);
     }
   };
@@ -160,7 +157,7 @@ const Booking: React.FC = () => {
         const endDateTime = new Date(startDateTime);
         endDateTime.setMinutes(
           endDateTime.getMinutes() +
-            Number(selectedService?.estimate_time).valueOf()
+          Number(selectedService?.estimate_time).valueOf()
         );
         setSelectedEndTimeDate(endDateTime);
       }
@@ -183,8 +180,6 @@ const Booking: React.FC = () => {
         const userData = await getUser();
         setUserProfile(userData);
         setLoading(false);
-        const customerData = await getCustomerProfileByUserId(userData.id);
-        setCustomerProfile(customerData);
       } catch (error) {
         console.error("Error fetching user data:", error);
         setLoading(false);
@@ -200,8 +195,6 @@ const Booking: React.FC = () => {
       try {
         const data = await fetchBranches();
         setBranches(data);
-        const d = new Date();
-        const date = d.toISOString();
       } catch (err) {
         setError("Failed to fetch branches.");
       } finally {
@@ -263,16 +256,12 @@ const Booking: React.FC = () => {
       } finally {
         setLoading(false);
       }
+
     };
 
     loadSchedule();
   }, [selectedEmployee, selectedDate]);
 
-  useEffect(() => {
-    if (!selectedService) {
-      setSelectedVoucher(null);
-    }
-  }, [selectedService]);
 
   useEffect(() => {
     const loadServices = async () => {
@@ -291,48 +280,14 @@ const Booking: React.FC = () => {
 
   useEffect(() => {
     const servicePrice = selectedService?.price ?? 0;
-    const voucherDiscount = selectedVoucher?.discount_value ?? 0;
+    let voucherDiscount = selectedVoucher?.discount_value ?? 0;
+    if (selectedVoucher?.discount_type === "percentage") {
+      voucherDiscount = Math.floor((servicePrice * voucherDiscount) / 100); // Rounds down to the nearest integer
+    }
+    console.log(selectedVoucher);
     setTotalPayment(servicePrice - voucherDiscount);
   }, [selectedService, selectedVoucher]);
   //total price
-  useEffect(() => {
-    // Lọc danh sách cửa hàng dựa vào searchTerm
-    setBranches(
-      branches.filter(
-        (branch) =>
-          branch.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          branch.address.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, []);
-
-  useEffect(() => {
-    // Lọc danh sách cửa hàng dựa vào searchTerm
-    setEmployees(
-      employees.filter(
-        (employee) =>
-          employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          employee.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          employee.work_position
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())
-      )
-    );
-  }, []);
-
-  useEffect(() => {
-    setServices(
-      services.filter(
-        (service) =>
-          service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          service.description
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          service.price.toString().includes(searchTerm)
-      )
-    );
-  }, []);
 
   const handleConfirm = async () => {
     let hasError = false;
@@ -367,18 +322,35 @@ const Booking: React.FC = () => {
     if (hasError) return;
     try {
       // Gửi API
-      const response = await addAppointment({
-        title: selectedService?.title,
-        date: String(selectedDate?.toISOString()),
-        start_time: String(selectedStartTimeDate?.toISOString()),
-        estimated_end_time: String(selectedEndTimeDate?.toISOString()),
-        final_price: totalPayment,
-        employee_id: selectedEmployee?.id,
-        user_id: userprofile?.id,
-        service_id: selectedService?.id,
-        branch_id: selectedBranch?.id,
-        status: "Pending",
-      });
+      if (appointmentId == null) {
+        await addAppointment({
+          title: selectedService?.title,
+          date: String(selectedDate?.toISOString()),
+          start_time: String(selectedStartTimeDate?.toISOString()),
+          estimated_end_time: String(selectedEndTimeDate?.toISOString()),
+          final_price: totalPayment,
+          employee_id: selectedEmployee?.id,
+          user_id: userprofile?.id,
+          service_id: selectedService?.id,
+          voucher_id: selectedVoucher?.id,
+          branch_id: selectedBranch?.id,
+          status: "Pending",
+        });
+      } else {
+        await changeAppointment(Number(appointmentId), {
+          title: selectedService?.title,
+          date: String(selectedDate?.toISOString()),
+          start_time: String(selectedStartTimeDate?.toISOString()),
+          estimated_end_time: String(selectedEndTimeDate?.toISOString()),
+          final_price: totalPayment,
+          employee_id: selectedEmployee?.id,
+          user_id: userprofile?.id,
+          service_id: selectedService?.id,
+          voucher_id: selectedVoucher?.id,
+          branch_id: selectedBranch?.id,
+          status: "Pending",
+        });
+      }
 
       setSuccessInfo({
         service: " " + selectedService?.title,
@@ -386,11 +358,11 @@ const Booking: React.FC = () => {
         address: " " + selectedBranch?.address,
         time:
           " " +
-          selectedDate?.toLocaleDateString() +
+          selectedStartTimeDate?.getHours().toString() +
+          ":" +
+          selectedEndTimeDate?.getMinutes().toString() +
           ", " +
-          String(selectedStartTimeDate?.getHours) +
-          " - " +
-          String(selectedEndTimeDate?.getHours),
+          selectedDate?.toLocaleDateString(),
         price: " " + totalPayment + "đ",
         status: "Chờ xác nhận",
       });
@@ -423,11 +395,10 @@ const Booking: React.FC = () => {
             <h2 className="text-3xl font-bold mb-1">1. Chọn chi nhánh</h2>
             <div className="flex items-center">
               <button
-                className={`px-2 py-2 border rounded mt-8 w-fit text-left ${
-                  viewType === "branches"
-                    ? "bg-blue-500 text-white font-bold"
-                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
-                }`}
+                className={`px-2 py-2 border rounded mt-8 w-fit text-left ${viewType === "branches"
+                  ? "bg-blue-500 text-white font-bold"
+                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+                  }`}
                 onClick={() => {
                   setViewType("branches"), setErrorBranch("");
                 }}
@@ -446,11 +417,10 @@ const Booking: React.FC = () => {
             <h2 className="text-3xl font-bold mb-1">2. Chọn dịch vụ</h2>
             <div className="flex items-center">
               <button
-                className={`px-2 py-2 border rounded mt-8 w-full text-left ${
-                  viewType === "services"
-                    ? "bg-blue-500 text-white font-bold"
-                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
-                }`}
+                className={`px-2 py-2 border rounded mt-8 w-full text-left ${viewType === "services"
+                  ? "bg-blue-500 text-white font-bold"
+                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+                  }`}
                 onClick={() => {
                   if (!selectedBranch) {
                     setErrorBranch("Vui lòng chọn chi nhánh trước");
@@ -471,11 +441,10 @@ const Booking: React.FC = () => {
               <p className="text-red-500 mt-2">{errorService}</p>
             )}
             <button
-              className={`inline-flex items-center px-2 py-2 border rounded mt-8 text-left w-full ${
-                viewType === "voucher"
-                  ? "bg-blue-500 text-white font-bold"
-                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
-              }`}
+              className={`inline-flex items-center px-2 py-2 border rounded mt-8 text-left w-full ${viewType === "voucher"
+                ? "bg-blue-500 text-white font-bold"
+                : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+                }`}
               onClick={() => {
                 if (!selectedBranch || !selectedService) {
                   if (!selectedBranch) {
@@ -491,14 +460,15 @@ const Booking: React.FC = () => {
               }}
             >
               <FontAwesomeIcon icon={faTicket} className="mr-2" />
-              Voucher
+              {selectedVoucher
+                ? selectedVoucher?.code
+                : "Voucher"}
             </button>
 
-            <p className="pt-3">
+            <p className="pt-3 text-green-700	">
               Tổng thanh toán:{" "}
               {selectedService
-                ? (selectedService.price ?? 0) -
-                  (selectedVoucher?.discount_value ?? 0)
+                ? beautifyPrice(totalPayment)
                 : 0}
             </p>
           </div>
@@ -509,11 +479,10 @@ const Booking: React.FC = () => {
             </h2>
             <div className="flex items-center mb-1">
               <button
-                className={`inline-block px-2 py-2 border rounded mt-4 w-full text-left ${
-                  viewType === "employees"
-                    ? "bg-blue-500 text-white font-bold"
-                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
-                }`}
+                className={`inline-block px-2 py-2 border rounded mt-4 w-full text-left ${viewType === "employees"
+                  ? "bg-blue-500 text-white font-bold"
+                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+                  }`}
                 onClick={() => {
                   if (!selectedBranch || !selectedService) {
                     if (!selectedBranch) {
@@ -528,7 +497,7 @@ const Booking: React.FC = () => {
                   setViewType("employees");
                   setErrorEmployee("");
                 }}
-                // disabled={!selectedBranch || !selectedService}
+              // disabled={!selectedBranch || !selectedService}
               >
                 <FontAwesomeIcon icon={faUserCheck} className="mr-2" />
                 Chọn nhân viên
@@ -540,8 +509,20 @@ const Booking: React.FC = () => {
             <div>
               <select
                 className="p-2 border rounded-lg flex-grow text-left"
+                onClick={() => {
+                  if (!selectedBranch || !selectedService) {
+                    if (!selectedBranch) {
+                      setErrorBranch("Vui lòng chọn chi nhánh trước");
+                    }
+                    if (!selectedService) {
+                      setErrorService("Vui lòng chọn dịch vụ trước");
+                    }
+                    return;
+                  }
+                }}
                 onChange={handleChange}
                 defaultValue="today"
+                disabled={!selectedBranch || !selectedService}
               >
                 <option value="tomorrow">Ngày mai</option>
                 <option value="today">Hôm nay</option>
@@ -556,7 +537,9 @@ const Booking: React.FC = () => {
                 })}
               </p>
             </div>
+
             <TimePicker
+              timeBlock={Math.floor(Number(selectedService?.estimate_time) / 20)}
               onTimeSelect={handleTimeSelect}
               schedule={schedule}
               selectedDate={selectedDate}
@@ -603,7 +586,10 @@ const Booking: React.FC = () => {
                   <strong>Trạng thái:</strong> {successInfo.status}
                 </p>
                 <button
-                  onClick={() => setSuccessInfo(null)}
+                  onClick={() => {
+                    setSuccessInfo(null);
+                    navigate("/appointment");
+                  }}
                   className="mt-4 w-full p-2 bg-blue-500 text-white rounded-lg"
                 >
                   Đóng
@@ -618,8 +604,9 @@ const Booking: React.FC = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder="Tìm kiếm chi nhánh"
+              placeholder="Tìm kiếm"
               className="w-full p-3 pl-9 mb-6 rounded-lg border-2 border-black"
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <FontAwesomeIcon
               icon={faSearch}
@@ -632,6 +619,7 @@ const Booking: React.FC = () => {
               selectedBranch={selectedBranch}
               setSelectedBranch={setSelectedBranch}
               resetState={resetState}
+              searchTerm={searchTerm}
             />
 
             <ServiceList
@@ -639,6 +627,8 @@ const Booking: React.FC = () => {
               services={services}
               selectedService={selectedService}
               setSelectedService={setSelectedService}
+              setSelectedVoucher={setSelectedVoucher}
+              searchTerm={searchTerm}
             />
             <VoucherList
               viewType={viewType}
@@ -646,14 +636,16 @@ const Booking: React.FC = () => {
               selectedVoucher={selectedVoucher}
               setSelectedVoucher={setSelectedVoucher} // Do nothing
               user={userprofile}
-              selectedDate={new Date(Date.UTC(2024, 11, 1, 0, 0, 0))}
+              selectedDate={selectedDate}
               selectedService={selectedService}
+              searchTerm={searchTerm}
             />
             <EmployeeList
               viewType={viewType}
               employees={employees}
               selectedEmployee={selectedEmployee}
               setSelectedEmployee={setSelectedEmployee}
+              searchTerm={searchTerm}
             />
           </div>
         </div>

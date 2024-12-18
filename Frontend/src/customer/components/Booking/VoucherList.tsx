@@ -8,7 +8,8 @@ interface VoucherListProps {
   setSelectedVoucher: React.Dispatch<React.SetStateAction<Voucher | null>>;
   selectedService: Service | null ; // Giá trị dịch vụ đã chọn
   user: User | null; // Số điểm của người dùng
-  selectedDate: Date; // Ngày được truyền vào để kiểm tra điều kiện
+  selectedDate: Date | undefined; // Ngày được truyền vào để kiểm tra điều kiện
+  searchTerm: String
 }
 
 const VoucherList: React.FC<VoucherListProps> = ({
@@ -19,15 +20,16 @@ const VoucherList: React.FC<VoucherListProps> = ({
   selectedService,
   user,
   selectedDate, // Nhận ngày từ props
+  searchTerm
 }) => {
   // Hàm kiểm tra xem voucher có hợp lệ với các điều kiện không
   const isVoucherValid = (voucher: Voucher): boolean => {
+    if(selectedDate === undefined) return false; // Nếu không có ngày thì không hợp lệ
     const startDate = new Date(voucher.start_date);
     const endDate = new Date(voucher.end_date);
     const isDateInRange = selectedDate >= startDate && selectedDate <= endDate; // Sử dụng selectedDate
    const isPriceValid =(selectedService?.price ?? 0) >= voucher.price_threshold;
     const isPointsValid = (Number (user?.points) >= voucher.required_point);
-
     
     return isDateInRange && isPriceValid && isPointsValid;
   };
@@ -36,7 +38,12 @@ const VoucherList: React.FC<VoucherListProps> = ({
   if (!selectedService) {selectedVoucher = null;} // Nếu không có dịch vụ nào được chọn thì vô hiệu hóa voucher
   return (
     <div className="mt-2.5 max-h-[500px] overflow-y-auto border border-gray-300 rounded-s-lg p-2 grid grid-cols-2 gap-3.5">
-      {vouchers.map((voucher) => {
+      {vouchers.filter(
+        (voucher) =>
+          voucher.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          voucher.price_threshold.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+          voucher.discount_value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      ).map((voucher) => {
         const valid = isVoucherValid(voucher); // Kiểm tra điều kiện voucher
         return (
           <button
