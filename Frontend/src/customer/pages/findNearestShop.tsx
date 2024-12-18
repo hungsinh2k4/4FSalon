@@ -119,6 +119,7 @@ const FindNearestShop: React.FC = () => {
                   <option value="Ba Đình">Ba Đình</option>
                   <option value="Hoàn Kiếm">Hoàn Kiếm</option>
                   <option value="Cầu Giấy">Cầu Giấy</option>
+                  <option value="Hai Bà Trưng">Hai Bà Trưng</option>
                 </select>
               </div>
             </div>

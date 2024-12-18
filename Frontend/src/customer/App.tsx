@@ -13,6 +13,9 @@ import ChangePassword from "./pages/ChangePassword";
 import FindNearestShop from "./pages/findNearestShop";
 import Appointment from "./pages/appointment";
 import NotFound from "./components/NotFound";
+import HairCut from "./components/HairCut";
+import CurlHair from "./components/CurlHair";
+import HairDying from "./components/HairDying";
 import { ForgotPassword } from "./components/ForgotPassword";
 import { ResetPassword } from "./components/ResetPassword";
 import { ToastContainer } from "react-toastify";
@@ -39,6 +42,9 @@ const App: React.FC = () => {
               <Route path="*" element={<NotFound />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/servicesHairCut" element={<HairCut />} />
+              <Route path="/servicesCurlHair" element={<CurlHair />} />
+              <Route path="/servicesHairDying" element={<HairDying />} />
               {/* Thêm tuyến đường cho Profile */}
             </Routes>
           </main>
