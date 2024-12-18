@@ -61,6 +61,7 @@ const Login: React.FC = () => {
 
   const handleToken = async (access_token: string) => {
     const { user } = await authService.loginWithGoogle(access_token);
+    toast.success("Đăng nhập thành công");
     setUser(user);
     console.log("Logged in with Google successfully");
   };

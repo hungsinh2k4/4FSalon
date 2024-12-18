@@ -9,6 +9,11 @@ import { fetchAccounts, removeAccount, addAccount, editAccount } from '../../ser
 
 import { Account } from '../../utils/types';
 
+const Role = {
+  Admin: 'admin',
+  Manager: 'manager',
+  Customer: 'customer',
+};
 
 const AccountList: React.FC = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -70,7 +75,7 @@ const AccountList: React.FC = () => {
         // Edit account
         const editdAccount = await editAccount(currentAccount.id, data);
         setAccounts(
-          accounts.map((account) => (account.id === editdAccount.id ? editdAccount : account))
+          accounts.map((account) => (account.id === editdAccount.id ? { ...account, ...editdAccount } : account))
         );
       } else {
         // Add account

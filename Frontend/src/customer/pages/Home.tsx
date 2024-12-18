@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Khuyenmai from "../assets/HomeImg/Khuyenmai.png";
 import Logo from "../assets/logo.png";
 import "./Home.css";
@@ -9,11 +9,22 @@ import { getEmployees } from "../api/employees";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+  const handleLearnMore = () => {
+    navigate("/servicesHairCut"); // Chuyển sang trang /services
+  };
+  const handleLearnMore2 = () => {
+    navigate("/servicesCurlHair"); // Chuyển sang trang /services
+  };
+  const handleLearnMore3 = () => {
+    navigate("/servicesHairDying"); // Chuyển sang trang /services
+  };
+
   const stylistContainerRef = useRef<HTMLDivElement>(null);
   const [stylists, setStylists] = useState<any[]>([]);
 
   useEffect(() => {
-    AOS.init({ once: true });
+    AOS.init({ once: true, duration: 1200 });
     window.scrollTo(0, 0);
 
     const fetchStylists = async () => {
@@ -76,7 +87,7 @@ const Home: React.FC = () => {
       </div>
 
       {/* Dịch Vụ */}
-      <section className="py-12 bg-white min-w-screen" data-aos="fade-up">
+      <section className="py-12 bg-white min-w-screen">
         <h2 className="text-4xl font-bold text-center mb-8">Dịch vụ</h2>
         <div className="container w-3/4 mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div
@@ -95,7 +106,12 @@ const Home: React.FC = () => {
             </div>
             <div className="text-center" data-aos="fade-up">
               <h3 className="text-xl font-semibold mt-4">Cắt tóc</h3>
-              <p className="text-gray-500 mt-2">Tìm hiểu thêm &gt;</p>
+              <p
+                className="text-blue-600 mt-2 cursor-pointer hover:underline"
+                onClick={handleLearnMore}
+              >
+                Tìm hiểu thêm &gt;
+              </p>
             </div>
           </div>
           <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
@@ -111,7 +127,12 @@ const Home: React.FC = () => {
             </div>
             <div className="text-center" data-aos="fade-up">
               <h3 className="text-xl font-semibold mt-4">Uốn tóc</h3>
-              <p className="text-gray-500 mt-2">Tìm hiểu thêm &gt;</p>
+              <p
+                className="text-blue-600 mt-2 cursor-pointer hover:underline"
+                onClick={handleLearnMore2}
+              >
+                Tìm hiểu thêm &gt;
+              </p>
             </div>
           </div>
           <div className="bg-gray-100 rounded-lg shadow-lg p-4 flex flex-col items-center">
@@ -127,7 +148,12 @@ const Home: React.FC = () => {
             </div>
             <div className="text-center" data-aos="fade-up">
               <h3 className="text-xl font-semibold mt-4">Nhuộm tóc</h3>
-              <p className="text-gray-500 mt-2">Tìm hiểu thêm &gt;</p>
+              <p
+                className="text-blue-600 mt-2 cursor-pointer hover:underline"
+                onClick={handleLearnMore3}
+              >
+                Tìm hiểu thêm &gt;
+              </p>
             </div>
           </div>
         </div>

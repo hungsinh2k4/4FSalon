@@ -45,10 +45,10 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({ appointments, onD
       <thead>
         <tr>
           <th onClick={() => handleSort("id")}>ID<FontAwesomeIcon icon={getSortIcon('id')} /></th>
-          <th onClick={() => handleSort("clientName")}>Tên khách hàng<FontAwesomeIcon icon={getSortIcon('clientName')} /></th>
-          <th onClick={() => handleSort("service_id")}>ID Dịch vụ<FontAwesomeIcon icon={getSortIcon('service_id')} /></th>
+          <th onClick={() => handleSort("customer")}>Tên khách hàng<FontAwesomeIcon icon={getSortIcon('customer')} /></th>
+          <th onClick={() => handleSort("service")}>Dịch vụ<FontAwesomeIcon icon={getSortIcon('service')} /></th>
           <th onClick={() => handleSort("date")}>Ngày<FontAwesomeIcon icon={getSortIcon('date')} /></th>
-          <th onClick={() => handleSort("time")}>Thời gian<FontAwesomeIcon icon={getSortIcon('time')} /></th>
+          <th onClick={() => handleSort("start_time")}>Thời gian<FontAwesomeIcon icon={getSortIcon('start_time')} /></th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -56,10 +56,10 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({ appointments, onD
         {sorted.map((appointment) => (
           <tr key={appointment.id}>
             <td>{appointment.id}</td>
-            <td>{appointment.clientName}</td>
-            <td>{appointment.service_id}</td>
+            <td>{appointment.customer.name}</td>
+            <td>{appointment.service?.title}</td>
             <td>{appointment.date}</td>
-            <td>{appointment.time}</td>
+            <td>{appointment.start_time}</td>
             <td className={styles.actionList}>
             <FaPen className={styles.actionEdit} onClick={() => onEdit(appointment)}/> 
             <FaXmark className={styles.actionDelete} onClick={() => onDelete(appointment.id)}/>

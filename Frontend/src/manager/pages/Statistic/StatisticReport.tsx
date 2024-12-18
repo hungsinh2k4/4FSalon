@@ -498,10 +498,10 @@ const StatisticReport: React.FC = () => {
       )
     }
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
 
+    if (loading) {
+      return <p>Loading...</p>;
+    }
     if (error) {
         return <p>{error}</p>;
     }
@@ -574,7 +574,7 @@ const StatisticReport: React.FC = () => {
             {/* Income Graph */}
             <div className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
               <div className="flex flex-row justify-between">
-                <h2 className="text-lg font-medium text-gray-800 mb-4">Doanh thu</h2>
+                <h2 className="text-lg font-medium text-gray-800 mb-4">Doanh thu theo chi nhánh</h2>
                 <select
                   className="border border-gray-200 rounded p-2"
                   value={startDate.toISOString()}
