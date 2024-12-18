@@ -8,3 +8,8 @@
     align-self: flex-end;
   }
   
+  .label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  

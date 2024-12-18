@@ -16,6 +16,12 @@ interface AccountFormProps {
   onSubmit: (data: any) => void;
 }
 
+enum Role {
+  Admin = 'admin',
+  Manager = 'manager',
+  Customer = 'customer',
+}
+
 const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit }) => {
   const [id, setId] = useState<number>(initialData?.id || 0);
   const [password, setPassword] = useState<string>(initialData?.password || '');
@@ -38,20 +44,23 @@ const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data: Partial<Account> = {  email, role };
+    const data: Partial<Account> = { email, role };
     onSubmit(data);
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.accountForm}>
       <h3>{initialData ? 'Chỉnh sửa tài khoản' : 'Thêm tài khoản'}</h3>
-      <Input
-        label="Role"
-        type="text"
+      <label className={styles.label}>Loại tài khoản</label>
+      <select 
         value={role}
         onChange={(e) => setRole(e.target.value)}
-        required
-      />
+        required={true}  
+      >
+        <option value={Role.Admin}>admin</option>
+        <option value={Role.Manager}>manager</option>
+        <option value={Role.Customer}>customer</option>
+      </select>
       <Input
         label="Email"
         type="email"

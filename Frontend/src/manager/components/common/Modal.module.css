@@ -27,8 +27,9 @@
   .modal {
     background: linear-gradient(145deg, #ffffff, #f0f0f0);
     border-radius: 16px 16px 8px 8px;
-    width: 500px;
-    max-width: 90%;
+    min-width: 500px;
+    width: fit-content;
+    max-width: 100%;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     animation: fadeIn 0.3s ease-out;
   }

@@ -26,6 +26,7 @@ const AppointmentList: React.FC = () => {
       try {
         const data = await fetchAppointments();
         setAppointments(data);
+        console.log(data);
       } catch (err) {
         setError('Failed to fetch appointments.');
       } finally {
@@ -154,7 +155,7 @@ return (
         onClose={() => setIsModalOpen(false)}
         title={currentAppointment ? 'Chỉnh sửa lịch hẹn' : 'Thêm đặt lịch'} >
           <AppointmentForm initialData={currentAppointment || undefined} onSubmit={handleFormSubmit} />
-        </Modal>
+      </Modal>
     </div>
 )
 }
