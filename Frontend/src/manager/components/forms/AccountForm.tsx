@@ -17,14 +17,13 @@ interface AccountFormProps {
 }
 
 enum Role {
-  Admin = 'admin',
   Manager = 'manager',
   Customer = 'customer',
 }
 
 const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit, type }) => {
   const [id, setId] = useState<number>(initialData?.id || 0);
-  const [password, setPassword] = useState<string>(initialData?.password || '');
+  const [password, setPassword] = useState<string>('');
   const [google_id, setGoogleId] = useState<string>(initialData?.google_id || '');
   const [email, setEmail] = useState<string>(initialData?.email || '');
   const [role, setRole] = useState<string>(initialData?.role || '');
@@ -32,7 +31,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit, type }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data = {id, email, role };
+    const data = {id, email, role, password};
     onSubmit(data);
   };
 
@@ -45,7 +44,6 @@ const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit, type }
         onChange={(e) => setRole(e.target.value)}
         required={true}  
       >
-        <option value={Role.Admin}>admin</option>
         <option value={Role.Manager}>manager</option>
         <option value={Role.Customer}>customer</option>
       </select>
@@ -56,7 +54,13 @@ const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit, type }
         onChange={(e) => setEmail(e.target.value)}
         required
       />
-      {/* Thêm các Input khác nếu cần */}
+      <Input
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
       <Button type="submit" className={styles.submitButton}>{type}</Button>
     </form>
   );

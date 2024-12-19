@@ -1,4 +1,4 @@
-// src/manager/components/tables/ServicesTable.tsx
+// src/manager/components/tables/FeedbacksTable.tsx
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
@@ -6,18 +6,17 @@ import { FaPen, FaXmark } from 'react-icons/fa6';
 
 import Button from '../common/Button';
 import styles from '../../components/common/global.module.css';
-import { Service } from '../../utils/types';
+import { Feedback } from '../../utils/types';
 
-interface ServicesTableProps {
-  services: Service[];
-  onDelete: (service: Service) => void;
-  onEdit: (service: Service) => void;
+interface FeedbacksTableProps {
+  feedbacks: Feedback[];
+
 }
 
-const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdit }) => {
-  const [sortConfig, setSortConfig] = useState<{ key: keyof Service, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: 'asc' });
+const FeedbacksTable: React.FC<FeedbacksTableProps> = ({ feedbacks }) => {
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Feedback, direction: 'asc' | 'desc' | '' }>({ key: 'id', direction: 'asc' });
 
-  const sorted = [...services].sort((a, b) => {
+  const sorted = [...feedbacks].sort((a, b) => {
     if (sortConfig.key) {
       const key = sortConfig.key;
       const direction = sortConfig.direction === 'asc' ? 1 : -1;
@@ -26,7 +25,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
     }
     return 0;
   });
-  const handleSort = (key: keyof Service) => {
+  const handleSort = (key: keyof Feedback) => {
     setSortConfig((prevState) => {
       const direction = prevState.key === key && prevState.direction === 'asc' ? 'desc' : 'asc';
       return { key, direction };
@@ -41,32 +40,38 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
     <div className={styles.tableContainer}>
       <table>
         <colgroup>
-            <col style={{ width: '7%' }} />
-            <col style={{ width: '25%' }} />
+            <col style={{ width: '5%' }} />
             <col style={{ width: '12%' }} />
             <col style={{ width: '12%' }} />
-            <col style={{ width: '10%' }} />
+            <col style={{ width: '6%' }} />
+            <col style={{ width: '20%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '6%' }} />
+            <col style={{ width: '20%' }} />
         </colgroup>
         <thead>
           <tr>
             <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
-            <th onClick={() => handleSort('title')}>Tên dịch vụ <FontAwesomeIcon icon={getSortIcon('title')} /></th>
-            <th onClick={() => handleSort('price')}>Giá <FontAwesomeIcon icon={getSortIcon('price')} /></th>
-            <th onClick={() => handleSort('estimate_time')}>Thời gian <FontAwesomeIcon icon={getSortIcon('estimate_time')} /></th>
-            <th>Hành động</th>
+            <th onClick={() => handleSort('customer_name')}>Customer Name <FontAwesomeIcon icon={getSortIcon('customer_name')} /></th>
+            <th onClick={() => handleSort('branch_name')}>Branch Name <FontAwesomeIcon icon={getSortIcon('branch_name')} /></th>
+            <th onClick={() => handleSort('branch_rating')}>R <FontAwesomeIcon icon={getSortIcon('branch_rating')} /></th>
+            <th onClick={() => handleSort('branch_feedback')}>Branch Feedback <FontAwesomeIcon icon={getSortIcon('branch_feedback')} /></th>
+            <th onClick={() => handleSort('employee_name')}>Employee Name <FontAwesomeIcon icon={getSortIcon('employee_name')} /></th>
+            <th onClick={() => handleSort('employee_rating')}>R <FontAwesomeIcon icon={getSortIcon('employee_rating')} /></th>
+            <th onClick={() => handleSort('employee_feedback')}>Employee Feedback <FontAwesomeIcon icon={getSortIcon('employee_feedback')} /></th>
           </tr>
         </thead>
         <tbody>
-          {sorted.map((service) => (
-            <tr key={service.id}>
-              <td>{service.id}</td>
-              <td>{service.title}</td>
-              <td>{service.price.toLocaleString('vi-VN')}vnđ</td>
-              <td>{service.estimate_time} phút</td>
-              <td className={styles.actionList}>
-                <FaPen className={styles.actionEdit} onClick={() => onEdit(service)}/> 
-                <FaXmark className={styles.actionDelete} onClick={() => onDelete(service)}/>
-              </td>
+          {sorted.map((feedback) => (
+            <tr key={feedback.id}>
+              <td>{feedback.id}</td>
+              <td>{feedback.customer_name || '---'}</td>
+              <td>{feedback.branch_name || '---'}</td>
+              <td>{feedback.branch_rating}</td>
+              <td>{feedback.branch_feedback || '---'}</td>
+              <td>{feedback.employee_name || '---'}</td>
+              <td>{feedback.employee_rating}</td>
+              <td>{feedback.employee_feedback || '---'}</td>
             </tr>
           ))}
         </tbody>
@@ -75,4 +80,4 @@ const ServicesTable: React.FC<ServicesTableProps> = ({ services, onDelete, onEdi
   );
 };
 
-export default ServicesTable;
+export default FeedbacksTable;

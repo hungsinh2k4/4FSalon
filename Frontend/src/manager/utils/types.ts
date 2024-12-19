@@ -19,10 +19,17 @@ export interface User {
   role: string;
 }
   export interface Feedback {
+    
     id: number;
-    message: string;
-    date: string;
-    // Thêm các trường khác nếu cần
+    branch_rating: number;
+    employee_rating: number;
+    branch_feedback: string;
+    employee_feedback: string;
+    overall_rating: number;
+    appointment?: Appointment;
+    employee_name: string;
+    branch_name: string;
+    customer_name: string;
   }
   
 

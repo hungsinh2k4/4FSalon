@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import ServicesTable from '../../components/tables/ServicesTable';
+import FeedbacksTable from '../../components/tables/FeedbacksTable';
 import styles from '../../components/common/global.module.css';
 import Modal from '../../components/common/Modal';
 import ModalWaiting from '../../components/common/ModalWaiting';
 
-import ServiceForm from '../../components/forms/ServiceForm';
-import { fetchServices, removeService, addService, editService } from '../../services/serviceService';
-import { Service } from '../../utils/types';
+import FeedbackForm from '../../components/forms/FeedbackForm';
+import { fetchFeedbacks, removeFeedback, addFeedback, editFeedback } from '../../services/feedbackService';
+import { Feedback } from '../../utils/types';
 import { FaBagShopping, FaFilter } from 'react-icons/fa6';
 
-const ServiceList: React.FC = () => {
-  const [services, setServices] = useState<Service[]>([]);
+const FeedbackList: React.FC = () => {
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +19,7 @@ const ServiceList: React.FC = () => {
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
   const [isModalWaitingOpen, setIsModalWaitingOpen] = useState<boolean>(false);
 
-  const [currentService, setCurrentService] = useState<Service | null>(null); 
+  const [currentFeedback, setCurrentFeedback] = useState<Feedback | null>(null); 
   const [page, setPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [rowPerPage, setRowPerPage] = useState<number>(10);
@@ -45,82 +45,37 @@ const ServiceList: React.FC = () => {
   };
 
   
-  const filteredServices = services.filter(service =>
-    service.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    service.price.toString().includes(filterTerm)
-  );
+  const filteredFeedbacks = feedbacks;
+  //.filter(feedback =>
+  //  feedback.overall_rating.toLowerCase().includes(searchTerm.toLowerCase())
+  //);
   useEffect(() => {
-    const loadServices = async () => {
+    const loadFeedbacks = async () => {
       setLoading(true);
       try {
-        const data = await fetchServices();
-        const reformattedData = data.map((service: any) => ({
-          ...service,
-          created_at: new Date(service.created_at).toLocaleDateString('vi-VN', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-          }),
+        const data = await fetchFeedbacks();
+        const reformattedData = data.map((feedback: any) => ({
+          ...feedback,
+          customer_name: feedback.appointment?.customer?.name || '---',
+          branch_name: feedback.appointment?.branch?.name||'---',
+          employee_name: feedback.appointment?.employee?.name || '---',
         }));
-        setServices(reformattedData);
+        console.log('hi', reformattedData);
+        setFeedbacks(reformattedData);
+        
       } catch (err) {
-        setError('Failed to fetch services.');
+        setError('Failed to fetch feedbacks.');
       } finally {
         setLoading(false);
+        console.log("feed");
+        console.log(feedbacks);
       }
     };
-    loadServices();
+    loadFeedbacks();
   }, []);
 
   
-  const handleDelete = (service: Service) => {
-    setCurrentService(service);
-    setIsModalDeleteOpen(true);
-  };
   
-  const handleAdd = () => {
-    setCurrentService(null);
-    setIsModalOpen(true);
-  };
-
-  const handleEdit = (service: Service) => {
-    setCurrentService(service);
-    setIsModalOpen(true);
-  };
-  const handleDeleteConfirm = async (id: number) => {
-    try {
-      await removeService(id);
-      setServices(services.filter((service) => service.id !== id));
-      addHistoryItem(`Đã xóa ${currentService?.title}`, 'deleted');
-    } catch (err) {
-      setError('Failed to delete service.');
-    }
-    setIsModalDeleteOpen(false);
-  };
-  const handleFormSubmit = async (data: any) => {
-    try {
-      setIsModalWaitingOpen(true);
-      if (currentService) {
-        // Edit service
-        const editdService = await editService(currentService.id, data);
-        setServices(
-          services.map((service) => (service.id === editdService.id ? editdService : service))
-        );
-        addHistoryItem(`Đã cập nhật ${data.title}`, 'edited');
-      } else {
-        // Add service
-        const newService = await addService(data);
-        setServices([...services, newService]);
-        addHistoryItem(`Đã thêm ${data.title}`, 'added');
-      }
-      setIsModalOpen(false);
-      setIsModalWaitingOpen(false);
-    } catch (err) {
-      setError('Failed to save service.');
-      addHistoryItem(`Đã có lỗi khi thao tác.`,'error');
-      setIsModalWaitingOpen(false);
-    }
-  };
   const handleSetPage = (page: number) => {
     setPage(page);
   }
@@ -135,7 +90,7 @@ const ServiceList: React.FC = () => {
     setPage(page - 1);
   }
   const renderPaginationButtons = () => {
-    const totalPages = Math.ceil(filteredServices.length / rowPerPage);
+    const totalPages = Math.ceil(filteredFeedbacks.length / rowPerPage);
     let startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
     if (page <= 3) startPage = 1;
   
@@ -157,7 +112,7 @@ const ServiceList: React.FC = () => {
       <div className={styles.header}>
         <div className={styles.headerTitle}>
           <div className={styles.iconWrapper}>
-            <FaBagShopping /> <p>Quản lý dịch vụ</p>
+            <FaBagShopping /> <p>Quản lý phản hồi</p>
           </div>
         </div>
         
@@ -174,27 +129,14 @@ const ServiceList: React.FC = () => {
           <option value={50}>50</option>
         </select>
         <span>
-          Showing {(page - 1) * rowPerPage + 1} - {Math.min(page * rowPerPage, filteredServices.length)} of {filteredServices.length} entries
+          Showing {(page - 1) * rowPerPage + 1} - {Math.min(page * rowPerPage, filteredFeedbacks.length)} of {filteredFeedbacks.length} entries
         </span>
       </div>
       <div className={styles.allPage}>
         <button onClick={() => handlePrevPage()} disabled={page === 1}> Previous </button>
         {renderPaginationButtons()}
-        <button onClick={() => handleNextPage()} disabled={page >= Math.ceil(filteredServices.length / rowPerPage)}> Next </button>
-        <div className={styles.searchField}>
-          <div>
-            <input
-              className={styles.searchInput}
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Nhập tên dịch vụ"
-            />
-          </div>
-        </div>
-        <div className={styles.addButton} onClick={handleAdd}>
-            + Thêm dịch vụ
-        </div>
+        <button onClick={() => handleNextPage()} disabled={page >= Math.ceil(filteredFeedbacks.length / rowPerPage)}> Next </button>
+        
         
       </div>
       </>
@@ -202,37 +144,12 @@ const ServiceList: React.FC = () => {
   }
   const renderTable = () => {
     return (
-      <ServicesTable 
-        services={filteredServices.slice(page*rowPerPage-rowPerPage, page*rowPerPage)} 
-        onDelete={handleDelete} 
-        onEdit={handleEdit} 
+      <FeedbacksTable 
+        feedbacks={filteredFeedbacks.slice(page*rowPerPage-rowPerPage, page*rowPerPage)} 
       />
     );
   }
-  const renderEditModal = () => {
-    return (
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={currentService ? 'Chỉnh sửa dịch vụ' : 'Thêm dịch vụ'}
-      >
-        <ServiceForm initialData={currentService || undefined} onSubmit={handleFormSubmit} type={currentService ? 'Xác nhận Sửa' : 'Xác nhận Thêm'} />
-      </Modal>
-    );
-  }
-  const renderDeleteModal = () => {
-    return (
-      <Modal
-        isOpen={isModalDeleteOpen}
-        onClose={() => setIsModalDeleteOpen(false)}
-        title="Xác nhận xóa dịch vụ"
-      >
-        <div className={styles.modalActions}>
-          <button onClick={() => currentService && handleDeleteConfirm(currentService.id)}>Xóa</button>
-        </div>
-      </Modal>
-    );
-  }
+
   const renderWaitingModal = () => {
     return(
       <ModalWaiting isOpen={isModalWaitingOpen}/>
@@ -271,12 +188,8 @@ const ServiceList: React.FC = () => {
           
             <div className={styles.headerTitle}>
               <div className={styles.iconWrapper}>
-                <FaBagShopping /> <p>Quản lý dịch vụ</p>
+                <FaBagShopping /> <p>Quản lý Phản hồi</p>
               </div>
-  
-            </div>
-            <div className={styles.addButton} onClick={handleAdd}>
-              + Thêm dịch vụ
             </div>
         </div>
         <ModalWaiting isOpen={loading}/>  
@@ -287,13 +200,11 @@ const ServiceList: React.FC = () => {
     <div className={styles.page}>
       {renderHeader()}
       {renderPageSelect()}
-      {renderEditModal()}
       {renderWaitingModal()}
-      {renderDeleteModal()}
       {renderTable()}
       {renderHistory()}
     </div>
   );
 };
 
-export default ServiceList;
+export default FeedbackList;
