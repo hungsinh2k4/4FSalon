@@ -388,7 +388,7 @@ const Booking: React.FC = () => {
           Đặt lịch hẹn
         </h1>
       </div>
-      
+
       <div className="m-10 mt-0 flex justify-between bg-white rounded-lg p-10 pb-15 space-x-10">
         {/* Phần bên trái */}
         <div className="w-full ">
@@ -422,8 +422,8 @@ const Booking: React.FC = () => {
               <button
                 className={`px-2 py-2 border rounded mt-8 w-full text-left ${
                   viewType === "services"
-                    ? "bg-blue-500 text-white font-bold"
-                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+                    ? "bg-teal-600 text-white font-bold"
+                    : "bg-gray-200 hover:hover:bg-teal-600 hover:text-white"
                 }`}
                 onClick={() => {
                   if (!selectedBranch) {
@@ -447,8 +447,8 @@ const Booking: React.FC = () => {
             <button
               className={`inline-flex items-center px-2 py-2 border rounded mt-8 text-left w-full ${
                 viewType === "voucher"
-                  ? "bg-blue-500 text-white font-bold"
-                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+                  ? "bg-teal-600 text-white font-bold"
+                  : "bg-gray-200 hover:bg-teal-600 hover:text-white"
               }`}
               onClick={() => {
                 if (!selectedBranch || !selectedService) {
@@ -465,9 +465,7 @@ const Booking: React.FC = () => {
               }}
             >
               <FontAwesomeIcon icon={faTicket} className="mr-2" />
-              {selectedVoucher
-                ? selectedVoucher?.code
-                : "Voucher"}
+              {selectedVoucher ? selectedVoucher?.code : "Voucher"}
             </button>
 
             <p className="pt-3 text-green-700	">
@@ -487,8 +485,8 @@ const Booking: React.FC = () => {
               <button
                 className={`inline-block px-2 py-2 border rounded mt-4 w-full text-left ${
                   viewType === "employees"
-                    ? "bg-blue-500 text-white font-bold"
-                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+                    ? "bg-teal-600 text-white font-bold"
+                    : "bg-gray-200 hover:bg-teal-600 hover:text-white"
                 }`}
                 onClick={() => {
                   if (!selectedBranch || !selectedService) {
@@ -504,7 +502,7 @@ const Booking: React.FC = () => {
                   setViewType("employees");
                   setErrorEmployee("");
                 }}
-              // disabled={!selectedBranch || !selectedService}
+                // disabled={!selectedBranch || !selectedService}
               >
                 <FontAwesomeIcon icon={faUserCheck} className="mr-2" />
                 Chọn nhân viên
@@ -535,7 +533,9 @@ const Booking: React.FC = () => {
             </div>
 
             <TimePicker
-              timeBlock={Math.floor(Number(selectedService?.estimate_time) / 20)}
+              timeBlock={Math.floor(
+                Number(selectedService?.estimate_time) / 20
+              )}
               onTimeSelect={handleTimeSelect}
               schedule={schedule}
               selectedDate={selectedDate}
