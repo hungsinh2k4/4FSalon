@@ -17,7 +17,6 @@ const EmployeeList: React.FC<EmployeeListProps> = ({
   searchTerm
 }) => {
   if (viewType !== "employees") return null;
-
   return (
     <div className="mt-2.5 max-h-[500px] overflow-y-auto border border-gray-300 rounded-s-lg p-2 grid grid-cols-2 gap-3.5">
       {employees.filter(
@@ -41,15 +40,15 @@ const EmployeeList: React.FC<EmployeeListProps> = ({
         >
           <div className="w-2/5 h-full overflow-hidden rounded-s-lg">
             <img
-              src="src/customer/assets/Booking/employees.jpeg"
+              src={employee.big_avatar_url}
               alt={employee.name}
               className="w-full h-full object-cover overflow-hidden rounded-s-lg"
             />
           </div>
           <div className="flex-1 p-4">
             <strong>{employee.name}</strong>
-            <div className="text-sm text-gray-600">Số điện thoại: {employee.phone}</div>
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 font-semibold">Số điện thoại: {employee.phone}</div>
+            <div className="text-sm text-gray-600 text-transform: capitalize font-semibold">
               Vị trí : {employee.work_position}
             </div>
           </div>

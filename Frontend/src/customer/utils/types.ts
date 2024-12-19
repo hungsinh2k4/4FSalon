@@ -77,6 +77,8 @@ export interface Appointment {
   employee_id: Number;
   // Thêm các trường khác nếu cần
 }
+
+
 export interface Customer {
   id: number;
   name: string;

@@ -41,43 +41,45 @@ const VoucherList: React.FC<VoucherListProps> = ({
   } // Nếu không có dịch vụ nào được chọn thì vô hiệu hóa voucher
   return (
     <div className="container mx-auto max-h-[500px] p-4 overflow-y-auto">
-      {vouchers.map((voucher) => {
+      {vouchers
+      .filter((voucher) => voucher.code.toLowerCase().includes(searchTerm.toLowerCase()))
+      .map((voucher) => {
         const valid = isVoucherValid(voucher); // Kiểm tra điều kiện voucher
         return (
-          <button
-            key={voucher.id}
-            onClick={() =>
-              setSelectedVoucher(
-                selectedVoucher?.id === voucher.id ? null : voucher
-              )
-            }
-            disabled={!valid} // Vô hiệu hóa nút nếu voucher không hợp lệ
-            className={`w-full max-h-[300px] my-2.5 pb-5 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${
-              selectedVoucher?.id === voucher.id
-                ? "bg-blue-700 border-blue-950" // Style khi được chọn
-                : "bg-gray-100 border-[#0a0a0a]"
-            } cursor-pointer text-left flex ${!valid ? "opacity-50" : ""}`}
-          >
-            <div className="w-28 h-28 overflow-hidden rounded-t-lg">
-              <img
-                src="src/customer/assets/Booking/employees.jpeg"
-                alt={voucher.description}
-                className="w-full h-full object-cover overflow-hidden rounded-s-lg"
-              />
-            </div>
-            <div className="flex-1 p-4">
-              <strong>{voucher.code}</strong>
-              <div className="text-sm text-gray-600">
-                Giá dịch vụ yêu cầu: {voucher.price_threshold}
-              </div>
-              <div className="text-sm text-gray-600">
-                Giảm : {voucher.discount_value} VNĐ
-              </div>
-              <div className="text-sm text-gray-600 justify-center">
-                Điểm yêu cầu: {voucher.required_point}
-              </div>
-            </div>
-          </button>
+        <button
+          key={voucher.id}
+          onClick={() =>
+          setSelectedVoucher(
+            selectedVoucher?.id === voucher.id ? null : voucher
+          )
+          }
+          disabled={!valid} // Vô hiệu hóa nút nếu voucher không hợp lệ
+          className={`w-full max-h-[300px] my-2.5 pb-5 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${
+          selectedVoucher?.id === voucher.id
+            ? "bg-blue-700 border-blue-950" // Style khi được chọn
+            : "bg-gray-100 border-[#0a0a0a]"
+          } cursor-pointer text-left flex ${!valid ? "opacity-50" : ""}`}
+        >
+          <div className="w-28 h-28 overflow-hidden rounded-t-lg">
+          <img
+            src="src/customer/assets/Booking/employees.jpeg"
+            alt={voucher.description}
+            className="w-full h-full object-cover overflow-hidden rounded-s-lg"
+          />
+          </div>
+          <div className="flex-1 p-4">
+          <strong>{voucher.code}</strong>
+          <div className="text-sm text-gray-600">
+            Giá dịch vụ yêu cầu: {voucher.price_threshold}
+          </div>
+          <div className="text-sm text-gray-600">
+            {voucher.discount_type === "percentage" ? `${voucher.discount_value}%` : `${voucher.discount_value} VNĐ`}
+          </div>
+          <div className="text-sm text-gray-600 justify-center">
+            Điểm yêu cầu: {voucher.required_point}
+          </div>
+          </div>
+        </button>
         );
       })}
     </div>

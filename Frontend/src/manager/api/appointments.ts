@@ -24,8 +24,13 @@ export const createAppointment = async (data: Partial<Appointment>): Promise<App
 };
 
 export const updateAppointment = async (id: number, data: Partial<Appointment>): Promise<Appointment> => {
+  try {
   const response = await axiosInstance.put(`api/appointments/${id}`, data);
   return response.data;
+  }catch(err){
+    console.log(data);
+  }
+  return data as Appointment;
 };
 
 export const deleteAppointment = async (id: number): Promise<void> => {

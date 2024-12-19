@@ -327,12 +327,6 @@ const Booking: React.FC = () => {
       // Gửi API
       if (appointmentId == null) {
 
-        if (userprofile) {
-          await editCustomer(userprofile?.id, {
-            points: userprofile?.points - (selectedVoucher ? selectedVoucher?.required_point : 0),
-          });
-        }
-
         await addAppointment({
           title: selectedService?.title,
           date: String(selectedDate?.toISOString()),
@@ -378,7 +372,6 @@ const Booking: React.FC = () => {
       });
     } catch (error) {
       console.error("Lỗi khi xác nhận lịch hẹn:", error);
-      alert("Đã xảy ra lỗi, vui lòng thử lại.");
     }
   };
   // Hàm xử lý khi thời gian được chọn

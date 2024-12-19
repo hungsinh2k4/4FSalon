@@ -1,6 +1,7 @@
 // src/manager/components/tables/AppointmentsTable.tsx
 import React, { useState } from 'react';
 import Button from '../common/Button';
+import appointmentTableStyle from './AppointmentsTable.module.css';
 import styles from '../../components/common/global.module.css';
 import { Appointment } from '../../utils/types';
 import { FaPen, FaXmark } from 'react-icons/fa6';
@@ -59,10 +60,10 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({ appointments, onD
             <td>{appointment.id}</td>
             <td>{appointment.customer.name}</td>
             <td className={
-              appointment.status === 'confirmed' ? styles.confirmed :
-              appointment.status === 'pending' ? styles.pending :
-              appointment.status === 'cancelled' ? styles.cancelled :
-              appointment.status === 'completed' ? styles.completed : ''
+              appointment.status === 'confirmed' ? appointmentTableStyle.confirmed :
+              appointment.status === 'pending' ? appointmentTableStyle.pending :
+              appointment.status === 'cancelled' ? appointmentTableStyle.cancelled :
+              appointment.status === 'completed' ? appointmentTableStyle.completed : ''
             }>
               {appointment.status}
             </td>

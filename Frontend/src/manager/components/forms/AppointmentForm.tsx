@@ -36,10 +36,9 @@ interface AppointmentFormProps {
     // Thêm các trường cần thiết
   };
   onSubmit: (data: any) => void;
-  type: string;
 }
 
-const AppointmentForm: React.FC<AppointmentFormProps> = ({ initialData, onSubmit, type }) => {
+const AppointmentForm: React.FC<AppointmentFormProps> = ({ initialData, onSubmit }) => {
   const [title, setTitle] = useState(initialData?.title || '');
   const [date, setDate] = useState(initialData?.date ? new Date(initialData.date) : new Date());
   const [start_time, setStart_time] = useState(initialData?.start_time || null);
@@ -140,8 +139,8 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ initialData, onSubmit
 
 
 
-  const handleSearch = () => {
-
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
   }
 
   const renderRightSection = () => {
@@ -290,6 +289,9 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ initialData, onSubmit
       <ul className={alternativeStyles.confirmed} key={"comfirmed"} onClick={() => setStatus("confirmed")}>
         {"Confirm"}
       </ul>
+      <ul className={alternativeStyles.cancelled} key={"cancelled"} onClick={() => setStatus("cancelled")}>
+        {"Cancelled"}
+      </ul>
       <ul className={alternativeStyles.completed} key={"completed"} onClick={() => setStatus("completed")}>
         {"Completed"}
       </ul>
@@ -427,11 +429,11 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ initialData, onSubmit
         <div className={styles.rightSection}>
           <div className={styles.stickySearchBar}>
             <Input
-              label="Search employees"
+              label="Search"
               type="text"
-              placeholder="Search employees..."
+              placeholder="Search..."
               value={searchTerm}
-              onChange={handleSearch}
+              onChange={(e) => handleSearch(e.target.value)}
               className={styles.searchBar}
             />
           </div>
@@ -443,7 +445,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ initialData, onSubmit
           </ul>
         </div>
       </div>
-      <Button type="submit" className={styles.submitButton}>{type}</Button>
+      <Button type="submit">Submit</Button>
     </form>
   );
 };
