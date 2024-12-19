@@ -1,6 +1,6 @@
 // src/manager/api/appointments.ts
 import axiosInstance from './axiosInstance';
-import { Appointment } from '../utils/types';
+import { Appointment, Customer } from '../utils/types';
 
 export const getAppointments = async (): Promise<Appointment[]> => {
   const response = await axiosInstance.get('api/appointments');
@@ -31,3 +31,8 @@ export const updateAppointment = async (id: number, data: Partial<Appointment>):
 export const deleteAppointment = async (id: number): Promise<void> => {
   await axiosInstance.delete(`api/appointments/${id}`);
 };
+
+export const updateCustomer = async (id: number, data: Partial<Customer>): Promise<Customer> => {
+  const response = await axiosInstance.put(`api/customers/${id}`, data);
+  return response.data;
+}

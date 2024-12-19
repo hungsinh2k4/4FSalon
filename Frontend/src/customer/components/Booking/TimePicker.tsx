@@ -29,7 +29,15 @@ export default function TimePicker({
     let minute = 0;
 
     while (hour < 21 || (hour === 21 && minute === 0)) {
-      timeMap.set(`${hour}:${minute === 0 ? "00" : minute}`, true);
+
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0)
+      if (selectedDate && selectedDate < currentDate) {
+        timeMap.set(`${hour}:${minute === 0 ? "00" : minute}`, false);
+      } else {
+        timeMap.set(`${hour}:${minute === 0 ? "00" : minute}`, true);
+      }
+
       minute += 20;
       if (minute === 60) {
         minute = 0;
@@ -55,6 +63,9 @@ export default function TimePicker({
         tempHour < currentHour ||
         (tempHour === currentHour && tempMinute <= currentMinute)
       ) {
+        if (tempHour > 21 || (tempHour === 21 && tempMinute > 0)) {
+          break;
+        }
         const timeString = `${tempHour}:${tempMinute === 0 ? "00" : tempMinute}`;
         freshTimes.set(timeString, false);
         tempMinute += 20;
@@ -77,14 +88,14 @@ export default function TimePicker({
 
       let block = timeBlock;
       while (block > 0) {
-        
+
         let [hour, minute] = tempTime.split(":").map(Number);
         minute -= 20;
         if (minute < 0) {
           minute = 40;
           hour -= 1;
         }
-        if(hour < 7) {break;}
+        if (hour < 7) { break; }
         tempTime = `${hour}:${minute === 0 ? "00" : minute}`;
         freshTimes.set(tempTime, false);
         block--;
@@ -93,6 +104,9 @@ export default function TimePicker({
       tempTime = beautifyTime(start_time);
       while (iterations--) {
         let [hour, minute] = tempTime.split(":").map(Number);
+        if (hour > 21 || (hour === 21 && minute > 0)) {
+          break;
+        }
         freshTimes.set(tempTime, false);
 
         if (tempTime === beautifyTime(estimated_end_time)) break;
@@ -144,11 +158,11 @@ export default function TimePicker({
 
   return (
     <div
-      className={`flex items-center justify-center space-x-2 ${
-        isDisplaying ? "block" : "hidden"
-      }`}
+      className={`flex items-center justify-center space-x-2 ${isDisplaying ? "block" : "hidden"
+        }`}
     >
       <button
+        type="button"
         onClick={handlePrev}
         className="w-8 h-8 flex items-center justify-center bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 disabled:opacity-50"
         disabled={visibleRange[0] === 0}
@@ -161,6 +175,7 @@ export default function TimePicker({
           .slice(visibleRange[0], visibleRange[1])
           .map((key) => (
             <button
+              type="button"
               key={key}
               onClick={() => handleTimeClick(key)}
               disabled={!times.get(key)}
@@ -170,7 +185,7 @@ export default function TimePicker({
                   : times.get(key) === false
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-gray-300 hover:bg-gray-400"
-              }`}
+                }`}
             >
               {key}
             </button>
@@ -178,6 +193,7 @@ export default function TimePicker({
       </div>
 
       <button
+        type="button"
         onClick={handleNext}
         className="w-8 h-8 flex items-center justify-center bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 disabled:opacity-50"
         disabled={visibleRange[1] >= times.size}

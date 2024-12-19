@@ -1,3 +1,5 @@
+import { Voucher } from "../../customer/utils/types";
+
 // src/manager/utils/types.ts
 export interface Account {
   id: number;
@@ -19,10 +21,17 @@ export interface User {
   role: string;
 }
   export interface Feedback {
+    
     id: number;
-    message: string;
-    date: string;
-    // Thêm các trường khác nếu cần
+    branch_rating: number;
+    employee_rating: number;
+    branch_feedback: string;
+    employee_feedback: string;
+    overall_rating: number;
+    appointment?: Appointment;
+    employee_name: string;
+    branch_name: string;
+    customer_name: string;
   }
   
 
@@ -48,6 +57,7 @@ export interface User {
     saturday: boolean;
     sunday: boolean;
     employee: Employee;
+    employee_name: string;
     // Thêm các trường khác nếu cần
   }
 
@@ -69,9 +79,10 @@ export interface User {
     final_price: number;
     status: string;
     customer: Customer;
-    service?: Service;
+    service: Service;
     branch: Branch;
-    feedback?: Feedback | null;
+    voucher: Voucher;
+    feedback: Feedback | null;
     employee: Employee | null;
     created_at: string;
     updated_at: string;
@@ -85,6 +96,7 @@ export interface User {
     phone: string;
     booking_count: number;
     canceled_count: number;
+    points: number;
     created_at: string;
     updated_at: string;
   }
