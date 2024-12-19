@@ -16,8 +16,15 @@
   margin: 0 auto;
 }
 
+.label {
+  font-size: 0.875rem; /* Adjust size as needed */
+  color: #333; /* Label text color */
+}
+
+
 .leftSection,
 .rightSection {
+  overflow-y: auto;
   min-height: 300px;
   max-height: 540px;
   flex: 1;
@@ -57,7 +64,8 @@ h3 {
 .rightSectionList {
   max-height: 400px;
   overflow-y: auto;
-  padding: 10px;
+  overflow-x: hidden;
+  padding: 5px;
 
   li {
     display: flex;
@@ -66,6 +74,23 @@ h3 {
     padding: 10px;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
+    margin-right: auto;
+    margin-bottom: 10px;
+
+    span {
+      font-size: 14px;
+      display: inline;
+      margin-left: 20px;
+    }
+  }
+
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    /* border: 1px solid #e0e0e0;
+    border-radius: 4px; */
     margin-right: auto;
     margin-bottom: 10px;
 
@@ -281,3 +306,10 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+
+.disabled {
+  color: gray;          /* Gray out the text */
+  cursor: not-allowed;  /* Show "not allowed" cursor */
+  pointer-events: none; /* Prevent interactions */
+  opacity: 0.5;         /* Make it visually distinct */
+}

@@ -1,6 +1,6 @@
 // src/manager/services/appointmentService.ts
-import { getAppointments, getAppointmentById, createAppointment, updateAppointment, deleteAppointment, getAppointmentsWithParams } from '../api/appointments';
-import { Appointment } from '../utils/types';
+import { getAppointments, getAppointmentById, createAppointment, updateAppointment, deleteAppointment, getAppointmentsWithParams, updateCustomer } from '../api/appointments';
+import { Appointment, Customer } from '../utils/types';
 
 export const fetchAppointments = async (): Promise<Appointment[]> => {
   return await getAppointments();
@@ -25,3 +25,7 @@ export const editAppointment = async (id: number, data: Partial<Appointment>): P
 export const removeAppointment = async (id: number): Promise<void> => {
   return await deleteAppointment(id);
 };
+
+export const editCustomer = async (id: number, data: Partial<Customer>): Promise<Customer> => {
+  return await updateCustomer(id, data);
+}

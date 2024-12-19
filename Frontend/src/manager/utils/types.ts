@@ -1,3 +1,5 @@
+import { Voucher } from "../../customer/utils/types";
+
 // src/manager/utils/types.ts
 export interface Account {
   id: number;
@@ -69,9 +71,10 @@ export interface User {
     final_price: number;
     status: string;
     customer: Customer;
-    service?: Service;
+    service: Service;
     branch: Branch;
-    feedback?: Feedback | null;
+    voucher: Voucher;
+    feedback: Feedback | null;
     employee: Employee | null;
     created_at: string;
     updated_at: string;
@@ -85,6 +88,7 @@ export interface User {
     phone: string;
     booking_count: number;
     canceled_count: number;
+    points: number;
     created_at: string;
     updated_at: string;
   }

@@ -6,9 +6,11 @@ import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
 import AppointmentForm from '../../components/forms/AppointmentForm';
 import styles from './AppointmentList.module.css';
-import { fetchAppointments, removeAppointment, addAppointment, editAppointment } from '../../services/appointmentService';
+import { fetchAppointments, removeAppointment, addAppointment, editAppointment, editCustomer } from '../../services/appointmentService';
 import { Appointment } from '../../utils/types';
 import { FaCalendar } from 'react-icons/fa6';
+import { toast } from 'react-toastify';
+import { editAccount } from '../../services/accountService';
 
 const AppointmentList: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -26,7 +28,6 @@ const AppointmentList: React.FC = () => {
       try {
         const data = await fetchAppointments();
         setAppointments(data);
-        console.log(data);
       } catch (err) {
         setError('Failed to fetch appointments.');
       } finally {
@@ -36,11 +37,15 @@ const AppointmentList: React.FC = () => {
     loadAppointments();
   }, []);
 
-  const handleDelete = async (id: number) => {
+
+
+  const handleDelete = async (currentAppointment: Appointment) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa đặt lịch này?')) {
       try {
-        await removeAppointment(id);
-        setAppointments(appointments.filter((appointment) => appointment.id !== id));
+        await removeAppointment(currentAppointment.id);
+        currentAppointment.customer.points += currentAppointment?.voucher?.required_point ?? 0;
+        await editCustomer(currentAppointment.customer.id, currentAppointment.customer);
+        setAppointments(appointments.filter((appointment) => appointment.id !== currentAppointment.id));
       } catch (err) {
         setError('Failed to delete appointment.');
       }
@@ -61,6 +66,7 @@ const AppointmentList: React.FC = () => {
     try {
       if (currentAppointment) {
         // Edit appointment
+        await editCustomer(currentAppointment.customer.id, data.customer);
         const editdAppointment = await editAppointment(currentAppointment.id, data);
         setAppointments(
           appointments.map((appointment) => (appointment.id === editdAppointment.id ? editdAppointment : appointment))
@@ -69,7 +75,7 @@ const AppointmentList: React.FC = () => {
         // Add appointment
         const newAppointment = await addAppointment(data);
         setAppointments([...appointments, newAppointment]);
-      } 
+      }
       setIsModalOpen(false);
     } catch (err) {
       setError('Failed to save appointment.');
@@ -78,65 +84,36 @@ const AppointmentList: React.FC = () => {
 
   const filteredAppointments = appointments.filter((appointment) =>
     // appointment.clientName.toLowerCase().includes(searchTerm.toLowerCase())
-      appointment
+    appointment
   );
 
-  // if (loading) {
-  //   return <p>Đang tải...</p>;
-  // }
 
-  // return (
-  //   <div className={styles.appointmentList}>
-  //     <h2>Danh sách đặt lịch</h2>
-  //     <div className={styles.actions}>
-  //       <Button onClick={handleAdd}>Thêm đặt lịch</Button>
-  //       <Input
-  //         label=""
-  //         type="text"
-  //         placeholder="Tìm kiếm theo tên khách hàng..."
-  //         value={searchTerm}
-  //         onChange={(e) => setSearchTerm(e.target.value)}
-  //         className={styles.searchInput}
-  //       />
-  //     </div>
-  //     {error && <p className={styles.error}>{error}</p>}
-  //     <AppointmentsTable appointments={filteredAppointments} onDelete={handleDelete} onEdit={handleEdit} />
-      
-  //     {/* Modal cho Add/Edit */}
-  //     <Modal
-  //       isOpen={isModalOpen}
-  //       onClose={() => setIsModalOpen(false)}
-  //       title={currentAppointment ? 'Chỉnh sửa đặt lịch' : 'Thêm đặt lịch'}
-  //     >
-  //       <AppointmentForm initialData={currentAppointment || undefined} onSubmit={handleFormSubmit} />
-  //     </Modal>
-  //   </div>
-  // );
 
-if(loading) {
-  return (
-    <div className={styles.page}>
-      <div className = {styles.header}>
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.header}>
 
-        <div className={styles.headerTitle}>
-          <div className={styles.iconWrapper}>
-            <FaCalendar /> <p>Quản lý đặt lịch</p>
+          <div className={styles.headerTitle}>
+            <div className={styles.iconWrapper}>
+              <FaCalendar /> <p>Quản lý đặt lịch</p>
+            </div>
+
+          </div>
+          <div className={styles.addButton} onClick={handleAdd}>
+            + Thêm lịch hẹn
           </div>
 
         </div>
-        <div className={styles.addButton} onClick={handleAdd}>
-          + Thêm lịch hẹn
-        </div>
-        
+        <p>Đang tải ...</p>
       </div>
-      <p>Đang tải ...</p>
-    </div>
-  )
-}
+    )
+  }
 
-return (
-  <div className={styles.page}>
-      <div className = {styles.header}>
+  return (
+    
+    <div className={styles.page}>
+      <div className={styles.header}>
 
         <div className={styles.headerTitle}>
           <div className={styles.iconWrapper}>
@@ -154,10 +131,10 @@ return (
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={currentAppointment ? 'Chỉnh sửa lịch hẹn' : 'Thêm đặt lịch'} >
-          <AppointmentForm initialData={currentAppointment || undefined} onSubmit={handleFormSubmit} />
+        <AppointmentForm initialData={currentAppointment || undefined} onSubmit={handleFormSubmit} />
       </Modal>
     </div>
-)
+  )
 }
 
 export default AppointmentList;
