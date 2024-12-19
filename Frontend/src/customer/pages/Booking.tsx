@@ -82,6 +82,7 @@ const Booking: React.FC = () => {
 
   const [searchParams] = useSearchParams();
   const appointmentId = searchParams.get("appointment_id");
+  const branchId = searchParams.get("branch_id");
 
   useEffect(() => {
     const loadCurrentAppointment = async () => {
@@ -114,6 +115,22 @@ const Booking: React.FC = () => {
       loadCurrentAppointment();
     }
   }, [appointmentId]);
+
+  useEffect(() => {
+    const loadBranch = async () => {
+      const data = await fetchBranches();
+      if (data) {
+        const branch = data.find((branch) => branch.id === Number(branchId));
+        if (branch) {
+          setSelectedBranch(branch);
+        }
+        setViewType("services");
+      }
+    };
+    if (branchId) {
+      loadBranch();
+    }
+  }, [branchId]);
 
   const [selectedDate, setSelectedDate] = useState(() => {
     type OptionType = "today" | "tomorrow";

@@ -39,6 +39,7 @@ const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdi
   };
 
   return (
+    <div className={styles.tableContainer}>
     <table>
       <colgroup>
         <col style={{ width: '5%' }} />
@@ -68,6 +69,7 @@ const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdi
         ))}
       </tbody>
     </table>
+    </div>
   );
 };
 

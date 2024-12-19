@@ -1,14 +1,13 @@
 .AppointmentForm {
-  width: 1300px;
+  width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 .container {
   display: flex;
   gap: 30px;
-  padding: 20px;
-  min-height: 540px;
+  padding: 10px;
   background-color: #f6f6f6;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -25,8 +24,7 @@
 .leftSection,
 .rightSection {
   overflow-y: auto;
-  min-height: 300px;
-  max-height: 540px;
+  max-height: 440px;
   flex: 1;
   background: #fff;
   padding: 20px;
@@ -44,6 +42,7 @@
 .rightSection {
   
   position: relative;
+  overflow-y: hidden;
 }
 
 .stickySearchBar {
@@ -51,8 +50,39 @@
   top: 0;
   z-index: 10;
   background-color: #fff; /* Ensures the background remains consistent */
-  padding: 10px;
+  padding: 0px;
   border-bottom: 1px solid #e0e0e0;
+}
+.leftSection::-webkit-scrollbar {
+  width: 7px; 
+}
+
+.leftSection::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+.leftSection::-webkit-scrollbar-thumb {
+  background-color: #2baf6652; 
+  border-radius: 4px;
+}
+
+.leftSection::-webkit-scrollbar-thumb:hover {
+  background-color: #2baf66b1;
+}.rightSectionList::-webkit-scrollbar {
+  width: 7px; 
+}
+
+.rightSectionList::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+.rightSectionList::-webkit-scrollbar-thumb {
+  background-color: #2baf6652; 
+  border-radius: 4px;
+}
+
+.rightSectionList::-webkit-scrollbar-thumb:hover {
+  background-color: #2baf66b1;
 }
 
 h3 {
@@ -62,7 +92,7 @@ h3 {
 }
 
 .rightSectionList {
-  max-height: 400px;
+  max-height: 300px;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 5px;

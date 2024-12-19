@@ -135,10 +135,11 @@ export interface Branch {
   email: string;
   status: boolean;
   picture_url: string | null;
+  long: number;
+  lat: number;
   user: User;
   employees: Employee[];
   appointments: Appointment[];
-  // Thêm các trường khác nếu cần
 }
 
 export interface Employee_date {

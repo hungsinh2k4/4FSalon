@@ -39,18 +39,27 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({ appointments, onD
   };
   
   return (
+    <div className={styles.tableContainer}>
     <table>
-      <colgroup>
-      <col style ={{width: "5%"}} />
+    <colgroup>
+        <col style={{ width: '5%' }} />
+        <col style={{ width: '20%' }} />
+        <col style={{ width: '10%' }} />
+        <col style={{ width: '20%' }} />
+        <col style={{ width: '20%' }} />
+        <col style={{ width: '15%' }} />
+        <col style={{ width: '10%' }} />
+        <col style={{ width: '10%' }} />
       </colgroup>
       <thead>
         <tr>
-          <th onClick={() => handleSort("id")}>ID<FontAwesomeIcon icon={getSortIcon('id')} /></th>
-          <th onClick={() => handleSort("customer")}>Tên khách hàng<FontAwesomeIcon icon={getSortIcon('customer')} /></th>
-          <th onClick={() => handleSort("status")}>ID<FontAwesomeIcon icon={getSortIcon('status')} /></th>
-          <th onClick={() => handleSort("service")}>Dịch vụ<FontAwesomeIcon icon={getSortIcon('service')} /></th>
-          <th onClick={() => handleSort("date")}>Ngày<FontAwesomeIcon icon={getSortIcon('date')} /></th>
-          <th onClick={() => handleSort("start_time")}>Thời gian<FontAwesomeIcon icon={getSortIcon('start_time')} /></th>
+          <th onClick={() => handleSort("id")}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
+          <th onClick={() => handleSort("customer")}>Tên khách hàng <FontAwesomeIcon icon={getSortIcon('customer')} /></th>
+          <th onClick={() => handleSort("status")}>Status <FontAwesomeIcon icon={getSortIcon('status')} /></th>
+          <th onClick={() => handleSort("employee")}>Nhân viên <FontAwesomeIcon icon={getSortIcon('employee')} /></th>
+          <th onClick={() => handleSort("service")}>Dịch vụ <FontAwesomeIcon icon={getSortIcon('service')} /></th>
+          <th onClick={() => handleSort("date")}>Ngày hẹn <FontAwesomeIcon icon={getSortIcon('date')} /></th>
+          <th onClick={() => handleSort("start_time")}>Thời gian <FontAwesomeIcon icon={getSortIcon('start_time')} /></th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -67,6 +76,7 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({ appointments, onD
             }>
               {appointment.status}
             </td>
+            <td>{appointment.employee?.name}</td>
             <td>{appointment.service?.title}</td>
             <td>{new Date(appointment.date).toLocaleDateString()}</td>
             <td>{new Date(appointment.start_time).toLocaleTimeString()}</td>
@@ -78,6 +88,7 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({ appointments, onD
         ))}
       </tbody>
     </table>
+    </div>
   );
 };
 
