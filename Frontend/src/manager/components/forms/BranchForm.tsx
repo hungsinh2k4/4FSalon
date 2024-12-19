@@ -12,18 +12,21 @@ interface BranchFormProps {
     phone: string;
     email: string;
     status: boolean;
+    pỉcture_url: string;
+    long: number;
+    lat: number;
   };
   onSubmit: (data: any) => void;
   type: string;
 }
 
 const BranchForm: React.FC<BranchFormProps> = ({ initialData, onSubmit, type }) => {
-  const [id, setId] = useState(initialData?.id || 10);
+  const [id, setId] = useState(initialData?.id || '');
   const [name, setName] = useState(initialData?.name || '');
   const [address, setAddress] = useState(initialData?.address || '');
   const [phone, setPhone] = useState(initialData?.phone || '');
   const [email, setEmail] = useState(initialData?.email || '');
-  const [status, setStatus] = useState(initialData?.status || true);
+  const [status, setStatus] = useState<boolean>(initialData?.status || true);
   // Thêm các state cho các trường khác
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -60,6 +63,13 @@ const BranchForm: React.FC<BranchFormProps> = ({ initialData, onSubmit, type }) 
         type="text"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <Input
+        label="Trạng thái hoạt động"
+        type="checkbox"
+        checked={status}
+        onChange={(e) => setStatus(e.target.checked)}
         required
       />
       <Button type="submit">{type}</Button>

@@ -77,7 +77,7 @@ const Booking: React.FC = () => {
     if (selectedBranch) {
       setErrorBranch("");
     }
-  });
+  }, []);
 
   const [searchParams] = useSearchParams();
   const appointmentId = searchParams.get("appointment_id");

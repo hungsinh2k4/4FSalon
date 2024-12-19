@@ -11,6 +11,10 @@
 .searchInput {
   flex: 1;
   margin-left: 20px;
+  margin-bottom: auto;
+  justify-self: center;
+  align-self: center;
+  float: inline-end;
 }
 
 .error {
@@ -70,7 +74,7 @@ p {
   margin-top: 10px;
   font-size: large;
   font-weight: bold;
-  width: 100px;
+  width: fit-content;
 }
 
 .addButton {
