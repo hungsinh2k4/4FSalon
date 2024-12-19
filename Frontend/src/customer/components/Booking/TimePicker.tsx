@@ -166,7 +166,7 @@ export default function TimePicker({
               disabled={!times.get(key)}
               className={`p-3 rounded-md text-center text-sm font-medium ${
                 selectedTime === key
-                  ? "bg-blue-500 text-white font-bold"
+                  ? "bg-teal-600 text-white font-bold"
                   : times.get(key) === false
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-gray-300 hover:bg-gray-400"

@@ -15,6 +15,7 @@ import {
   Voucher,
   User,
 } from "../utils/types";
+import Loading from "../components/Loading";
 import ServiceList from "../components/Booking/ServiceList";
 import BranchList from "../components/Booking/BranchList";
 import TimePicker from "../components/Booking/TimePicker";
@@ -387,7 +388,7 @@ const Booking: React.FC = () => {
           Đặt lịch hẹn
         </h1>
       </div>
-
+      
       <div className="m-10 mt-0 flex justify-between bg-white rounded-lg p-10 pb-15 space-x-10">
         {/* Phần bên trái */}
         <div className="w-full ">
@@ -396,10 +397,11 @@ const Booking: React.FC = () => {
             <h2 className="text-3xl font-bold mb-1">1. Chọn chi nhánh</h2>
             <div className="flex items-center">
               <button
-                className={`px-2 py-2 border rounded mt-8 w-fit text-left ${viewType === "branches"
-                  ? "bg-blue-500 text-white font-bold"
-                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
-                  }`}
+                className={`px-2 py-2 border rounded mt-8 w-fit text-left ${
+                  viewType === "branches"
+                    ? "bg-teal-600 text-white font-bold"
+                    : "bg-gray-200 hover:bg-teal-600 hover:text-white"
+                }`}
                 onClick={() => {
                   setViewType("branches"), setErrorBranch("");
                 }}
@@ -418,10 +420,11 @@ const Booking: React.FC = () => {
             <h2 className="text-3xl font-bold mb-1">2. Chọn dịch vụ</h2>
             <div className="flex items-center">
               <button
-                className={`px-2 py-2 border rounded mt-8 w-full text-left ${viewType === "services"
-                  ? "bg-blue-500 text-white font-bold"
-                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
-                  }`}
+                className={`px-2 py-2 border rounded mt-8 w-full text-left ${
+                  viewType === "services"
+                    ? "bg-blue-500 text-white font-bold"
+                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+                }`}
                 onClick={() => {
                   if (!selectedBranch) {
                     setErrorBranch("Vui lòng chọn chi nhánh trước");
@@ -442,10 +445,11 @@ const Booking: React.FC = () => {
               <p className="text-red-500 mt-2">{errorService}</p>
             )}
             <button
-              className={`inline-flex items-center px-2 py-2 border rounded mt-8 text-left w-full ${viewType === "voucher"
-                ? "bg-blue-500 text-white font-bold"
-                : "bg-gray-200 hover:bg-blue-500 hover:text-white"
-                }`}
+              className={`inline-flex items-center px-2 py-2 border rounded mt-8 text-left w-full ${
+                viewType === "voucher"
+                  ? "bg-blue-500 text-white font-bold"
+                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+              }`}
               onClick={() => {
                 if (!selectedBranch || !selectedService) {
                   if (!selectedBranch) {
@@ -469,21 +473,23 @@ const Booking: React.FC = () => {
             <p className="pt-3 text-green-700	">
               Tổng thanh toán:{" "}
               {selectedService
-                ? beautifyPrice(totalPayment)
+                ? (selectedService.price ?? 0) -
+                  (selectedVoucher?.discount_value ?? 0)
                 : 0}
             </p>
           </div>
           {/* Chọn ngày, giờ & nhân viên */}
           <div>
             <h2 className="text-3xl font-bold mb-1">
-              2. Chọn ngày giờ & nhân viên
+              3. Chọn ngày giờ & nhân viên
             </h2>
             <div className="flex items-center mb-1">
               <button
-                className={`inline-block px-2 py-2 border rounded mt-4 w-full text-left ${viewType === "employees"
-                  ? "bg-blue-500 text-white font-bold"
-                  : "bg-gray-200 hover:bg-blue-500 hover:text-white"
-                  }`}
+                className={`inline-block px-2 py-2 border rounded mt-4 w-full text-left ${
+                  viewType === "employees"
+                    ? "bg-blue-500 text-white font-bold"
+                    : "bg-gray-200 hover:bg-blue-500 hover:text-white"
+                }`}
                 onClick={() => {
                   if (!selectedBranch || !selectedService) {
                     if (!selectedBranch) {
@@ -510,17 +516,6 @@ const Booking: React.FC = () => {
             <div>
               <select
                 className="p-2 border rounded-lg flex-grow text-left"
-                onClick={() => {
-                  if (!selectedBranch || !selectedService) {
-                    if (!selectedBranch) {
-                      setErrorBranch("Vui lòng chọn chi nhánh trước");
-                    }
-                    if (!selectedService) {
-                      setErrorService("Vui lòng chọn dịch vụ trước");
-                    }
-                    return;
-                  }
-                }}
                 onChange={handleChange}
                 defaultValue="today"
                 disabled={!selectedBranch || !selectedService}
@@ -528,7 +523,7 @@ const Booking: React.FC = () => {
                 <option value="tomorrow">Ngày mai</option>
                 <option value="today">Hôm nay</option>
               </select>
-              <p>
+              <p className="pb-3 pt-2">
                 Ngày được chọn:{" "}
                 {selectedDate?.toLocaleDateString("vi-VN", {
                   weekday: "long",
@@ -551,22 +546,18 @@ const Booking: React.FC = () => {
           </div>
 
           <button
-            className="mt-6 w-full p-3 bg-blue-500 text-white rounded-lg"
+            className="mt-6 w-full p-3 bg-black text-white rounded-full text-center font-medium hover:bg-gray-900 active:bg-gray-800"
             onClick={handleConfirm}
           >
-            Xác nhận lịch hẹn
+            Đặt ngay
           </button>
-          {/* {errorEmployee && (
-            <p className="text-red-500 mt-2">{errorEmployee}</p>
-          )} */}
-          {/* {errorBranch && <p className="text-red-500 mt-2">{errorBranch}</p>} */}
-          {/* {errorService && <p className="text-red-500 mt-2">{errorService}</p>} */}
+
           {successInfo && (
             <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg w-96">
                 <div className="flex items-center mb-4">
                   <span className="text-green-500 text-xl mr-2">✔</span>
-                  <h2 className="text-lg font-bold">Đặt lịch thành công</h2>
+                  <h2 className="text-center font-bold">Đặt lịch thành công</h2>
                 </div>
                 <p>
                   <strong>Dịch vụ:</strong> {successInfo.service}
@@ -605,7 +596,7 @@ const Booking: React.FC = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder="Tìm kiếm"
+              placeholder="Tìm kiếm chi nhánh"
               className="w-full p-3 pl-9 mb-6 rounded-lg border-2 border-black"
               onChange={(e) => setSearchTerm(e.target.value)}
             />
