@@ -1,5 +1,6 @@
 import React from "react";
 import { Employee } from "../../utils/types";
+
 interface EmployeeListProps {
   viewType: string;
   employees: Employee[];
@@ -32,12 +33,13 @@ const EmployeeList: React.FC<EmployeeListProps> = ({
               selectedEmployee?.id === employee.id ? null : employee
             )
           }
-          className={`w-full py-6.5 h-[400px] my-2.5 ${selectedEmployee?.id === employee.id
-              ? "bg-blue-700 border-blue-950" // Style khi được chọn
-              : "bg-gray-100 border-[#0a0a0a]"
-            } cursor-pointer text-left flex`}
+          className={`w-full py-6.5 h-[400px] my-2.5 transition-transform duration-300 transform hover:scale-105 ${
+            selectedEmployee?.id === employee.id
+              ? "bg-blue-200 border-blue-950" // Style khi được chọn
+              : "bg-gray-100 border-[#0a0a0a] hover:bg-gray-200 hover:border-gray-400"
+          } cursor-pointer text-left flex rounded-lg shadow-md`}
         >
-          <div className="w-2/5 h-full overflow-hidden">
+          <div className="w-2/5 h-full overflow-hidden rounded-s-lg">
             <img
               src="src/customer/assets/Booking/employees.jpeg"
               alt={employee.name}
@@ -46,9 +48,9 @@ const EmployeeList: React.FC<EmployeeListProps> = ({
           </div>
           <div className="flex-1 p-4">
             <strong>{employee.name}</strong>
-            <div className="text-sm text-gray-600">{employee.phone}</div>
+            <div className="text-sm text-gray-600">Số điện thoại: {employee.phone}</div>
             <div className="text-sm text-gray-600">
-              {employee.work_position}
+              Vị trí : {employee.work_position}
             </div>
           </div>
         </button>

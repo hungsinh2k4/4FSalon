@@ -60,7 +60,7 @@ const ServiceList: React.FC<ServiceListProps> = ({
                   <h2 className="text-base font-semibold mb-2">{service.title}</h2>
                   <div>
                     <FontAwesomeIcon icon={faClock} className="text-gray-600 mr-2" />
-                    <span className="text-gray-600 mb-4">{service.estimate_time}p</span>
+                    <span className="text-green-600 mb-4">{service.estimate_time}p</span>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">{service.description}</p>
