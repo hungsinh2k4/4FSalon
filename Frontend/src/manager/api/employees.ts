@@ -4,7 +4,6 @@ import { Employee } from '../utils/types';
 
 export const getEmployees = async (): Promise<Employee[]> => {
   const response = await axiosInstance.get('api/employees');
-  console.log(response.data);
   return response.data;
 };
 

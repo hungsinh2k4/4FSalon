@@ -70,7 +70,12 @@ const ScheduleList: React.FC = () => {
         const data = !selectedBranch
           ? await fetchSchedules()
           : await fetchSchedulesByBranch(selectedBranch);
-        setSchedules(data);
+        const reformattedData = data.map((sche: any) => ({
+          ...sche,
+          employee_name: sche.employee?.name || '---',
+        }));
+        
+        setSchedules(reformattedData);
       } catch (err) {
         setError("Failed to fetch schedule.");
       } finally {
@@ -120,7 +125,8 @@ const ScheduleList: React.FC = () => {
     try {
       if (currentSchedule) {
         // Edit schedule
-        const editdSchedule = await editSchedule(currentSchedule.id, data);
+        const editdSchedule = await editSchedule(data);
+        console.log(editdSchedule);
         setSchedules(
           schedules.map((schedule) =>
             schedule.id === editdSchedule.id ? editdSchedule : schedule
@@ -211,7 +217,7 @@ const ScheduleList: React.FC = () => {
           </div>
         </div>
         <div className={styles.addButton} onClick={handleAdd}>
-          + Thêm nhân viên
+          + Thêm lịch của nhân viên
         </div>
       </div>
       <div>
@@ -229,10 +235,20 @@ const ScheduleList: React.FC = () => {
         </select>
       </div>
       <div className={styles.divider}>
-        <label> Danh sách lịch làm việc </label>
+        <div>
+          <label> Danh sách lịch làm việc </label>
+          <input
+            type="text"
+            placeholder="Tìm kiếm theo tên"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={styles.searchInput}
+          />
+        </div>
       </div>
       <SchedulesTable
-        schedules={schedules}
+        schedules={schedules
+          .filter((row) => !searchTerm.length || row.employee.name.toLowerCase().includes(searchTerm.toLowerCase()))}
         onDelete={handleDelete}
         onEdit={handleEdit}
       />
@@ -249,7 +265,7 @@ const ScheduleList: React.FC = () => {
         <div>
           <div className={styles.header}>
             <div className={styles.switchWrapper}>
-              <label> Chế độ bảng </label>
+              <label> Xem kiểu lịch </label>
               <label className={styles.switch}>
                 <input
                   type="checkbox"

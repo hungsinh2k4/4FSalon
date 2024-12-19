@@ -1,6 +1,6 @@
 // src/manager/components/tables/AccountsTable.tsx
 import React, {useState} from 'react';
-import styles from './AccountsTable.module.css';
+import styles from '../../components/common/global.module.css';
 import { Account } from '../../utils/types';
 import { FaPen, FaXmark } from 'react-icons/fa6';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface AccountsTableProps {
   accounts: Account[];
-  onDelete: (id: number) => void;
+  onDelete: (account: Account) => void;
   onEdit: (account: Account) => void;
 }
 
@@ -44,7 +44,6 @@ const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdi
         <col style={{ width: '5%' }} />
         <col style={{ width: '20%' }} />
         <col style={{ width: '10%' }} />
-        <col style={{ width: '15%' }} />
         <col style={{ width: '10%' }} />
       </colgroup>
       <thead> 
@@ -52,7 +51,6 @@ const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdi
           <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
           <th onClick={() => handleSort('email')}>Email <FontAwesomeIcon icon={getSortIcon('email')} /></th>
           <th onClick={() => handleSort('role')}>Role <FontAwesomeIcon icon={getSortIcon('role')} /></th>
-          <th onClick={() => handleSort('created_at')}>Ngày tạo <FontAwesomeIcon icon={getSortIcon('create_at')} /></th>
           <th onClick={() => handleSort('id')}>Hành động</th>
         </tr>
       </thead>
@@ -62,10 +60,9 @@ const AccountsTable: React.FC<AccountsTableProps> = ({ accounts, onDelete, onEdi
             <td>{account.id}</td>
             <td>{account.email}</td>
             <td>{account.role}</td>
-            <td>{account.created_at}</td>
             <td className={styles.actionList}>
             <FaPen className={styles.actionEdit} onClick={() => onEdit(account)}/> 
-              <FaXmark className={styles.actionDelete} onClick={() => onDelete(account.id)}/>
+              <FaXmark className={styles.actionDelete} onClick={() => onDelete(account)}/>
             </td>
           </tr>
         ))}

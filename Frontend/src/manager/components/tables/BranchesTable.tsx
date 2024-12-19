@@ -1,6 +1,6 @@
 // src/manager/components/tables/BranchesTable.tsx
 import React, { useState } from 'react';
-import styles from './BranchesTable.module.css';
+import styles from '../../components/common/global.module.css';
 import { FaPen, FaXmark } from 'react-icons/fa6';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

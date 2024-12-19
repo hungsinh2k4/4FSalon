@@ -32,8 +32,8 @@ export const createAbsence = async (data: Partial<Absence>): Promise<Absence> =>
   return response.data;
 }
 
-export const updateSchedule = async (id: number, data: Partial<Schedule>): Promise<Schedule> => {
-  const response = await axiosInstance.put(`api/schedules/${id}`, data);
+export const updateSchedule = async (data: Partial<Schedule>): Promise<Schedule> => {
+  const response = await axiosInstance.put(`api/schedules`, data);
   return response.data;
 };
 

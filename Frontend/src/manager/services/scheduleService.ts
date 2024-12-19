@@ -30,8 +30,8 @@ export const removeAbsence = async (id: number): Promise<void> => {
   return await deleteAbsence(id);
 }
 
-export const editSchedule = async (id: number, data: Partial<Schedule>): Promise<Schedule> => {
-  return await updateSchedule(id, data);
+export const editSchedule = async (data: Partial<Schedule>): Promise<Schedule> => {
+  return await updateSchedule(data);
 };
 
 export const removeSchedule = async (id: number): Promise<void> => {

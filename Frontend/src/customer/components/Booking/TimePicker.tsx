@@ -179,8 +179,10 @@ export default function TimePicker({
               key={key}
               onClick={() => handleTimeClick(key)}
               disabled={!times.get(key)}
-              className={`p-3 rounded-md text-center text-sm font-medium flex justify-center items-center
-           ${times.get(key) === false
+              className={`p-3 rounded-md text-center text-sm font-medium ${
+                selectedTime === key
+                  ? "bg-teal-600 text-white font-bold"
+                  : times.get(key) === false
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-gray-300 hover:bg-gray-400"
                 }`}

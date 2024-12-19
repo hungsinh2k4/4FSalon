@@ -193,7 +193,7 @@ const BranchList: React.FC = () => {
           </div>
         </div>
         <div className={styles.addButton} onClick={handleAdd}>
-            + Thêm dịch vụ
+            + Thêm chi nhánh
         </div>
         
       </div>
@@ -283,6 +283,8 @@ const BranchList: React.FC = () => {
       </div>
     );
   }
+
+  
   return (
     <div className={styles.page}>
       {renderHeader()}
