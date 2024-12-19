@@ -35,7 +35,7 @@ const VoucherList: React.FC<VoucherListProps> = ({
   if (viewType !== "voucher") return null;
   if (!selectedService) {selectedVoucher = null;} // Nếu không có dịch vụ nào được chọn thì vô hiệu hóa voucher
   return (
-    <div className="mt-2.5 max-h-[500px] overflow-y-auto border border-gray-300 rounded-s-lg p-2 grid grid-cols-2 gap-3.5">
+    <div className="container mx-auto max-h-[500px] p-4 overflow-y-auto">
       {vouchers.map((voucher) => {
         const valid = isVoucherValid(voucher); // Kiểm tra điều kiện voucher
         return (
@@ -47,13 +47,13 @@ const VoucherList: React.FC<VoucherListProps> = ({
               )
             }
             disabled={!valid} // Vô hiệu hóa nút nếu voucher không hợp lệ
-            className={`w-full py-6.5 h-[400px] my-2.5 ${
+            className={`w-full max-h-[300px] my-2.5 pb-5 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${
               selectedVoucher?.id === voucher.id
                 ? "bg-blue-700 border-blue-950" // Style khi được chọn
                 : "bg-gray-100 border-[#0a0a0a]"
             } cursor-pointer text-left flex ${!valid ? "opacity-50" : ""}`}
           >
-            <div className="w-2/5 h-full overflow-hidden">
+            <div className="w-28 h-28 overflow-hidden rounded-t-lg">
               <img
                 src="src/customer/assets/Booking/employees.jpeg"
                 alt={voucher.description}
@@ -63,10 +63,13 @@ const VoucherList: React.FC<VoucherListProps> = ({
             <div className="flex-1 p-4">
               <strong>{voucher.code}</strong>
               <div className="text-sm text-gray-600">
-                {voucher.price_threshold}
+                Giá dịch vụ yêu cầu: {voucher.price_threshold}
               </div>
               <div className="text-sm text-gray-600">
-                {voucher.discount_value}
+                Giảm : {voucher.discount_value} VNĐ
+              </div>
+              <div className="text-sm text-gray-600 justify-center">
+                Điểm yêu cầu: {voucher.required_point}
               </div>
             </div>
           </button>

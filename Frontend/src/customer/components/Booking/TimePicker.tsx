@@ -156,7 +156,11 @@ export default function TimePicker({
   }, [schedule]);
 
   return (
-    <div className={`flex items-center justify-center space-x-2 ${isDisplaying ? "block" : "hidden"}`}>
+    <div
+      className={`flex items-center justify-center space-x-2 ${
+        isDisplaying ? "block" : "hidden"
+      }`}
+    >
       <button
         onClick={handlePrev}
         className="w-8 h-8 flex items-center justify-center bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 disabled:opacity-50"
@@ -166,7 +170,6 @@ export default function TimePicker({
       </button>
 
       <div className="grid grid-cols-8 gap-3 min-h-[200px] grid-auto-rows-[40px] place-items-start">
-        
         {Array.from(times.keys())
           .slice(visibleRange[0], visibleRange[1])
           .map((key) => (
@@ -176,7 +179,7 @@ export default function TimePicker({
               disabled={!times.get(key)} // Disable nếu giờ nằm trong khoảng không khả dụng
               className={`p-3 rounded-md text-center text-sm font-medium ${
                 selectedTime === key
-                  ? "bg-blue-500 text-white font-bold"
+                  ? "bg-teal-600 text-white font-bold"
                   : times.get(key) === false
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-gray-300 hover:bg-gray-400"
