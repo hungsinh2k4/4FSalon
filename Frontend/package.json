@@ -14,6 +14,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@goongmaps/goong-map-react": "^1.1.2",
     "@react-oauth/google": "^0.12.1",
     "aos": "^2.3.4",
     "apexcharts": "^4.2.0",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@goongmaps/goong-js": "^1.0.9",
     "@types/aos": "^3.0.7",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
