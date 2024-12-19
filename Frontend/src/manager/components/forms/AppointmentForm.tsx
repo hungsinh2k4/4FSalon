@@ -30,9 +30,10 @@ interface AppointmentFormProps {
     // Thêm các trường cần thiết
   };
   onSubmit: (data: any) => void;
+  type: string;
 }
 
-const AppointmentForm: React.FC<AppointmentFormProps> = ({ initialData, onSubmit }) => {
+const AppointmentForm: React.FC<AppointmentFormProps> = ({ initialData, onSubmit, type }) => {
   const [title, setTitle] = useState(initialData?.title || '');
   const [date, setDate] = useState(initialData?.date || '');
   const [start_time, setStart_time] = useState(initialData?.start_time || '');
@@ -188,7 +189,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ initialData, onSubmit
           </ul>
         </div>
       </div>
-      <Button type="submit">Submit</Button>
+      <Button type="submit" className={styles.submitButton}>{type}</Button>
     </form>
   );
 };

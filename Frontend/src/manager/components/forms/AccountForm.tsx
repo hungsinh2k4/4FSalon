@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Input from '../common/Input';
 import Button from '../common/Button';
-import styles from './AccountForm.module.css';
-import { Account } from '../../utils/types';
+import styles from './formcss.module.css';
 
 interface AccountFormProps {
   initialData?: {
@@ -14,6 +13,7 @@ interface AccountFormProps {
     role: string;
   };
   onSubmit: (data: any) => void;
+  type: string;
 }
 
 enum Role {
@@ -22,7 +22,7 @@ enum Role {
   Customer = 'customer',
 }
 
-const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit }) => {
+const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit, type }) => {
   const [id, setId] = useState<number>(initialData?.id || 0);
   const [password, setPassword] = useState<string>(initialData?.password || '');
   const [google_id, setGoogleId] = useState<string>(initialData?.google_id || '');
@@ -30,28 +30,16 @@ const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit }) => {
   const [role, setRole] = useState<string>(initialData?.role || '');
   // Thêm các state cho các trường khác nếu cần
 
-  useEffect(() => {
-    if (initialData) {
-      setEmail(initialData.email);
-      setRole(initialData.role);
-      // Cập nhật các trường khác nếu cần
-    } else {
-      setEmail('');
-      setRole
-      // Reset các trường khác nếu cần
-    }
-  }, [initialData]);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data: Partial<Account> = { email, role };
+    const data = {id, email, role };
     onSubmit(data);
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.accountForm}>
-      <h3>{initialData ? 'Chỉnh sửa tài khoản' : 'Thêm tài khoản'}</h3>
       <label className={styles.label}>Loại tài khoản</label>
+      <br></br>
       <select 
         value={role}
         onChange={(e) => setRole(e.target.value)}
@@ -69,7 +57,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ initialData, onSubmit }) => {
         required
       />
       {/* Thêm các Input khác nếu cần */}
-      <Button type="submit">Lưu</Button>
+      <Button type="submit" className={styles.submitButton}>{type}</Button>
     </form>
   );
 };
