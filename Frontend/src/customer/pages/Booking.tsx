@@ -362,7 +362,7 @@ const Booking: React.FC = () => {
           " " +
           selectedStartTimeDate?.getHours().toString() +
           ":" +
-          selectedEndTimeDate?.getMinutes().toString() +
+          selectedStartTimeDate?.getMinutes().toString() +
           ", " +
           selectedDate?.toLocaleDateString(),
         price: " " + totalPayment + "đ",
@@ -473,7 +473,7 @@ const Booking: React.FC = () => {
               {selectedService
                 ? (selectedService.price ?? 0) -
                   (selectedVoucher?.discount_value ?? 0)
-                : 0}
+                : 0} VNĐ
             </p>
           </div>
           {/* Chọn ngày, giờ & nhân viên */}
@@ -596,7 +596,7 @@ const Booking: React.FC = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder="Tìm kiếm chi nhánh"
+              placeholder=""
               className="w-full p-3 pl-9 mb-6 rounded-lg border-2 border-black"
               onChange={(e) => setSearchTerm(e.target.value)}
             />
