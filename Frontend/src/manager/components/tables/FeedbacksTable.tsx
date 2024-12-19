@@ -41,11 +41,11 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({ feedbacks }) => {
       <table>
         <colgroup>
             <col style={{ width: '5%' }} />
-            <col style={{ width: '12%' }} />
-            <col style={{ width: '12%' }} />
+            <col style={{ width: '6%' }} />
+            <col style={{ width: '6%' }} />
             <col style={{ width: '6%' }} />
             <col style={{ width: '20%' }} />
-            <col style={{ width: '12%' }} />
+            <col style={{ width: '6%' }} />
             <col style={{ width: '6%' }} />
             <col style={{ width: '20%' }} />
         </colgroup>
@@ -54,10 +54,10 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({ feedbacks }) => {
             <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
             <th onClick={() => handleSort('customer_name')}>Customer Name <FontAwesomeIcon icon={getSortIcon('customer_name')} /></th>
             <th onClick={() => handleSort('branch_name')}>Branch Name <FontAwesomeIcon icon={getSortIcon('branch_name')} /></th>
-            <th onClick={() => handleSort('branch_rating')}>R <FontAwesomeIcon icon={getSortIcon('branch_rating')} /></th>
+            <th onClick={() => handleSort('branch_rating')}>Branch Rating <FontAwesomeIcon icon={getSortIcon('branch_rating')} /></th>
             <th onClick={() => handleSort('branch_feedback')}>Branch Feedback <FontAwesomeIcon icon={getSortIcon('branch_feedback')} /></th>
             <th onClick={() => handleSort('employee_name')}>Employee Name <FontAwesomeIcon icon={getSortIcon('employee_name')} /></th>
-            <th onClick={() => handleSort('employee_rating')}>R <FontAwesomeIcon icon={getSortIcon('employee_rating')} /></th>
+            <th onClick={() => handleSort('employee_rating')}>Employee Rating <FontAwesomeIcon icon={getSortIcon('employee_rating')} /></th>
             <th onClick={() => handleSort('employee_feedback')}>Employee Feedback <FontAwesomeIcon icon={getSortIcon('employee_feedback')} /></th>
           </tr>
         </thead>

@@ -104,6 +104,7 @@ const ServiceList: React.FC = () => {
       if (currentService) {
         // Edit service
         const editdService = await editService(currentService.id, data);
+        console.log(editdService);
         setServices(
           services.map((service) => (service.id === editdService.id ? editdService : service))
         );

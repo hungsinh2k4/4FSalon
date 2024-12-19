@@ -70,7 +70,12 @@ const ScheduleList: React.FC = () => {
         const data = !selectedBranch
           ? await fetchSchedules()
           : await fetchSchedulesByBranch(selectedBranch);
-        setSchedules(data);
+        const reformattedData = data.map((sche: any) => ({
+          ...sche,
+          employee_name: sche.employee?.name || '---',
+        }));
+        
+        setSchedules(reformattedData);
       } catch (err) {
         setError("Failed to fetch schedule.");
       } finally {
@@ -120,7 +125,8 @@ const ScheduleList: React.FC = () => {
     try {
       if (currentSchedule) {
         // Edit schedule
-        const editdSchedule = await editSchedule(currentSchedule.id, data);
+        const editdSchedule = await editSchedule(data);
+        console.log(editdSchedule);
         setSchedules(
           schedules.map((schedule) =>
             schedule.id === editdSchedule.id ? editdSchedule : schedule

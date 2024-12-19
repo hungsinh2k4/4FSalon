@@ -5,20 +5,8 @@ import { Employee } from '../../utils/types';
 import { FaCheck, FaPen, FaX } from 'react-icons/fa6';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Schedule } from "../../utils/types";
 
-interface Schedule {
-  id: number;
-  employee_id: number;
-  monday: boolean;
-  tuesday: boolean;
-  wednesday: boolean;
-  thursday: boolean;
-  friday: boolean;
-  saturday: boolean;
-  sunday: boolean;
-  employee: Employee;
-  // Thêm các trường khác nếu cần
-}
 
 interface SchedulesTableProps {
   schedules: Schedule[];
@@ -55,14 +43,14 @@ const SchedulesTable: React.FC<SchedulesTableProps> = ({ schedules, onDelete, on
     <table className={styles.table}>
       <colgroup>
         <col style={{ width: '5%' }} />
-        <col style={{ width: '5%' }} />
+        <col style={{ width: '7%' }} />
         <col style={{ width: '15%' }} />
       </colgroup>
       <thead>
         <tr>
           <th onClick={() => handleSort('id')}>ID <FontAwesomeIcon icon={getSortIcon('id')} /></th>
-          <th onClick={() => handleSort('employee_id')}>Mã <FontAwesomeIcon icon={getSortIcon('employee_id')} /></th>
-          <th onClick={() => handleSort('employee')}>Tên <FontAwesomeIcon icon={getSortIcon('employee')} /></th>
+          <th onClick={() => handleSort('employee_id')}>ID NV <FontAwesomeIcon icon={getSortIcon('employee_id')} /></th>
+          <th onClick={() => handleSort('employee_name')}>Tên NV <FontAwesomeIcon icon={getSortIcon('employee_name')} /></th>
           <th onClick={() => handleSort('monday')}>Thứ 2 <FontAwesomeIcon icon={getSortIcon('monday')} /></th>
           <th onClick={() => handleSort('tuesday')}>Thứ 3 <FontAwesomeIcon icon={getSortIcon('tuesday')} /></th>
           <th onClick={() => handleSort('wednesday')}>Thứ 4 <FontAwesomeIcon icon={getSortIcon('wednesday')} /></th>
@@ -77,8 +65,8 @@ const SchedulesTable: React.FC<SchedulesTableProps> = ({ schedules, onDelete, on
         {sorted.map((schedule) => (
           <tr key={schedule.id}>
             <td>{schedule.id}</td>
-            <td>{schedule.employee.id}</td>
-            <td>{schedule.employee.name}</td>
+            <td>{schedule.employee_id}</td>
+            <td>{schedule.employee_name}</td>
             <td>{(schedule.monday) ? <FaCheck /> : <FaX />}</td>
             <td>{(schedule.tuesday) ? <FaCheck /> : <FaX />}</td>
             <td>{(schedule.wednesday) ? <FaCheck /> : <FaX />}</td>

@@ -55,6 +55,7 @@ export interface User {
     saturday: boolean;
     sunday: boolean;
     employee: Employee;
+    employee_name: string;
     // Thêm các trường khác nếu cần
   }
 

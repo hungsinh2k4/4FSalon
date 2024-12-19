@@ -14,13 +14,11 @@ export const getServiceById = async (id: number): Promise<Service> => {
 
 export const createService = async (data: Partial<Service>): Promise<Service> => {
   const response = await axiosInstance.post('api/services', data);
-  console.log("response",data);
   return response.data;
 };
 
 export const updateService = async (id: number, data: Partial<Service>): Promise<Service> => {
   const response = await axiosInstance.put(`api/services/${id}`, data);
-  console.log("response",data);
   return response.data;
 };
 

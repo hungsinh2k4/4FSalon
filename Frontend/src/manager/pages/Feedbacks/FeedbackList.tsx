@@ -11,12 +11,9 @@ import { FaBagShopping, FaFilter } from 'react-icons/fa6';
 
 const FeedbackList: React.FC = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
   const [isModalWaitingOpen, setIsModalWaitingOpen] = useState<boolean>(false);
 
   const [currentFeedback, setCurrentFeedback] = useState<Feedback | null>(null); 
@@ -32,17 +29,7 @@ const FeedbackList: React.FC = () => {
     type: string,
   }>>([]);
   
-  const addHistoryItem = (message: string, type: string) => {
-    const newItem = {
-      id: Date.now(),
-      message,
-      type
-    };
-    setHistoryItems(prev => [...prev, newItem]);
-    setTimeout(() => {
-      setHistoryItems(prev => prev.filter(item => item.id !== newItem.id));
-    }, 5000);
-  };
+
 
   
   const filteredFeedbacks = feedbacks;
@@ -60,15 +47,12 @@ const FeedbackList: React.FC = () => {
           branch_name: feedback.appointment?.branch?.name||'---',
           employee_name: feedback.appointment?.employee?.name || '---',
         }));
-        console.log('hi', reformattedData);
         setFeedbacks(reformattedData);
         
       } catch (err) {
         setError('Failed to fetch feedbacks.');
       } finally {
         setLoading(false);
-        console.log("feed");
-        console.log(feedbacks);
       }
     };
     loadFeedbacks();
