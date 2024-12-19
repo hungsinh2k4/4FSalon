@@ -37,6 +37,7 @@ import {
 import { Schedule } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
 import { beautifyPrice } from "../utils/helpers";
+import { editCustomer } from "../../manager/services/appointmentService";
 
 
 const Booking: React.FC = () => {
@@ -252,7 +253,7 @@ const Booking: React.FC = () => {
           selectedDate
         );
 
-        setSchedule(data);
+        setSchedule(Array.isArray(data) ? data : []);
       } catch (err) {
         setError("Failed to fetch schedule.");
       } finally {
@@ -325,6 +326,13 @@ const Booking: React.FC = () => {
     try {
       // Gửi API
       if (appointmentId == null) {
+
+        if (userprofile) {
+          await editCustomer(userprofile?.id, {
+            points: userprofile?.points - (selectedVoucher ? selectedVoucher?.required_point : 0),
+          });
+        }
+
         await addAppointment({
           title: selectedService?.title,
           date: String(selectedDate?.toISOString()),
@@ -397,11 +405,10 @@ const Booking: React.FC = () => {
             <h2 className="text-3xl font-bold mb-1">1. Chọn chi nhánh</h2>
             <div className="flex items-center">
               <button
-                className={`px-2 py-2 border rounded mt-8 w-fit text-left ${
-                  viewType === "branches"
+                className={`px-2 py-2 border rounded mt-8 w-fit text-left ${viewType === "branches"
                     ? "bg-teal-600 text-white font-bold"
                     : "bg-gray-200 hover:bg-teal-600 hover:text-white"
-                }`}
+                  }`}
                 onClick={() => {
                   setViewType("branches"), setErrorBranch("");
                 }}
@@ -420,11 +427,10 @@ const Booking: React.FC = () => {
             <h2 className="text-3xl font-bold mb-1">2. Chọn dịch vụ</h2>
             <div className="flex items-center">
               <button
-                className={`px-2 py-2 border rounded mt-8 w-full text-left ${
-                  viewType === "services"
+                className={`px-2 py-2 border rounded mt-8 w-full text-left ${viewType === "services"
                     ? "bg-teal-600 text-white font-bold"
                     : "bg-gray-200 hover:hover:bg-teal-600 hover:text-white"
-                }`}
+                  }`}
                 onClick={() => {
                   if (!selectedBranch) {
                     setErrorBranch("Vui lòng chọn chi nhánh trước");
@@ -445,11 +451,10 @@ const Booking: React.FC = () => {
               <p className="text-red-500 mt-2">{errorService}</p>
             )}
             <button
-              className={`inline-flex items-center px-2 py-2 border rounded mt-8 text-left w-full ${
-                viewType === "voucher"
+              className={`inline-flex items-center px-2 py-2 border rounded mt-8 text-left w-full ${viewType === "voucher"
                   ? "bg-teal-600 text-white font-bold"
                   : "bg-gray-200 hover:bg-teal-600 hover:text-white"
-              }`}
+                }`}
               onClick={() => {
                 if (!selectedBranch || !selectedService) {
                   if (!selectedBranch) {
@@ -472,7 +477,7 @@ const Booking: React.FC = () => {
               Tổng thanh toán:{" "}
               {selectedService
                 ? (selectedService.price ?? 0) -
-                  (selectedVoucher?.discount_value ?? 0)
+                (selectedVoucher?.discount_value ?? 0)
                 : 0} VNĐ
             </p>
           </div>
@@ -483,11 +488,10 @@ const Booking: React.FC = () => {
             </h2>
             <div className="flex items-center mb-1">
               <button
-                className={`inline-block px-2 py-2 border rounded mt-4 w-full text-left ${
-                  viewType === "employees"
+                className={`inline-block px-2 py-2 border rounded mt-4 w-full text-left ${viewType === "employees"
                     ? "bg-teal-600 text-white font-bold"
                     : "bg-gray-200 hover:bg-teal-600 hover:text-white"
-                }`}
+                  }`}
                 onClick={() => {
                   if (!selectedBranch || !selectedService) {
                     if (!selectedBranch) {
@@ -502,7 +506,7 @@ const Booking: React.FC = () => {
                   setViewType("employees");
                   setErrorEmployee("");
                 }}
-                // disabled={!selectedBranch || !selectedService}
+              // disabled={!selectedBranch || !selectedService}
               >
                 <FontAwesomeIcon icon={faUserCheck} className="mr-2" />
                 Chọn nhân viên
@@ -626,7 +630,7 @@ const Booking: React.FC = () => {
               viewType={viewType}
               vouchers={voucher}
               selectedVoucher={selectedVoucher}
-              setSelectedVoucher={setSelectedVoucher} // Do nothing
+              setSelectedVoucher={setSelectedVoucher} 
               user={userprofile}
               selectedDate={selectedDate}
               selectedService={selectedService}
