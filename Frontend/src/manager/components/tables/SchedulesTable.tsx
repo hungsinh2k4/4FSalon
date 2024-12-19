@@ -1,6 +1,6 @@
 // src/manager/components/tables/SchedulesTable.tsx
 import React, { useState } from 'react';
-import styles from './SchedulesTable.module.css';
+import styles from '../common/global.module.css';
 import { Employee } from '../../utils/types';
 import { FaCheck, FaPen, FaX } from 'react-icons/fa6';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';

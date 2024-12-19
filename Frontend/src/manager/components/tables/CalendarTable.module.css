@@ -109,6 +109,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .directionButton {
@@ -117,22 +118,26 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: #f0f8ff;
+  background-color: hsl(0, 0, 100);
+  border: 1px solid #ddd;
   color: #4f4f50;
   cursor: pointer;
 }
 
 .directionButton:hover {
-  background-color: #848484;
-  border-radius: 50%;
+  background-color: hsl(0, 0%, 80%);
 }
 
 .todayButton {
   width: 100px;
-  background-color: none;
+  background-color: hsl(0, 0, 100);
   color: black;
   border: 1px solid #ddd;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.todayButton:hover {
+  background-color: hsl(0, 0%, 80%);
 }

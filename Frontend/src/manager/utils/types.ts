@@ -114,6 +114,10 @@ export interface User {
     address: string;
     phone: string;
     email: string;
+    status: boolean;
+    pỉcture_url: string;
+    long: number;
+    lat: number;
   }
 
   export interface Statistic {
