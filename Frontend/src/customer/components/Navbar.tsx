@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/Barber Hair Cutting Effect 3.png";
 import "./Navbar.css";
 import { useAuth } from "../context/AuthContext";
 
@@ -33,7 +32,7 @@ const Navbar: React.FC = () => {
     <nav className="bg-white p-4 sticky top-0 left-0 shadow-md z-10">
       <div className="container mx-auto flex justify-between ">
         <div className="flex items-center space-x-2">
-          <img src={logo} alt="Logo" className="h-10 w-10" />
+          <img src="logo2.png" alt="Logo" className="h-10 w-10" />
           <h1 className="text-black text-2xl">4F Salon</h1>
         </div>
 
