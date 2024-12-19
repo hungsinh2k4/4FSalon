@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import samplePic1 from "../assets/AboutUsImg/aboutUsPic.jpg";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { toast } from "react-toastify";
@@ -52,7 +51,7 @@ const Vechungtoi: React.FC = () => {
         >
           <div className="flex-1 h-full">
             <img
-              src={samplePic1}
+              src="bottom.png"
               alt="service1"
               className="w-full h-full object-cover rounded-lg"
             />
@@ -61,14 +60,14 @@ const Vechungtoi: React.FC = () => {
           <div className="flex flex-col space-y-2 h-full w-1/3">
             <div className="flex-1 rounded-lg overflow-hidden">
               <img
-                src={samplePic1}
+                src="bottom.png"
                 alt="service1"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="flex-1 rounded-lg overflow-hidden">
               <img
-                src={samplePic1}
+                src="bottom.png"
                 alt="service1"
                 className="w-full h-full object-cover"
               />

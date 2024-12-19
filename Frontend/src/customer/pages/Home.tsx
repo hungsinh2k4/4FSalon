@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Khuyenmai from "../assets/HomeImg/Khuyenmai.png";
-import Logo from "../assets/logo.png";
 import "./Home.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -167,7 +165,7 @@ const Home: React.FC = () => {
             {/* Ảnh */}
             <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4" data-aos="fade-up">
               <img
-                src={Khuyenmai}
+                src="khuyenmai.png"
                 alt="Khuyến mãi"
                 className="rounded-lg object-cover"
               />
@@ -281,7 +279,7 @@ const Home: React.FC = () => {
         {/* Cột giữa */}
         <div className="bg-gray-300 p-8 flex flex-col items-center text-center">
           <h2 className="text-3xl font-bold mb-4">OUR STORY</h2>
-          <img src={Logo} alt="Barber Logo" className="w-24 h-24 mb-4" />
+          <img src="logo.png" alt="Barber Logo" className="w-24 h-24 mb-4" />
           <p className="mb-6" data-aos="fade-up">
             4F Salon – Nơi biến mái tóc thành ngôn ngữ của cá tính. Chúng tôi
             không chỉ cắt tóc, mà tạo nên phong cách. Đến với 4F Salon, bạn sẽ
