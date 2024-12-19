@@ -39,6 +39,7 @@ const BranchesTable: React.FC<BranchesTableProps> = ({ branches, onDelete, onEdi
   };
 
   return (
+    <div className={styles.tableContainer}>
     <table >
       <colgroup>
         <col style={{ width: '5%' }} />
@@ -74,6 +75,7 @@ const BranchesTable: React.FC<BranchesTableProps> = ({ branches, onDelete, onEdi
         ))}
       </tbody>
     </table>
+    </div>
   );
 };
 
