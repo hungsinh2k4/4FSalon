@@ -36,7 +36,7 @@ return (
       >
         <div className="w-1/3 h-full overflow-hidden rounded-lg">
           <img
-            src="/src/customer/assets/bg.png"
+            src={branch.picture_url || undefined}
             alt="branch image"
             className="w-full h-full object-cover rounded-lg"
           />
